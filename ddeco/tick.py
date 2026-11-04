@@ -23,7 +23,8 @@
 from __future__ import annotations
 
 from . import formulas as F
-from .effects import Effect, Op, TargetKind, effective
+from . import trade
+from .effects import TargetKind, effective
 from .state import SimState
 from .world import World
 
@@ -95,9 +96,11 @@ def _arrivals(world: World, state: SimState) -> None:
 
 
 def _production_consumption_spoilage(
-    world: World, state: SimState, m0: dict, demand: dict, star: dict
+    world: World, state: SimState, m0: dict, demand: dict, star: dict, produced: dict
 ) -> None:
-    """Шаги 3–5: производство, потребление, порча по снимку начала дня (m0)."""
+    """Шаги 3–5: производство, потребление, порча по снимку начала дня (m0).
+
+    produced[(n,g)] — выпуск за день (нужен для обязательной поставки в хаб, §5.6)."""
     p = world.params
     for n in world.node_ids():
         pros = state.prosperity[n]
@@ -108,8 +111,9 @@ def _production_consumption_spoilage(
             demand[(n, g)] = D
             star[(n, g)] = F.target_stock(good, D)
 
-            s = state.stock[(n, g)]
-            s += F.production(good, effective_pcap(world, state, n, g), m0[(n, g)], p.lo_prod, p.hi_prod)
+            prod = F.production(good, effective_pcap(world, state, n, g), m0[(n, g)], p.lo_prod, p.hi_prod)
+            produced[(n, g)] = prod
+            s = state.stock[(n, g)] + prod
             s -= F.consumption(good, D, m0[(n, g)], s)
             s = F.after_spoilage(good, s)
             state.stock[(n, g)] = s
@@ -123,11 +127,6 @@ def _prices(world: World, state: SimState, star: dict) -> None:
             good = world.catalog[g]
             mstar = F.target_multiplier(good, state.stock[(n, g)], star[(n, g)])
             state.multiplier[(n, g)] = F.smooth_multiplier(state.multiplier[(n, g)], mstar, lam)
-
-
-# Заглушки, подключаются в следующих задачах.
-def _dispatch(world: World, state: SimState, star: dict) -> None:
-    """Шаг 6: торговая отправка (§5.6) — задача 4."""
 
 
 def _basket_terms(world: World, state: SimState, node: str, good_ids: list[str], star: dict):
@@ -173,8 +172,9 @@ def step_day(world: World, state: SimState) -> SimState:
     m0 = dict(state.multiplier)                       # снимок цен на начало дня
     demand: dict = {}
     star: dict = {}
-    _production_consumption_spoilage(world, state, m0, demand, star)  # 3–5
-    _dispatch(world, state, star)                     # 6
+    produced: dict = {}
+    _production_consumption_spoilage(world, state, m0, demand, star, produced)  # 3–5
+    trade.dispatch(world, state, star, produced)      # 6
     _prosperity(world, state, star)                   # 7
     _prices(world, state, star)                       # 8
     _caravans(world, state)                           # 9
