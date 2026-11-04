@@ -130,8 +130,34 @@ def _dispatch(world: World, state: SimState, star: dict) -> None:
     """Шаг 6: торговая отправка (§5.6) — задача 4."""
 
 
+def _basket_terms(world: World, state: SimState, node: str, good_ids: list[str], star: dict):
+    """Список (basket_weight, r) по товарам корзины с ненулевым спросом."""
+    terms = []
+    for g in good_ids:
+        good = world.catalog[g]
+        if good.basket_weight <= 0.0:
+            continue
+        s_star = star[(node, g)]
+        if s_star <= 0.0:
+            continue  # нет спроса — товар не входит в корзину этого узла
+        terms.append((good.basket_weight, state.stock[(node, g)] / s_star))
+    return terms
+
+
 def _prosperity(world: World, state: SimState, star: dict) -> None:
-    """Шаг 7: процветание (§5.8) — задача 3."""
+    """Шаг 7: процветание π как медленная переменная (§5.8).
+
+    Естественный потолок: выше π → выше спрос (§5.3) → ниже r → ниже π*, поэтому
+    π упирается в уровень, где потребление съедает излишек производства."""
+    p = world.params
+    catalog = world.catalog
+    food_ids = catalog.food_ids()
+    market_ids = catalog.market_ids()
+    for n in world.node_ids():
+        food_fill = F.basket_fill(_basket_terms(world, state, n, food_ids, star))
+        market_fill = F.basket_fill(_basket_terms(world, state, n, market_ids, star))
+        target = F.prosperity_target(food_fill, market_fill, p.w_food, p.w_market)
+        state.prosperity[n] = F.smooth_prosperity(state.prosperity[n], target, p.mu)
 
 
 def _caravans(world: World, state: SimState) -> None:

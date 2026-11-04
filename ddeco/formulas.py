@@ -79,3 +79,29 @@ def target_multiplier(good: GoodParams, stock: float, star: float) -> float:
 def smooth_multiplier(current: float, target: float, lam: float) -> float:
     """m ← m + λ·(m* − m) — сглаживание, множитель плывёт, а не прыгает."""
     return current + lam * (target - current)
+
+
+# §5.8 Процветание -------------------------------------------------------------
+
+def basket_fill(terms: list[tuple[float, float]]) -> float:
+    """Заполненность корзины Σ w_g·min(r_g, 1) / Σ w_g.
+
+    terms — список (weight, r). Нехватка одного товара не компенсируется избытком
+    другого (потолок min(r,1)), поэтому разнообразие учитывается. Нормируем по
+    сумме весов присутствующих товаров."""
+    total_w = 0.0
+    acc = 0.0
+    for w, r in terms:
+        total_w += w
+        acc += w * min(r, 1.0)
+    return acc / total_w if total_w > 0.0 else 0.0
+
+
+def prosperity_target(food_fill: float, market_fill: float, w_food: float, w_market: float) -> float:
+    """π*_i = clamp(w_F·F_i + w_M·M_i, 0, 1)."""
+    return clamp(w_food * food_fill + w_market * market_fill, 0.0, 1.0)
+
+
+def smooth_prosperity(current: float, target: float, mu: float) -> float:
+    """π ← π + μ·(π* − π) — медленная переменная."""
+    return current + mu * (target - current)
