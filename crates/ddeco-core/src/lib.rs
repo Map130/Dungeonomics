@@ -9,7 +9,10 @@
 //! обхода (индексы вместо хеш-мап, §9); цены — множители к базовому прайс-листу;
 //! детерминизм через [`mathf`] и счётчиковый RNG.
 
+pub mod goods;
+pub mod loader;
 pub mod mathf;
+pub mod world;
 
-// Модули ядра подключаются пофазно (R2+): goods, world, state, effects, formulas,
-// tick, trade, calibration, rng, shocks, purchase, caravans, reasons, events, loader.
+// Модули ядра подключаются пофазно (R3+): state, effects, formulas, tick, trade,
+// calibration, rng, shocks, purchase, caravans, reasons, events.
