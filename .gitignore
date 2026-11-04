@@ -15,6 +15,10 @@ dist/
 # Simulation session state (auto-saved, not versioned)
 state.toml
 
+# Rust
+/target/
+# Cargo.lock намеренно коммитится: воспроизводимость CI и детерминизм сборки.
+
 # Editor / OS
 .vscode/
 .idea/
