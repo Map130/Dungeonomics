@@ -23,6 +23,7 @@
 from __future__ import annotations
 
 from . import formulas as F
+from . import shocks as shocks_mod
 from . import trade
 from .effects import TargetKind, effective
 from .state import SimState
@@ -163,10 +164,13 @@ def _caravans(world: World, state: SimState) -> None:
     """Шаг 9: материализация караванов (§5.10) — задача 6."""
 
 
-def step_day(world: World, state: SimState) -> SimState:
+def step_day(world: World, state: SimState, shocks=()) -> SimState:
     """Продвинуть состояние на один день. Мутирует state и возвращает его.
 
-    Снимок для отката делается вызывающим кодом через state.clone() до вызова."""
+    shocks — список ShockTemplate для фоновых шоков (§5.11); пусто = генератор
+    выключен. Снимок для отката делается вызывающим кодом через state.clone()."""
+    if shocks:
+        state.effects.extend(shocks_mod.generate(world, state, shocks))  # 0
     _drop_expired(state)                              # 1
     _arrivals(world, state)                           # 2
     m0 = dict(state.multiplier)                       # снимок цен на начало дня
@@ -182,8 +186,8 @@ def step_day(world: World, state: SimState) -> SimState:
     return state
 
 
-def run(world: World, state: SimState, days: int) -> SimState:
+def run(world: World, state: SimState, days: int, shocks=()) -> SimState:
     """Прокрутить N дней (REQUIREMENTS §5.7)."""
     for _ in range(days):
-        step_day(world, state)
+        step_day(world, state, shocks)
     return state
