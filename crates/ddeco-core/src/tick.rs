@@ -6,6 +6,7 @@
 use std::collections::BTreeMap;
 
 use crate::effects::{effective, Effect, TargetKind};
+use crate::shocks::{self, ShockTemplate};
 use crate::state::{Key, SimState};
 use crate::world::World;
 use crate::{caravans, formulas as f, trade};
@@ -228,8 +229,13 @@ fn prices(world: &World, state: &mut SimState, star: &BTreeMap<Key, f64>) {
     }
 }
 
-/// Продвинуть состояние на один день. Снимок для отката делает вызывающий код.
-pub fn step_day(world: &World, state: &mut SimState) {
+/// Продвинуть состояние на один день. `shocks` — шаблоны фоновых шоков (§5.11);
+/// пустой срез = генератор выключен. Снимок для отката делает вызывающий код.
+pub fn step_day(world: &World, state: &mut SimState, shocks: &[ShockTemplate]) {
+    if !shocks.is_empty() {
+        let new = shocks::generate(world, state, shocks); // 0
+        state.effects.extend(new);
+    }
     drop_expired(state); // 1
     arrivals(world, state); // 2
     let m0 = state.multiplier.clone(); // снимок цен на начало дня
@@ -245,8 +251,8 @@ pub fn step_day(world: &World, state: &mut SimState) {
 }
 
 /// Прокрутить N дней (REQUIREMENTS §5.7).
-pub fn run(world: &World, state: &mut SimState, days: u32) {
+pub fn run(world: &World, state: &mut SimState, days: u32, shocks: &[ShockTemplate]) {
     for _ in 0..days {
-        step_day(world, state);
+        step_day(world, state, shocks);
     }
 }

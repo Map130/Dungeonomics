@@ -140,7 +140,7 @@ fn run_single(name: &str) {
         }
     }
     for _ in 0..sc.days {
-        step_day(&world, &mut state);
+        step_day(&world, &mut state, &[]);
         if let Some(fr) = next {
             if fr.day == state.day {
                 check_frame(&state, fr);

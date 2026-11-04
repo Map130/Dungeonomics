@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 import json
+import struct
 from pathlib import Path
 
 from ddeco import events
@@ -172,8 +173,12 @@ def scenario_rng() -> dict:
     for day in (0, 1, 7, 100):
         for target in ("redwater", "millbrook", "redwater__millbrook"):
             for tpl in ("blight", "bandits", "caravan_guard"):
+                u = uniform(seed, day, target, tpl)
+                # uniform_bits — битовая маска double, чтобы сверка RNG не зависела
+                # от округления десятичного литерала при парсинге JSON (нужна точность).
+                bits = struct.unpack("<Q", struct.pack("<d", u))[0]
                 samples.append({"day": day, "target": target, "template": tpl,
-                                "uniform": uniform(seed, day, target, tpl),
+                                "uniform": u, "uniform_bits": bits,
                                 "chance_0_1": chance(seed, day, 0.1, target, tpl)})
     return {"seed": seed, "samples": samples}
 

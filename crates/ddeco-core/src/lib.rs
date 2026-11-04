@@ -9,15 +9,18 @@
 //! обхода (индексы вместо хеш-мап, §9); цены — множители к базовому прайс-листу;
 //! детерминизм через [`mathf`] и счётчиковый RNG.
 
+pub mod calibration;
 pub mod caravans;
 pub mod effects;
 pub mod formulas;
 pub mod goods;
 pub mod loader;
 pub mod mathf;
+pub mod rng;
+pub mod shocks;
 pub mod state;
 pub mod tick;
 pub mod trade;
 pub mod world;
 
-// Подключаются в следующих фазах: calibration, rng, shocks, purchase, reasons, events.
+// Подключаются в R5: purchase, reasons, events.

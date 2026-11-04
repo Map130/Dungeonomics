@@ -6,6 +6,7 @@
    "target": "redwater",
    "template": "blight",
    "uniform": 0.5843672943471766,
+   "uniform_bits": 4603438732203415315,
    "chance_0_1": false
   },
   {
@@ -13,6 +14,7 @@
    "target": "redwater",
    "template": "bandits",
    "uniform": 0.8826526411059874,
+   "uniform_bits": 4606125447756441434,
    "chance_0_1": false
   },
   {
@@ -20,6 +22,7 @@
    "target": "redwater",
    "template": "caravan_guard",
    "uniform": 0.0905828111569569,
+   "uniform_bits": 4591191600096327218,
    "chance_0_1": true
   },
   {
@@ -27,6 +30,7 @@
    "target": "millbrook",
    "template": "blight",
    "uniform": 0.46820848341271903,
+   "uniform_bits": 4602106114123622826,
    "chance_0_1": false
   },
   {
@@ -34,6 +38,7 @@
    "target": "millbrook",
    "template": "bandits",
    "uniform": 0.9162464820033939,
+   "uniform_bits": 4606428034175136441,
    "chance_0_1": false
   },
   {
@@ -41,6 +46,7 @@
    "target": "millbrook",
    "template": "caravan_guard",
    "uniform": 0.038693828148221136,
+   "uniform_bits": 4585737189356750167,
    "chance_0_1": true
   },
   {
@@ -48,6 +54,7 @@
    "target": "redwater__millbrook",
    "template": "blight",
    "uniform": 0.26737475253282644,
+   "uniform_bits": 4598488215261406383,
    "chance_0_1": false
   },
   {
@@ -55,6 +62,7 @@
    "target": "redwater__millbrook",
    "template": "bandits",
    "uniform": 0.7941148727679961,
+   "uniform_bits": 4605327970435451048,
    "chance_0_1": false
   },
   {
@@ -62,6 +70,7 @@
    "target": "redwater__millbrook",
    "template": "caravan_guard",
    "uniform": 0.4183740489525116,
+   "uniform_bits": 4601208376761761988,
    "chance_0_1": false
   },
   {
@@ -69,6 +78,7 @@
    "target": "redwater",
    "template": "blight",
    "uniform": 0.7122138402721209,
+   "uniform_bits": 4604590271516591683,
    "chance_0_1": false
   },
   {
@@ -76,6 +86,7 @@
    "target": "redwater",
    "template": "bandits",
    "uniform": 0.18754188687207085,
+   "uniform_bits": 4595924928865202768,
    "chance_0_1": false
   },
   {
@@ -83,6 +94,7 @@
    "target": "redwater",
    "template": "caravan_guard",
    "uniform": 0.533971775506497,
+   "uniform_bits": 4602984809723671260,
    "chance_0_1": false
   },
   {
@@ -90,6 +102,7 @@
    "target": "millbrook",
    "template": "blight",
    "uniform": 0.2057257204481759,
+   "uniform_bits": 4596580070514142879,
    "chance_0_1": false
   },
   {
@@ -97,6 +110,7 @@
    "target": "millbrook",
    "template": "bandits",
    "uniform": 0.49948338096076805,
+   "uniform_bits": 4602669512591396602,
    "chance_0_1": false
   },
   {
@@ -104,6 +118,7 @@
    "target": "millbrook",
    "template": "caravan_guard",
    "uniform": 0.13699527523346308,
+   "uniform_bits": 4594103795254478967,
    "chance_0_1": false
   },
   {
@@ -111,6 +126,7 @@
    "target": "redwater__millbrook",
    "template": "blight",
    "uniform": 0.9162451712307607,
+   "uniform_bits": 4606428022368746156,
    "chance_0_1": false
   },
   {
@@ -118,6 +134,7 @@
    "target": "redwater__millbrook",
    "template": "bandits",
    "uniform": 0.472361366730104,
+   "uniform_bits": 4602180925818665578,
    "chance_0_1": false
   },
   {
@@ -125,6 +142,7 @@
    "target": "redwater__millbrook",
    "template": "caravan_guard",
    "uniform": 0.750332109922995,
+   "uniform_bits": 4604933610366583053,
    "chance_0_1": false
   },
   {
@@ -132,6 +150,7 @@
    "target": "redwater",
    "template": "blight",
    "uniform": 0.7949706922044267,
+   "uniform_bits": 4605335678971641059,
    "chance_0_1": false
   },
   {
@@ -139,6 +158,7 @@
    "target": "redwater",
    "template": "bandits",
    "uniform": 0.9025628544646571,
+   "uniform_bits": 4606304783015367378,
    "chance_0_1": false
   },
   {
@@ -146,6 +166,7 @@
    "target": "redwater",
    "template": "caravan_guard",
    "uniform": 0.12703122690487934,
+   "uniform_bits": 4593744802579761276,
    "chance_0_1": false
   },
   {
@@ -153,6 +174,7 @@
    "target": "millbrook",
    "template": "blight",
    "uniform": 0.15488042358544893,
+   "uniform_bits": 4594748175634106723,
    "chance_0_1": false
   },
   {
@@ -160,6 +182,7 @@
    "target": "millbrook",
    "template": "bandits",
    "uniform": 0.9948120747268024,
+   "uniform_bits": 4607135690123363011,
    "chance_0_1": false
   },
   {
@@ -167,6 +190,7 @@
    "target": "millbrook",
    "template": "caravan_guard",
    "uniform": 0.2659621624626891,
+   "uniform_bits": 4598462768300952392,
    "chance_0_1": false
   },
   {
@@ -174,6 +198,7 @@
    "target": "redwater__millbrook",
    "template": "blight",
    "uniform": 0.8089323522927288,
+   "uniform_bits": 4605461434425983360,
    "chance_0_1": false
   },
   {
@@ -181,6 +206,7 @@
    "target": "redwater__millbrook",
    "template": "bandits",
    "uniform": 0.1034700957388868,
+   "uniform_bits": 4592120226816983170,
    "chance_0_1": false
   },
   {
@@ -188,6 +214,7 @@
    "target": "redwater__millbrook",
    "template": "caravan_guard",
    "uniform": 0.2701354302261234,
+   "uniform_bits": 4598537947209529672,
    "chance_0_1": false
   },
   {
@@ -195,6 +222,7 @@
    "target": "redwater",
    "template": "blight",
    "uniform": 0.3695273965200362,
+   "uniform_bits": 4600328433698989218,
    "chance_0_1": false
   },
   {
@@ -202,6 +230,7 @@
    "target": "redwater",
    "template": "bandits",
    "uniform": 0.2940373408087721,
+   "uniform_bits": 4598968525751903510,
    "chance_0_1": false
   },
   {
@@ -209,6 +238,7 @@
    "target": "redwater",
    "template": "caravan_guard",
    "uniform": 0.5343605876495968,
+   "uniform_bits": 4602988311832116823,
    "chance_0_1": false
   },
   {
@@ -216,6 +246,7 @@
    "target": "millbrook",
    "template": "blight",
    "uniform": 0.5610508193523576,
+   "uniform_bits": 4603228716067218794,
    "chance_0_1": false
   },
   {
@@ -223,6 +254,7 @@
    "target": "millbrook",
    "template": "bandits",
    "uniform": 0.21056092261589054,
+   "uniform_bits": 4596754277031589124,
    "chance_0_1": false
   },
   {
@@ -230,6 +262,7 @@
    "target": "millbrook",
    "template": "caravan_guard",
    "uniform": 0.8810330949528069,
+   "uniform_bits": 4606110860181537488,
    "chance_0_1": false
   },
   {
@@ -237,6 +270,7 @@
    "target": "redwater__millbrook",
    "template": "blight",
    "uniform": 0.9074519547978462,
+   "uniform_bits": 4606348820116244833,
    "chance_0_1": false
   },
   {
@@ -244,6 +278,7 @@
    "target": "redwater__millbrook",
    "template": "bandits",
    "uniform": 0.6376388388539125,
+   "uniform_bits": 4603918559619395288,
    "chance_0_1": false
   },
   {
@@ -251,6 +286,7 @@
    "target": "redwater__millbrook",
    "template": "caravan_guard",
    "uniform": 0.26217350228715225,
+   "uniform_bits": 4598394517866733267,
    "chance_0_1": false
   }
  ]
