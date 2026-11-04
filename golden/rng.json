@@ -1,0 +1,257 @@
+{
+ "seed": 42,
+ "samples": [
+  {
+   "day": 0,
+   "target": "redwater",
+   "template": "blight",
+   "uniform": 0.5843672943471766,
+   "chance_0_1": false
+  },
+  {
+   "day": 0,
+   "target": "redwater",
+   "template": "bandits",
+   "uniform": 0.8826526411059874,
+   "chance_0_1": false
+  },
+  {
+   "day": 0,
+   "target": "redwater",
+   "template": "caravan_guard",
+   "uniform": 0.0905828111569569,
+   "chance_0_1": true
+  },
+  {
+   "day": 0,
+   "target": "millbrook",
+   "template": "blight",
+   "uniform": 0.46820848341271903,
+   "chance_0_1": false
+  },
+  {
+   "day": 0,
+   "target": "millbrook",
+   "template": "bandits",
+   "uniform": 0.9162464820033939,
+   "chance_0_1": false
+  },
+  {
+   "day": 0,
+   "target": "millbrook",
+   "template": "caravan_guard",
+   "uniform": 0.038693828148221136,
+   "chance_0_1": true
+  },
+  {
+   "day": 0,
+   "target": "redwater__millbrook",
+   "template": "blight",
+   "uniform": 0.26737475253282644,
+   "chance_0_1": false
+  },
+  {
+   "day": 0,
+   "target": "redwater__millbrook",
+   "template": "bandits",
+   "uniform": 0.7941148727679961,
+   "chance_0_1": false
+  },
+  {
+   "day": 0,
+   "target": "redwater__millbrook",
+   "template": "caravan_guard",
+   "uniform": 0.4183740489525116,
+   "chance_0_1": false
+  },
+  {
+   "day": 1,
+   "target": "redwater",
+   "template": "blight",
+   "uniform": 0.7122138402721209,
+   "chance_0_1": false
+  },
+  {
+   "day": 1,
+   "target": "redwater",
+   "template": "bandits",
+   "uniform": 0.18754188687207085,
+   "chance_0_1": false
+  },
+  {
+   "day": 1,
+   "target": "redwater",
+   "template": "caravan_guard",
+   "uniform": 0.533971775506497,
+   "chance_0_1": false
+  },
+  {
+   "day": 1,
+   "target": "millbrook",
+   "template": "blight",
+   "uniform": 0.2057257204481759,
+   "chance_0_1": false
+  },
+  {
+   "day": 1,
+   "target": "millbrook",
+   "template": "bandits",
+   "uniform": 0.49948338096076805,
+   "chance_0_1": false
+  },
+  {
+   "day": 1,
+   "target": "millbrook",
+   "template": "caravan_guard",
+   "uniform": 0.13699527523346308,
+   "chance_0_1": false
+  },
+  {
+   "day": 1,
+   "target": "redwater__millbrook",
+   "template": "blight",
+   "uniform": 0.9162451712307607,
+   "chance_0_1": false
+  },
+  {
+   "day": 1,
+   "target": "redwater__millbrook",
+   "template": "bandits",
+   "uniform": 0.472361366730104,
+   "chance_0_1": false
+  },
+  {
+   "day": 1,
+   "target": "redwater__millbrook",
+   "template": "caravan_guard",
+   "uniform": 0.750332109922995,
+   "chance_0_1": false
+  },
+  {
+   "day": 7,
+   "target": "redwater",
+   "template": "blight",
+   "uniform": 0.7949706922044267,
+   "chance_0_1": false
+  },
+  {
+   "day": 7,
+   "target": "redwater",
+   "template": "bandits",
+   "uniform": 0.9025628544646571,
+   "chance_0_1": false
+  },
+  {
+   "day": 7,
+   "target": "redwater",
+   "template": "caravan_guard",
+   "uniform": 0.12703122690487934,
+   "chance_0_1": false
+  },
+  {
+   "day": 7,
+   "target": "millbrook",
+   "template": "blight",
+   "uniform": 0.15488042358544893,
+   "chance_0_1": false
+  },
+  {
+   "day": 7,
+   "target": "millbrook",
+   "template": "bandits",
+   "uniform": 0.9948120747268024,
+   "chance_0_1": false
+  },
+  {
+   "day": 7,
+   "target": "millbrook",
+   "template": "caravan_guard",
+   "uniform": 0.2659621624626891,
+   "chance_0_1": false
+  },
+  {
+   "day": 7,
+   "target": "redwater__millbrook",
+   "template": "blight",
+   "uniform": 0.8089323522927288,
+   "chance_0_1": false
+  },
+  {
+   "day": 7,
+   "target": "redwater__millbrook",
+   "template": "bandits",
+   "uniform": 0.1034700957388868,
+   "chance_0_1": false
+  },
+  {
+   "day": 7,
+   "target": "redwater__millbrook",
+   "template": "caravan_guard",
+   "uniform": 0.2701354302261234,
+   "chance_0_1": false
+  },
+  {
+   "day": 100,
+   "target": "redwater",
+   "template": "blight",
+   "uniform": 0.3695273965200362,
+   "chance_0_1": false
+  },
+  {
+   "day": 100,
+   "target": "redwater",
+   "template": "bandits",
+   "uniform": 0.2940373408087721,
+   "chance_0_1": false
+  },
+  {
+   "day": 100,
+   "target": "redwater",
+   "template": "caravan_guard",
+   "uniform": 0.5343605876495968,
+   "chance_0_1": false
+  },
+  {
+   "day": 100,
+   "target": "millbrook",
+   "template": "blight",
+   "uniform": 0.5610508193523576,
+   "chance_0_1": false
+  },
+  {
+   "day": 100,
+   "target": "millbrook",
+   "template": "bandits",
+   "uniform": 0.21056092261589054,
+   "chance_0_1": false
+  },
+  {
+   "day": 100,
+   "target": "millbrook",
+   "template": "caravan_guard",
+   "uniform": 0.8810330949528069,
+   "chance_0_1": false
+  },
+  {
+   "day": 100,
+   "target": "redwater__millbrook",
+   "template": "blight",
+   "uniform": 0.9074519547978462,
+   "chance_0_1": false
+  },
+  {
+   "day": 100,
+   "target": "redwater__millbrook",
+   "template": "bandits",
+   "uniform": 0.6376388388539125,
+   "chance_0_1": false
+  },
+  {
+   "day": 100,
+   "target": "redwater__millbrook",
+   "template": "caravan_guard",
+   "uniform": 0.26217350228715225,
+   "chance_0_1": false
+  }
+ ]
+}

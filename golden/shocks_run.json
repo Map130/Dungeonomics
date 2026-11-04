@@ -1,0 +1,3086 @@
+{
+ "days": 200,
+ "frames": [
+  {
+   "day": 0,
+   "stock": {
+    "eastford|cloth": 93.33333333333333,
+    "eastford|fish": 2857.1428571428573,
+    "eastford|grain": 5714.285714285715,
+    "eastford|tools": 46.666666666666664,
+    "eastford|wine": 56.53618315605042,
+    "greenvale|cloth": 789.5986068205941,
+    "greenvale|fish": 1388.888888888889,
+    "greenvale|grain": 2777.777777777778,
+    "greenvale|tools": 150.0,
+    "greenvale|wine": 656.7864744324411,
+    "greyrock|cloth": 100.0,
+    "greyrock|fish": 462.96296296296293,
+    "greyrock|grain": 6122.448979591837,
+    "greyrock|tools": 50.0,
+    "greyrock|wine": 60.57448195291116,
+    "lakeside|cloth": 86.66666666666666,
+    "lakeside|fish": 2653.061224489796,
+    "lakeside|grain": 5306.122448979592,
+    "lakeside|tools": 43.33333333333333,
+    "lakeside|wine": 52.49788435918967,
+    "millbrook|cloth": 106.66666666666666,
+    "millbrook|fish": 493.82716049382714,
+    "millbrook|grain": 6530.6122448979595,
+    "millbrook|tools": 53.33333333333333,
+    "millbrook|wine": 64.6127807497719,
+    "redwater|cloth": 1882.9474535577865,
+    "redwater|fish": 1851.8518518518517,
+    "redwater|grain": 3703.7037037037035,
+    "redwater|tools": 941.4737267788933,
+    "redwater|wine": 569.2071576258742,
+    "stonehaven|cloth": 566.8933850215111,
+    "stonehaven|fish": 1543.2098765432097,
+    "stonehaven|grain": 3086.4197530864194,
+    "stonehaven|tools": 1000.0,
+    "stonehaven|wine": 201.9149398430372
+   },
+   "multiplier": {
+    "eastford|cloth": 3.0,
+    "eastford|fish": 0.7,
+    "eastford|grain": 0.7,
+    "eastford|tools": 3.0,
+    "eastford|wine": 3.0,
+    "greenvale|cloth": 1.139819640290336,
+    "greenvale|fish": 1.8,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 3.0,
+    "greenvale|wine": 0.4366177617299318,
+    "greyrock|cloth": 3.0,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 0.7,
+    "greyrock|tools": 3.0,
+    "greyrock|wine": 3.0,
+    "lakeside|cloth": 3.0,
+    "lakeside|fish": 0.7,
+    "lakeside|grain": 0.7,
+    "lakeside|tools": 3.0,
+    "lakeside|wine": 3.0,
+    "millbrook|cloth": 3.0,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 0.7,
+    "millbrook|tools": 3.0,
+    "millbrook|wine": 3.0,
+    "redwater|cloth": 0.63729871894865,
+    "redwater|fish": 1.8,
+    "redwater|grain": 1.8,
+    "redwater|tools": 0.63729871894865,
+    "redwater|wine": 0.8331827614089862,
+    "stonehaven|cloth": 1.7640001214021124,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.8,
+    "stonehaven|tools": 0.5,
+    "stonehaven|wine": 3.0
+   },
+   "prosperity": {
+    "eastford": 0.5,
+    "greenvale": 0.5,
+    "greyrock": 0.5,
+    "lakeside": 0.5,
+    "millbrook": 0.5,
+    "redwater": 0.5,
+    "stonehaven": 0.5
+   },
+   "pipeline": {}
+  },
+  {
+   "day": 1,
+   "stock": {
+    "eastford|cloth": 78.69174242750304,
+    "eastford|fish": 2716.041594855894,
+    "eastford|grain": 5178.4550236873,
+    "eastford|tools": 39.34587121375152,
+    "eastford|wine": 54.91960240231947,
+    "greenvale|cloth": 639.010515020248,
+    "greenvale|fish": 959.1346397005169,
+    "greenvale|grain": 2010.9621911568083,
+    "greenvale|tools": 126.46887175848705,
+    "greenvale|wine": 338.986611235551,
+    "greyrock|cloth": 84.31258117232471,
+    "greyrock|fish": 319.71154656683893,
+    "greyrock|grain": 5562.773006189562,
+    "greyrock|tools": 42.156290586162356,
+    "greyrock|wine": 58.84243114534228,
+    "lakeside|cloth": 73.0709036826814,
+    "lakeside|fish": 2592.375270791365,
+    "lakeside|grain": 4763.210109139652,
+    "lakeside|tools": 36.5354518413407,
+    "lakeside|wine": 50.99677365929664,
+    "millbrook|cloth": 89.93341991714635,
+    "millbrook|fish": 341.02564967129484,
+    "millbrook|grain": 5910.54819432183,
+    "millbrook|tools": 44.966709958573176,
+    "millbrook|wine": 62.7652598883651,
+    "redwater|cloth": 735.2721130730299,
+    "redwater|fish": 1278.8461862673557,
+    "redwater|grain": 2846.6103770776053,
+    "redwater|tools": 402.22040136325177,
+    "redwater|wine": 317.64940526776695,
+    "stonehaven|cloth": 546.0317187760277,
+    "stonehaven|fish": 1065.7051552227963,
+    "stonehaven|grain": 2352.4934742866712,
+    "stonehaven|tools": 563.46932061284,
+    "stonehaven|wine": 196.14143715114093
+   },
+   "multiplier": {
+    "eastford|cloth": 3.0,
+    "eastford|fish": 0.7053857983020112,
+    "eastford|grain": 0.7105972865315224,
+    "eastford|tools": 3.0,
+    "eastford|wine": 3.0,
+    "greenvale|cloth": 1.220402006586346,
+    "greenvale|fish": 1.8,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 3.0,
+    "greenvale|wine": 0.6588848455425111,
+    "greyrock|cloth": 3.0,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 0.7103110157503166,
+    "greyrock|tools": 3.0,
+    "greyrock|wine": 3.0,
+    "lakeside|cloth": 3.0,
+    "lakeside|fish": 0.7024437681096585,
+    "lakeside|grain": 0.7116450615088858,
+    "lakeside|tools": 3.0,
+    "lakeside|wine": 3.0,
+    "millbrook|cloth": 3.0,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 0.7107406730633136,
+    "millbrook|tools": 3.0,
+    "millbrook|wine": 3.0,
+    "redwater|cloth": 0.9357237555801879,
+    "redwater|fish": 1.8,
+    "redwater|grain": 1.8,
+    "redwater|tools": 0.8936249413218045,
+    "redwater|wine": 1.182804967187392,
+    "stonehaven|cloth": 1.7842187170574195,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.8,
+    "stonehaven|tools": 0.6162079274109497,
+    "stonehaven|wine": 3.0
+   },
+   "prosperity": {
+    "eastford": 0.5070419645912635,
+    "greenvale": 0.49659602102361394,
+    "greyrock": 0.5013765800147842,
+    "lakeside": 0.5070419645912635,
+    "millbrook": 0.5013765800147842,
+    "redwater": 0.4967198999467035,
+    "stonehaven": 0.4969774729443137
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {},
+     {
+      "fish": 693.9567638057972,
+      "grain": 714.7143338057786
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 101.40582288208586,
+      "wine": 140.33594232973232
+     }
+    ],
+    "greenvale__redwater": [
+     {},
+     {},
+     {},
+     {},
+     {
+      "wine": 37.127978537425435
+     }
+    ],
+    "greenvale__stonehaven": [
+     {},
+     {},
+     {},
+     {},
+     {},
+     {
+      "cloth": 47.603071704618955,
+      "wine": 140.33594232973232
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 1246.9368780892605
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 804.3946788649632,
+      "grain": 658.187825254051
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 1193.0254715818223
+     }
+    ],
+    "redwater__eastford": [
+     {},
+     {
+      "cloth": 341.5791954380119,
+      "tools": 172.74657208224156,
+      "wine": 85.6742324797465
+     }
+    ],
+    "redwater__greenvale": [
+     {},
+     {},
+     {},
+     {},
+     {
+      "cloth": 140.9603421002314,
+      "tools": 191.87723379760064
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 341.5791954380119,
+      "tools": 172.74657208224156,
+      "wine": 85.6742324797465
+     }
+    ],
+    "redwater__stonehaven": [
+     {},
+     {},
+     {},
+     {
+      "cloth": 319.7907126013858,
+      "wine": 80.20928739861425
+     }
+    ],
+    "stonehaven__greenvale": [
+     {},
+     {},
+     {},
+     {},
+     {},
+     {
+      "tools": 240.6198617943885
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 19.72787947544043,
+      "tools": 240.6198617943885
+     }
+    ],
+    "stonehaven__redwater": [
+     {},
+     {},
+     {},
+     {
+      "tools": 7.357161779678133
+     }
+    ]
+   }
+  },
+  {
+   "day": 2,
+   "stock": {
+    "eastford|cloth": 63.95728542589053,
+    "eastford|fish": 2533.063892567871,
+    "eastford|grain": 4696.475416740787,
+    "eastford|tools": 31.978642712945266,
+    "eastford|wine": 53.257165370674215,
+    "greenvale|cloth": 601.8483220714047,
+    "greenvale|fish": 1322.6947607185205,
+    "greenvale|grain": 1912.0114413955619,
+    "greenvale|tools": 103.07969970001535,
+    "greenvale|wine": 366.89081007348744,
+    "greyrock|cloth": 88.3193772933078,
+    "greyrock|fish": 180.73632387775802,
+    "greyrock|grain": 5017.89609917139,
+    "greyrock|tools": 267.9794815763452,
+    "greyrock|wine": 57.10082998291339,
+    "lakeside|cloth": 160.59191913179146,
+    "lakeside|fish": 2545.728828118368,
+    "lakeside|grain": 4222.271421239366,
+    "lakeside|tools": 29.694453947734893,
+    "lakeside|wine": 182.93703477364684,
+    "millbrook|cloth": 385.3135773558252,
+    "millbrook|fish": 192.7854121362752,
+    "millbrook|grain": 5347.481512299939,
+    "millbrook|tools": 197.03576107201286,
+    "millbrook|wine": 139.28585814120342,
+    "redwater|cloth": 785.7570851878393,
+    "redwater|fish": 723.2348346237079,
+    "redwater|grain": 3179.5999068385763,
+    "redwater|tools": 424.4478244353186,
+    "redwater|wine": 342.61272841297887,
+    "stonehaven|cloth": 526.9868964519801,
+    "stonehaven|fish": 602.6823082836632,
+    "stonehaven|grain": 2860.693896272466,
+    "stonehaven|tools": 577.3564458872947,
+    "stonehaven|wine": 190.43752575235723
+   },
+   "multiplier": {
+    "eastford|cloth": 3.0,
+    "eastford|fish": 0.7168932555133232,
+    "eastford|grain": 0.7291558403207747,
+    "eastford|tools": 3.0,
+    "eastford|wine": 3.0,
+    "greenvale|cloth": 1.3010669167577176,
+    "greenvale|fish": 1.8,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 3.0,
+    "greenvale|wine": 0.7685836735223616,
+    "greyrock|cloth": 3.0,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 0.7292010968936702,
+    "greyrock|tools": 2.268200696022158,
+    "greyrock|wine": 3.0,
+    "lakeside|cloth": 2.589807509063951,
+    "lakeside|fish": 0.706182036158047,
+    "lakeside|grain": 0.7336658951613343,
+    "lakeside|tools": 3.0,
+    "lakeside|wine": 2.2442860884514815,
+    "millbrook|cloth": 2.34955928798975,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 0.7296090068685297,
+    "millbrook|tools": 2.3440130195009603,
+    "millbrook|wine": 2.3867092728460895,
+    "redwater|cloth": 1.1113601299264306,
+    "redwater|fish": 1.8,
+    "redwater|grain": 1.8,
+    "redwater|tools": 1.0479486201251484,
+    "redwater|wine": 1.3527546050208936,
+    "stonehaven|cloth": 1.8161624429549759,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.8,
+    "stonehaven|tools": 0.6902080702430747,
+    "stonehaven|wine": 3.0
+   },
+   "prosperity": {
+    "eastford": 0.5133186972047085,
+    "greenvale": 0.4937039805826222,
+    "greyrock": 0.5046359593480823,
+    "lakeside": 0.5171860534690514,
+    "millbrook": 0.5100026738228,
+    "redwater": 0.4937411570101685,
+    "stonehaven": 0.49381798183492714
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 693.9567638057972,
+      "grain": 714.7143338057786
+     },
+     {
+      "fish": 741.9729036085727,
+      "grain": 669.2765122477399
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 26.875435430807276
+     }
+    ],
+    "greenvale__redwater": [
+     {},
+     {},
+     {},
+     {
+      "wine": 37.127978537425435
+     },
+     {
+      "cloth": 14.388105797449827,
+      "wine": 28.179816304666726
+     }
+    ],
+    "greenvale__stonehaven": [
+     {},
+     {},
+     {},
+     {},
+     {
+      "cloth": 47.603071704618955,
+      "wine": 140.33594232973232
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 1243.3064623904247,
+      "tools": 6.474617282863615
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 793.159181141079,
+      "grain": 664.529198045992,
+      "wine": 6.851989685997249
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "cloth": 28.788810173250134,
+      "grain": 1147.687490878975,
+      "tools": 11.968493107033941,
+      "wine": 7.295926320317352
+     }
+    ],
+    "redwater__eastford": [
+     {
+      "cloth": 341.5791954380119,
+      "tools": 172.74657208224156,
+      "wine": 85.6742324797465
+     }
+    ],
+    "redwater__greenvale": [
+     {},
+     {},
+     {},
+     {
+      "cloth": 140.9603421002314,
+      "tools": 191.87723379760064
+     }
+    ],
+    "redwater__stonehaven": [
+     {},
+     {},
+     {
+      "cloth": 319.7907126013858,
+      "wine": 80.20928739861425
+     }
+    ],
+    "stonehaven__greenvale": [
+     {},
+     {},
+     {},
+     {},
+     {
+      "tools": 240.6198617943885
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 14.32076309210198
+     }
+    ],
+    "stonehaven__redwater": [
+     {},
+     {},
+     {
+      "tools": 7.357161779678133
+     },
+     {
+      "cloth": 4.614701196179422,
+      "tools": 56.59874578436786
+     }
+    ]
+   }
+  },
+  {
+   "day": 3,
+   "stock": {
+    "eastford|cloth": 369.5122913845059,
+    "eastford|fish": 2341.255664932265,
+    "eastford|grain": 4268.340876939189,
+    "eastford|tools": 190.3164845521561,
+    "eastford|wine": 134.47650736009933,
+    "greenvale|cloth": 594.9668268567676,
+    "greenvale|fish": 1664.5852514505223,
+    "greenvale|grain": 1828.871335251759,
+    "greenvale|tools": 79.81792842049776,
+    "greenvale|wine": 416.2546863313552,
+    "greyrock|cloth": 86.86128242405348,
+    "greyrock|fish": 45.879972647606046,
+    "greyrock|grain": 4482.0959249285315,
+    "greyrock|tools": 253.01261852683703,
+    "greyrock|wine": 55.33651140504489,
+    "lakeside|cloth": 172.12975800063205,
+    "lakeside|fish": 2497.405829975025,
+    "lakeside|grain": 3690.0731919145255,
+    "lakeside|tools": 22.785443058317053,
+    "lakeside|wine": 176.8779424528402,
+    "millbrook|cloth": 345.74346012525007,
+    "millbrook|fish": 48.85067219126108,
+    "millbrook|grain": 4772.90842018682,
+    "millbrook|tools": 181.30755890918655,
+    "millbrook|wine": 135.22544214966413,
+    "redwater|cloth": 886.773868910286,
+    "redwater|fish": 857.6160919988963,
+    "redwater|grain": 4172.3222246926525,
+    "redwater|tools": 468.8509195805683,
+    "redwater|wine": 382.3408539087671,
+    "stonehaven|cloth": 517.7522817118781,
+    "stonehaven|fish": 153.71469667941864,
+    "stonehaven|grain": 3360.5540879139726,
+    "stonehaven|tools": 631.0235661138425,
+    "stonehaven|wine": 184.80590806267065
+   },
+   "multiplier": {
+    "eastford|cloth": 2.3309599076081318,
+    "eastford|fish": 0.733994394197477,
+    "eastford|grain": 0.7535815084180199,
+    "eastford|tools": 2.3242121192997516,
+    "eastford|wine": 2.3654690177214794,
+    "greenvale|cloth": 1.3611250436957336,
+    "greenvale|fish": 1.7530712041263732,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 3.0,
+    "greenvale|wine": 0.7879338149934756,
+    "greyrock|cloth": 3.0,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 0.7559465287498934,
+    "greyrock|tools": 1.7665866731024675,
+    "greyrock|wine": 3.0,
+    "lakeside|cloth": 2.2753571318309955,
+    "lakeside|fish": 0.710993274581103,
+    "lakeside|grain": 0.7656427261959329,
+    "lakeside|tools": 3.0,
+    "lakeside|wine": 1.7320555904686437,
+    "millbrook|cloth": 1.9256868615316418,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 0.7565158357408206,
+    "millbrook|tools": 1.9087303978180032,
+    "millbrook|wine": 1.9861532874236596,
+    "redwater|cloth": 1.1808689927145142,
+    "redwater|fish": 1.8,
+    "redwater|grain": 1.7685797743918361,
+    "redwater|tools": 1.1145979245063624,
+    "redwater|wine": 1.3841270413667446,
+    "stonehaven|cloth": 1.8464429446051667,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.777313674480112,
+    "stonehaven|tools": 0.7190912536223104,
+    "stonehaven|wine": 3.0
+   },
+   "prosperity": {
+    "eastford": 0.5279191362885672,
+    "greenvale": 0.4911952498899331,
+    "greyrock": 0.5070512014708914,
+    "lakeside": 0.5270022716205973,
+    "millbrook": 0.5176035825123944,
+    "redwater": 0.49292577832724094,
+    "stonehaven": 0.49058480606189886
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 741.9729036085727,
+      "grain": 669.2765122477399
+     },
+     {
+      "cloth": 20.527167367635005,
+      "fish": 760.4819412167938,
+      "grain": 625.7225082652142,
+      "tools": 6.656305238423459,
+      "wine": 2.751039692190562
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 15.956989846854457
+     }
+    ],
+    "greenvale__redwater": [
+     {},
+     {},
+     {
+      "wine": 37.127978537425435
+     },
+     {
+      "cloth": 14.388105797449827,
+      "wine": 28.179816304666726
+     },
+     {
+      "wine": 20.858587152688568
+     }
+    ],
+    "greenvale__stonehaven": [
+     {},
+     {},
+     {},
+     {
+      "cloth": 47.603071704618955,
+      "wine": 140.33594232973232
+     },
+     {},
+     {
+      "wine": 8.45063910987479
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 1249.6959468868295,
+      "tools": 5.221696491233467
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 797.7464017009992,
+      "grain": 666.6510265927727,
+      "wine": 3.5769260030192545
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "cloth": 19.441040835790197,
+      "grain": 1174.0080729115489,
+      "tools": 5.641171062313781,
+      "wine": 1.3516165593656073
+     }
+    ],
+    "redwater__greenvale": [
+     {},
+     {},
+     {
+      "cloth": 140.9603421002314,
+      "tools": 191.87723379760064
+     }
+    ],
+    "redwater__stonehaven": [
+     {},
+     {
+      "cloth": 319.7907126013858,
+      "wine": 80.20928739861425
+     }
+    ],
+    "stonehaven__greenvale": [
+     {},
+     {},
+     {},
+     {
+      "tools": 240.6198617943885
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 9.604095115330017
+     }
+    ],
+    "stonehaven__redwater": [
+     {},
+     {
+      "tools": 7.357161779678133
+     },
+     {
+      "cloth": 4.614701196179422,
+      "tools": 56.59874578436786
+     },
+     {
+      "cloth": 0.9480626581815672,
+      "tools": 32.64117927292216
+     }
+    ]
+   }
+  },
+  {
+   "day": 5,
+   "stock": {
+    "eastford|cloth": 314.15918410813555,
+    "eastford|fish": 1908.5162809247267,
+    "eastford|grain": 3515.296293582678,
+    "eastford|tools": 168.11162721988623,
+    "eastford|wine": 128.28527410043728,
+    "greenvale|cloth": 587.4859688090332,
+    "greenvale|fish": 2319.1992084807325,
+    "greenvale|grain": 1687.370187376265,
+    "greenvale|tools": 33.63442061376975,
+    "greenvale|wine": 486.53986383463587,
+    "greyrock|cloth": 72.63578741671066,
+    "greyrock|fish": 0.0,
+    "greyrock|grain": 3651.5787616482144,
+    "greyrock|tools": 227.49709141745967,
+    "greyrock|wine": 51.760247439221956,
+    "lakeside|cloth": 170.3161279022106,
+    "lakeside|fish": 2359.9249941573034,
+    "lakeside|grain": 2696.9212049936086,
+    "lakeside|tools": 8.776175322992257,
+    "lakeside|wine": 167.23677960177204,
+    "millbrook|cloth": 292.48049963941486,
+    "millbrook|fish": 0.0,
+    "millbrook|grain": 4031.5266951181197,
+    "millbrook|tools": 157.25780327757948,
+    "millbrook|wine": 135.39931840541385,
+    "redwater|cloth": 1086.4606783306529,
+    "redwater|fish": 1224.141725051494,
+    "redwater|grain": 5926.844305366719,
+    "redwater|tools": 550.5972625943972,
+    "redwater|wine": 416.57190539548384,
+    "stonehaven|cloth": 732.608003494753,
+    "stonehaven|fish": 0.0,
+    "stonehaven|grain": 4348.751985305336,
+    "stonehaven|tools": 728.0212180416192,
+    "stonehaven|wine": 237.7190320694038
+   },
+   "multiplier": {
+    "eastford|cloth": 1.6024723756741734,
+    "eastford|fish": 0.7880585772791072,
+    "eastford|grain": 0.8166049403301087,
+    "eastford|tools": 1.5714898061190277,
+    "eastford|wine": 1.7027108090349796,
+    "greenvale|cloth": 1.4371017600474867,
+    "greenvale|fish": 1.5915461005446763,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 3.0,
+    "greenvale|wine": 0.727264477512958,
+    "greyrock|cloth": 3.0,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 0.8252621442694595,
+    "greyrock|tools": 1.1978152041015182,
+    "greyrock|wine": 3.0,
+    "lakeside|cloth": 1.921801011932601,
+    "lakeside|fish": 0.7251352982795551,
+    "lakeside|grain": 0.8605853753882039,
+    "lakeside|tools": 3.0,
+    "lakeside|wine": 1.1676327586426813,
+    "millbrook|cloth": 1.4976297293657053,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 0.8193468296378318,
+    "millbrook|tools": 1.451418613359805,
+    "millbrook|wine": 1.556121908584498,
+    "redwater|cloth": 1.1610913951296933,
+    "redwater|fish": 1.8,
+    "redwater|grain": 1.6143295302229717,
+    "redwater|tools": 1.1153697102497204,
+    "redwater|wine": 1.3388245687722065,
+    "stonehaven|cloth": 1.7132821600522412,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.6633202219077972,
+    "stonehaven|tools": 0.7068362818650387,
+    "stonehaven|wine": 2.7539019788444743
+   },
+   "prosperity": {
+    "eastford": 0.5555601633900545,
+    "greenvale": 0.48713400528453066,
+    "greyrock": 0.5107137086618846,
+    "lakeside": 0.5450380563059645,
+    "millbrook": 0.5304898104705981,
+    "redwater": 0.4968120426480167,
+    "stonehaven": 0.4871068382079365
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "cloth": 12.688807092542733,
+      "fish": 799.1085483621823,
+      "grain": 608.383364610487,
+      "tools": 2.6795349952017125
+     },
+     {
+      "cloth": 3.8180593749906646,
+      "fish": 809.4937293420974,
+      "grain": 574.1388818080279
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 18.090400974881,
+      "wine": 6.219784239820559
+     }
+    ],
+    "greenvale__redwater": [
+     {
+      "wine": 37.127978537425435
+     },
+     {
+      "cloth": 14.388105797449827,
+      "wine": 28.179816304666726
+     },
+     {
+      "wine": 20.858587152688568
+     },
+     {
+      "wine": 17.38050485736328
+     },
+     {
+      "fish": 4.515366668327181,
+      "wine": 16.540050867073163
+     }
+    ],
+    "greenvale__stonehaven": [
+     {},
+     {
+      "cloth": 47.603071704618955,
+      "wine": 140.33594232973232
+     },
+     {},
+     {
+      "wine": 8.45063910987479
+     },
+     {
+      "wine": 18.304464171680507
+     },
+     {
+      "fish": 10.635113901214547,
+      "wine": 21.731075041812428
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 1067.4564404272382
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 834.5291772976352,
+      "grain": 644.2006702640408
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 922.9413479564332
+     }
+    ],
+    "redwater__eastford": [
+     {},
+     {
+      "wine": 12.327884676754419
+     }
+    ],
+    "redwater__greenvale": [
+     {
+      "cloth": 140.9603421002314,
+      "tools": 191.87723379760064
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 5.457007937112695,
+      "tools": 10.978217535849549,
+      "wine": 15.456846944383619
+     }
+    ],
+    "stonehaven__greenvale": [
+     {},
+     {
+      "tools": 240.6198617943885
+     },
+     {},
+     {},
+     {
+      "tools": 9.509360195603755
+     },
+     {
+      "tools": 21.709234177583802
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 102.845731561454,
+      "wine": 16.244558584358955
+     }
+    ],
+    "stonehaven__redwater": [
+     {
+      "cloth": 4.614701196179422,
+      "tools": 56.59874578436786
+     },
+     {
+      "cloth": 0.9480626581815672,
+      "tools": 32.64117927292216
+     },
+     {
+      "tools": 24.636763154708873
+     },
+     {
+      "tools": 20.58903252938496
+     }
+    ]
+   }
+  },
+  {
+   "day": 8,
+   "stock": {
+    "eastford|cloth": 239.8908949432505,
+    "eastford|fish": 1688.3307878261999,
+    "eastford|grain": 2898.9922272933222,
+    "eastford|tools": 137.34455478085175,
+    "eastford|wine": 140.08577106923252,
+    "greenvale|cloth": 692.6134030723853,
+    "greenvale|fish": 2896.133245124794,
+    "greenvale|grain": 1257.7716771725743,
+    "greenvale|tools": 298.6201811260725,
+    "greenvale|wine": 492.98750664817004,
+    "greyrock|cloth": 189.34822599976147,
+    "greyrock|fish": 0.0,
+    "greyrock|grain": 3218.399235622284,
+    "greyrock|tools": 212.29523779286578,
+    "greyrock|wine": 118.9234719223187,
+    "lakeside|cloth": 186.14148054100698,
+    "lakeside|fish": 2241.9989221208184,
+    "lakeside|grain": 1818.6266982995216,
+    "lakeside|tools": 51.55780672902157,
+    "lakeside|wine": 175.84317328417777,
+    "millbrook|cloth": 279.9177146517069,
+    "millbrook|fish": 0.0,
+    "millbrook|grain": 3607.85798430152,
+    "millbrook|tools": 169.4221946286842,
+    "millbrook|wine": 159.53762956914497,
+    "redwater|cloth": 1095.9625336309887,
+    "redwater|fish": 1810.3752452855608,
+    "redwater|grain": 6948.244263674758,
+    "redwater|tools": 647.8474292866423,
+    "redwater|wine": 495.1073537045956,
+    "stonehaven|cloth": 680.1894406708518,
+    "stonehaven|fish": 0.0,
+    "stonehaven|grain": 4973.907553931311,
+    "stonehaven|tools": 747.9836270462428,
+    "stonehaven|wine": 294.63778424996036
+   },
+   "multiplier": {
+    "eastford|cloth": 1.3232964839370405,
+    "eastford|fish": 0.8651438066541469,
+    "eastford|grain": 0.9145825062332174,
+    "eastford|tools": 1.2358789274710733,
+    "eastford|wine": 1.3949896394579886,
+    "greenvale|cloth": 1.3269107986246873,
+    "greenvale|fish": 1.3805471333439183,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 2.0568984841501763,
+    "greenvale|wine": 0.657774758978742,
+    "greyrock|cloth": 2.139651946845512,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 0.9102579935267343,
+    "greyrock|tools": 0.8840452773583617,
+    "greyrock|wine": 2.3118313945437325,
+    "lakeside|cloth": 1.6569419056468664,
+    "lakeside|fish": 0.7490636263171389,
+    "lakeside|grain": 1.0510516155120166,
+    "lakeside|tools": 2.9088860487946726,
+    "lakeside|wine": 0.8479487404826628,
+    "millbrook|cloth": 1.3058638194043732,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 0.8941236997347535,
+    "millbrook|tools": 1.1683671696565545,
+    "millbrook|wine": 1.1967309409127227,
+    "redwater|cloth": 1.1152958236251778,
+    "redwater|fish": 1.8,
+    "redwater|grain": 1.427763001904907,
+    "redwater|tools": 1.000678405088257,
+    "redwater|wine": 1.170757610865424,
+    "stonehaven|cloth": 1.52484661588627,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.5128391080671002,
+    "stonehaven|tools": 0.671804731031196,
+    "stonehaven|wine": 2.077458009366439
+   },
+   "prosperity": {
+    "eastford": 0.5906780984845377,
+    "greenvale": 0.4908208816163579,
+    "greyrock": 0.5230116396543608,
+    "lakeside": 0.5639055599657878,
+    "millbrook": 0.5476629219910021,
+    "redwater": 0.510016339168865,
+    "stonehaven": 0.4872991211896785
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 692.3111036242942,
+      "grain": 443.4024825792254
+     },
+     {
+      "fish": 671.4393561752736,
+      "grain": 416.86423114104474
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 20.93312115859477,
+      "tools": 32.755147003282865,
+      "wine": 14.660256916841353
+     }
+    ],
+    "greenvale__redwater": [
+     {
+      "wine": 17.38050485736328
+     },
+     {
+      "fish": 4.515366668327181,
+      "wine": 16.540050867073163
+     },
+     {
+      "fish": 20.921028225716658,
+      "wine": 18.728133516118397
+     },
+     {
+      "fish": 33.69539792504646,
+      "wine": 16.991645645634403
+     },
+     {
+      "fish": 39.09547402991847,
+      "wine": 16.371558147389976
+     }
+    ],
+    "greenvale__stonehaven": [
+     {
+      "wine": 8.45063910987479
+     },
+     {
+      "wine": 18.304464171680507
+     },
+     {
+      "fish": 10.635113901214547,
+      "wine": 21.731075041812428
+     },
+     {
+      "fish": 58.61557129864356,
+      "wine": 27.755192694389088
+     },
+     {
+      "fish": 103.12801224930661,
+      "wine": 23.27647288653381
+     },
+     {
+      "fish": 132.29468655251728,
+      "wine": 36.13313647299848
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 900.864413541754
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 784.9074831340324,
+      "grain": 412.1793221562315
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 781.9693750028135
+     }
+    ],
+    "redwater__eastford": [
+     {
+      "cloth": 13.920389351707225,
+      "tools": 15.862948058319095,
+      "wine": 15.00840602607235
+     },
+     {
+      "cloth": 21.42810706173952,
+      "tools": 17.03175386201279,
+      "wine": 14.176351615498136
+     }
+    ],
+    "redwater__greenvale": [
+     {},
+     {},
+     {
+      "cloth": 10.668904754521215,
+      "grain": 72.0613953662109
+     },
+     {
+      "cloth": 13.712173005151334,
+      "grain": 131.34822558213455
+     },
+     {
+      "cloth": 8.226961983300125,
+      "grain": 161.6477306714001,
+      "tools": 14.348783399830733
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 25.175368835468355,
+      "tools": 19.468906507527464,
+      "wine": 12.898276291342183
+     }
+    ],
+    "redwater__stonehaven": [
+     {},
+     {
+      "cloth": 28.122909535502668,
+      "grain": 6.801491415330352
+     },
+     {
+      "cloth": 34.21908673633718,
+      "grain": 10.952454427385815
+     },
+     {
+      "cloth": 27.78964837007393,
+      "grain": 10.60030335684075,
+      "wine": 7.333363694187638
+     }
+    ],
+    "stonehaven__greenvale": [
+     {},
+     {
+      "tools": 9.509360195603755
+     },
+     {
+      "tools": 21.709234177583802
+     },
+     {
+      "tools": 28.90688896543633
+     },
+     {
+      "tools": 31.366058625703346
+     },
+     {
+      "tools": 55.286163387059275
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 18.240457948897,
+      "tools": 19.04355579349673,
+      "wine": 5.721294974297117
+     }
+    ],
+    "stonehaven__redwater": [
+     {
+      "tools": 20.58903252938496
+     },
+     {
+      "tools": 18.67539495822517
+     },
+     {
+      "tools": 18.41549871115646
+     },
+     {
+      "tools": 18.7746516126369
+     }
+    ]
+   }
+  },
+  {
+   "day": 13,
+   "stock": {
+    "eastford|cloth": 217.32517580516583,
+    "eastford|fish": 1698.8892791708038,
+    "eastford|grain": 2376.6271032761947,
+    "eastford|tools": 143.63617736262046,
+    "eastford|wine": 165.72033442194123,
+    "greenvale|cloth": 671.5181340876841,
+    "greenvale|fish": 3103.8821547668313,
+    "greenvale|grain": 96.71296166717693,
+    "greenvale|tools": 233.91957329913626,
+    "greenvale|wine": 492.52064671569394,
+    "greyrock|cloth": 178.17282673545716,
+    "greyrock|fish": 0.0,
+    "greyrock|grain": 3047.6072064146265,
+    "greyrock|tools": 212.63284138290575,
+    "greyrock|wine": 133.79482048683244,
+    "lakeside|cloth": 182.3473634257267,
+    "lakeside|fish": 2272.6389955893237,
+    "lakeside|grain": 1344.1346294004816,
+    "lakeside|tools": 57.169020569327266,
+    "lakeside|wine": 182.79195573155874,
+    "millbrook|cloth": 263.4365728903872,
+    "millbrook|fish": 0.0,
+    "millbrook|grain": 3336.1155245838763,
+    "millbrook|tools": 174.7126457064374,
+    "millbrook|wine": 171.37532791582538,
+    "redwater|cloth": 1050.0550775942415,
+    "redwater|fish": 2229.513077580054,
+    "redwater|grain": 7010.479227630148,
+    "redwater|tools": 679.1595895370027,
+    "redwater|wine": 543.2304715338519,
+    "stonehaven|cloth": 646.5315782403233,
+    "stonehaven|fish": 0.0,
+    "stonehaven|grain": 5240.55172898557,
+    "stonehaven|tools": 758.757600579865,
+    "stonehaven|wine": 305.67552978795334
+   },
+   "multiplier": {
+    "eastford|cloth": 1.4312265935953647,
+    "eastford|fish": 0.9084172740848022,
+    "eastford|grain": 1.0417528186512832,
+    "eastford|tools": 1.1378021764414326,
+    "eastford|wine": 1.2062806212359714,
+    "greenvale|cloth": 1.323036417476209,
+    "greenvale|fish": 1.239080209526989,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 1.9457696616904463,
+    "greenvale|wine": 0.6349617244606208,
+    "greyrock|cloth": 1.7995978422880596,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 0.9765305343323799,
+    "greyrock|tools": 0.7612569837321277,
+    "greyrock|wine": 1.36080604489085,
+    "lakeside|cloth": 1.5684865179411311,
+    "lakeside|fish": 0.7594836337477486,
+    "lakeside|grain": 1.3031049306351816,
+    "lakeside|tools": 2.288766418148601,
+    "lakeside|wine": 0.74653023361454,
+    "millbrook|cloth": 1.290478612709164,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 0.9612836451241307,
+    "millbrook|tools": 1.0182316323831693,
+    "millbrook|wine": 1.0378542477573296,
+    "redwater|cloth": 1.1534290822608144,
+    "redwater|fish": 1.7039354359577201,
+    "redwater|grain": 1.328484544415811,
+    "redwater|tools": 0.9316698149778961,
+    "redwater|wine": 1.0647690799617253,
+    "stonehaven|cloth": 1.5158629500127252,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.4075812936837537,
+    "stonehaven|tools": 0.6573840856205805,
+    "stonehaven|wine": 1.6453330611899313
+   },
+   "prosperity": {
+    "eastford": 0.633163074756811,
+    "greenvale": 0.4901748408934618,
+    "greyrock": 0.5453721674957441,
+    "lakeside": 0.586984371386147,
+    "millbrook": 0.5727428779501675,
+    "redwater": 0.5324893014519563,
+    "stonehaven": 0.48918519773943736
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 645.1585371935396,
+      "grain": 376.059282735352
+     },
+     {
+      "fish": 643.4712110492819,
+      "grain": 372.24088387251714
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 21.287555083543637,
+      "tools": 4.899594596794981,
+      "wine": 18.205674253004084
+     }
+    ],
+    "greenvale__redwater": [
+     {
+      "fish": 40.2032434070295,
+      "wine": 15.247303347035162
+     },
+     {
+      "fish": 39.1282832874815,
+      "wine": 15.712054380918214
+     },
+     {
+      "fish": 37.09974214739894,
+      "wine": 16.538610589607128
+     },
+     {
+      "fish": 34.756020527733156,
+      "wine": 17.30682470512699
+     },
+     {
+      "fish": 32.40864675469927,
+      "wine": 18.02618706519769
+     }
+    ],
+    "greenvale__stonehaven": [
+     {
+      "fish": 132.29468655251728,
+      "wine": 36.13313647299848
+     },
+     {
+      "fish": 151.3127724829671,
+      "wine": 22.589747264650548
+     },
+     {
+      "fish": 164.09259268328694,
+      "wine": 21.876272188581265
+     },
+     {
+      "fish": 173.11016535904017,
+      "wine": 20.84142104611905
+     },
+     {
+      "fish": 179.8155932924617,
+      "wine": 20.35595353619315
+     },
+     {
+      "fish": 185.05016704572276,
+      "wine": 20.712789531033998
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 859.719291800975
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 770.8148374040024,
+      "grain": 325.7692673225485
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 752.789110738936
+     }
+    ],
+    "redwater__eastford": [
+     {
+      "cloth": 25.662633943629828,
+      "tools": 16.59233420139456,
+      "wine": 13.160758312353435
+     },
+     {
+      "cloth": 25.54338685405548,
+      "tools": 16.759356043678835,
+      "wine": 13.096486415152608
+     }
+    ],
+    "redwater__greenvale": [
+     {
+      "cloth": 6.045133365101226,
+      "grain": 174.84554516082056,
+      "tools": 11.188919676371587
+     },
+     {
+      "cloth": 4.516394917971781,
+      "grain": 178.5111282277535,
+      "tools": 5.713398925965876
+     },
+     {
+      "cloth": 3.70477676663805,
+      "grain": 177.03015997841746,
+      "tools": 2.684483815790815
+     },
+     {
+      "cloth": 3.360543753352087,
+      "grain": 172.92177124260692,
+      "tools": 0.8420849890199796
+     },
+     {
+      "cloth": 3.289113818755432,
+      "grain": 167.6409766984741
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 28.215009094794492,
+      "tools": 18.558108580338995,
+      "wine": 13.347432164188193
+     }
+    ],
+    "redwater__stonehaven": [
+     {
+      "cloth": 21.770948501975234,
+      "grain": 5.238004376393146
+     },
+     {
+      "cloth": 21.201103503250877,
+      "grain": 2.7196615040881023
+     },
+     {
+      "cloth": 21.404427798337174,
+      "grain": 0.6889015416028009
+     },
+     {
+      "cloth": 21.678903264223667
+     }
+    ],
+    "stonehaven__greenvale": [
+     {
+      "tools": 55.286163387059275
+     },
+     {
+      "grain": 8.165043317094174,
+      "tools": 49.02738095590093
+     },
+     {
+      "grain": 16.052831224204862,
+      "tools": 40.28280716052793
+     },
+     {
+      "grain": 22.113149501630218,
+      "tools": 36.230560775884236
+     },
+     {
+      "grain": 26.44604480311283,
+      "tools": 34.08776794119485
+     },
+     {
+      "grain": 29.301419051008697,
+      "tools": 33.11415337213817
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 20.186360377747526,
+      "tools": 20.474926065306178,
+      "wine": 8.368511061747187
+     }
+    ],
+    "stonehaven__redwater": [
+     {
+      "tools": 17.48362144091738
+     },
+     {
+      "tools": 17.807181466828204
+     },
+     {
+      "tools": 18.244755121935224
+     },
+     {
+      "tools": 18.611460361774313
+     }
+    ]
+   }
+  },
+  {
+   "day": 21,
+   "stock": {
+    "eastford|cloth": 209.87528690652329,
+    "eastford|fish": 1792.667799904774,
+    "eastford|grain": 1917.3663516560189,
+    "eastford|tools": 149.31830480655663,
+    "eastford|wine": 184.46770096107338,
+    "greenvale|cloth": 630.485727032266,
+    "greenvale|fish": 2360.88575206374,
+    "greenvale|grain": 0.0,
+    "greenvale|tools": 241.47926502322488,
+    "greenvale|wine": 464.00046527618827,
+    "greyrock|cloth": 158.45894316290986,
+    "greyrock|fish": 0.0,
+    "greyrock|grain": 2080.6263279055097,
+    "greyrock|tools": 216.89651407391653,
+    "greyrock|wine": 139.33884413595126,
+    "lakeside|cloth": 171.81701460230735,
+    "lakeside|fish": 1483.3237328563373,
+    "lakeside|grain": 410.0072876526839,
+    "lakeside|tools": 71.04757907794308,
+    "lakeside|wine": 189.02132219042932,
+    "millbrook|cloth": 250.89923085749194,
+    "millbrook|fish": 0.0,
+    "millbrook|grain": 3180.6006819442014,
+    "millbrook|tools": 178.1758362846044,
+    "millbrook|wine": 183.1397710629934,
+    "redwater|cloth": 1008.863529092174,
+    "redwater|fish": 2641.1153345905436,
+    "redwater|grain": 6724.893961929502,
+    "redwater|tools": 687.8699439766968,
+    "redwater|wine": 574.1185439903236,
+    "stonehaven|cloth": 594.6092214840024,
+    "stonehaven|fish": 0.0,
+    "stonehaven|grain": 3655.729547381346,
+    "stonehaven|tools": 748.3978160589559,
+    "stonehaven|wine": 299.579448400572
+   },
+   "multiplier": {
+    "eastford|cloth": 1.5727063293063706,
+    "eastford|fish": 0.8963082418468125,
+    "eastford|grain": 1.1823706497146844,
+    "eastford|tools": 1.1241822720274122,
+    "eastford|wine": 1.2169745719395566,
+    "greenvale|cloth": 1.382836269745569,
+    "greenvale|fish": 1.3032436357388755,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 1.8237758833228233,
+    "greenvale|wine": 0.6658582821216696,
+    "greyrock|cloth": 1.9722887926586472,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 1.1141614234569506,
+    "greyrock|tools": 0.7436007129390306,
+    "greyrock|wine": 1.2260042771239776,
+    "lakeside|cloth": 1.6615726989680069,
+    "lakeside|fish": 0.8754637303119173,
+    "lakeside|grain": 1.7160244591705434,
+    "lakeside|tools": 2.040242275633734,
+    "lakeside|wine": 0.753477024929094,
+    "millbrook|cloth": 1.3985727799164671,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 1.0016401030967519,
+    "millbrook|tools": 1.000749400712933,
+    "millbrook|wine": 1.0708529251882262,
+    "redwater|cloth": 1.2495708928835056,
+    "redwater|fish": 1.5438995681839578,
+    "redwater|grain": 1.3309983380540373,
+    "redwater|tools": 0.9299509898979808,
+    "redwater|wine": 1.127778540070322,
+    "stonehaven|cloth": 1.6307462425023445,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.506348684854665,
+    "stonehaven|tools": 0.6592710129540399,
+    "stonehaven|wine": 1.5335552898514675
+   },
+   "prosperity": {
+    "eastford": 0.6736269489384521,
+    "greenvale": 0.4829286001220432,
+    "greyrock": 0.5632836083102156,
+    "lakeside": 0.597536689960622,
+    "millbrook": 0.6021333890669182,
+    "redwater": 0.5611361652428437,
+    "stonehaven": 0.4883718166575303
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 643.3746353175253,
+      "grain": 375.4455900289521
+     },
+     {
+      "fish": 643.8474018381927,
+      "grain": 377.01984069888914
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 20.76735685615722,
+      "tools": 8.8339668435693,
+      "wine": 17.372641859140764
+     }
+    ],
+    "greenvale__redwater": [
+     {
+      "fish": 3.7973104365058834,
+      "wine": 19.241393166455428
+     },
+     {
+      "wine": 19.350631058640996
+     },
+     {
+      "wine": 19.762340157625875
+     },
+     {
+      "wine": 20.17453896724767
+     },
+     {
+      "wine": 20.67806758502447
+     }
+    ],
+    "greenvale__stonehaven": [
+     {
+      "fish": 195.86784172348237,
+      "wine": 21.980056051322975
+     },
+     {
+      "fish": 177.53227191755695,
+      "wine": 22.397074094390682
+     },
+     {
+      "fish": 105.35005051588672,
+      "wine": 22.730948406557467
+     },
+     {
+      "fish": 60.396763569345055,
+      "wine": 23.321305556546488
+     },
+     {
+      "fish": 31.676701509656347,
+      "wine": 23.396662655841503
+     },
+     {
+      "fish": 13.473082816723394,
+      "wine": 23.176501302775556
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 390.6460422428026
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 403.41684730287477,
+      "grain": 170.58794995721053
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 748.8589976388889
+     }
+    ],
+    "redwater__eastford": [
+     {
+      "cloth": 25.599997547236715,
+      "tools": 16.401220226557808,
+      "wine": 13.403630148434255
+     },
+     {
+      "cloth": 25.697170599074,
+      "tools": 16.5326478402462,
+      "wine": 13.44778089909274
+     }
+    ],
+    "redwater__greenvale": [
+     {
+      "cloth": 3.1672706634749694,
+      "grain": 145.5877754706343,
+      "tools": 4.669285264316069
+     },
+     {
+      "cloth": 3.181497332615351,
+      "grain": 141.47438212558052,
+      "tools": 3.8169471936272794
+     },
+     {
+      "cloth": 3.039899633831332,
+      "grain": 136.25362176242655,
+      "tools": 2.6992780269845285
+     },
+     {
+      "cloth": 2.8512205011440614,
+      "grain": 129.53872907626518,
+      "tools": 1.9033505117718745
+     },
+     {
+      "cloth": 2.6628454489415887,
+      "grain": 121.27474313518196,
+      "tools": 1.6137899596807914
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 29.119033039557998,
+      "tools": 18.680411921531963,
+      "wine": 14.26725135260868
+     }
+    ],
+    "redwater__stonehaven": [
+     {
+      "cloth": 22.185998436502906,
+      "grain": 12.424684044732176
+     },
+     {
+      "cloth": 22.183441747720632,
+      "grain": 29.247699352824334
+     },
+     {
+      "cloth": 22.024589695771898,
+      "grain": 48.97186257702438
+     },
+     {
+      "cloth": 21.77208168782466,
+      "grain": 66.4449849102968
+     }
+    ],
+    "stonehaven__greenvale": [
+     {
+      "grain": 32.44645747282659,
+      "tools": 40.39493917662009
+     },
+     {
+      "grain": 32.628048894640564,
+      "tools": 40.362302746624614
+     },
+     {
+      "grain": 27.42896330808947,
+      "tools": 39.04616690856945
+     },
+     {
+      "tools": 37.49392574135034
+     },
+     {
+      "tools": 36.617168349444
+     },
+     {
+      "tools": 36.54556862745632
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 20.217522091259063,
+      "tools": 19.994406670291937,
+      "wine": 8.54846010087858
+     }
+    ],
+    "stonehaven__redwater": [
+     {
+      "tools": 18.974611161198563
+     },
+     {
+      "tools": 19.08206476585931
+     },
+     {
+      "tools": 19.351987207939427
+     },
+     {
+      "tools": 19.680712604463352
+     }
+    ]
+   }
+  },
+  {
+   "day": 34,
+   "stock": {
+    "eastford|cloth": 208.09208459367952,
+    "eastford|fish": 714.6776215233724,
+    "eastford|grain": 0.0,
+    "eastford|tools": 152.62723693914035,
+    "eastford|wine": 196.1055353439618,
+    "greenvale|cloth": 610.1135332054491,
+    "greenvale|fish": 1620.064368794475,
+    "greenvale|grain": 0.0,
+    "greenvale|tools": 239.87806780669848,
+    "greenvale|wine": 466.4198843660388,
+    "greyrock|cloth": 153.7784472241448,
+    "greyrock|fish": 0.0,
+    "greyrock|grain": 2139.9987886043878,
+    "greyrock|tools": 219.759334435246,
+    "greyrock|wine": 142.05737395674865,
+    "lakeside|cloth": 165.4222130016493,
+    "lakeside|fish": 1109.0018606987387,
+    "lakeside|grain": 0.0,
+    "lakeside|tools": 73.51869870714609,
+    "lakeside|wine": 185.3291324730171,
+    "millbrook|cloth": 251.19682920334034,
+    "millbrook|fish": 0.0,
+    "millbrook|grain": 1798.2821761152807,
+    "millbrook|tools": 183.2496281060001,
+    "millbrook|wine": 199.72085927294012,
+    "redwater|cloth": 1012.5583973168344,
+    "redwater|fish": 0.0,
+    "redwater|grain": 2765.9200994000707,
+    "redwater|tools": 707.7790340164162,
+    "redwater|wine": 644.8238504988599,
+    "stonehaven|cloth": 569.3780867719205,
+    "stonehaven|fish": 0.0,
+    "stonehaven|grain": 1684.3397107197566,
+    "stonehaven|tools": 738.834208814035,
+    "stonehaven|wine": 279.5290093770293
+   },
+   "multiplier": {
+    "eastford|cloth": 1.5994281602089708,
+    "eastford|fish": 1.3434720202309014,
+    "eastford|grain": 1.7820021027714705,
+    "eastford|tools": 1.0931267539158092,
+    "eastford|wine": 1.0533456345623984,
+    "greenvale|cloth": 1.411823874368491,
+    "greenvale|fish": 1.563840103693313,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 1.7963160627568382,
+    "greenvale|wine": 0.5913940806001364,
+    "greyrock|cloth": 2.082729782027651,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 1.2221772416316123,
+    "greyrock|tools": 0.7295068246937351,
+    "greyrock|wine": 1.1361195575041023,
+    "lakeside|cloth": 1.7130560298629793,
+    "lakeside|fish": 1.052753177865454,
+    "lakeside|grain": 1.7991863692950643,
+    "lakeside|tools": 1.943335884669869,
+    "lakeside|wine": 0.6879715828433218,
+    "millbrook|cloth": 1.4312700182093072,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 1.3322994253391462,
+    "millbrook|tools": 0.9829332926770626,
+    "millbrook|wine": 0.9664196181177275,
+    "redwater|cloth": 1.2730166314750258,
+    "redwater|fish": 1.7926325588404974,
+    "redwater|grain": 1.7695119765865246,
+    "redwater|tools": 0.9141202869114458,
+    "redwater|wine": 0.9942980170845129,
+    "stonehaven|cloth": 1.6652720680777007,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.7970464778456177,
+    "stonehaven|tools": 0.644696108545929,
+    "stonehaven|wine": 1.3941165724285611
+   },
+   "prosperity": {
+    "eastford": 0.6412324770933274,
+    "greenvale": 0.45948140315484337,
+    "greyrock": 0.5531029600273094,
+    "lakeside": 0.5682734526164279,
+    "millbrook": 0.5952852205786501,
+    "redwater": 0.5524881242281933,
+    "stonehaven": 0.4516996705187385
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 208.2557068545812,
+      "grain": 101.8834307272763
+     },
+     {
+      "fish": 245.7116126123104,
+      "grain": 44.131484604625896
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 20.88277023710877,
+      "tools": 9.858584797222052,
+      "wine": 16.828345858614345
+     }
+    ],
+    "greenvale__redwater": [
+     {
+      "wine": 18.318271135582936
+     },
+     {
+      "wine": 17.82080573658158
+     },
+     {
+      "wine": 17.3745853980594
+     },
+     {
+      "wine": 16.791149676021327
+     },
+     {
+      "wine": 16.323360852139945
+     }
+    ],
+    "greenvale__stonehaven": [
+     {
+      "fish": 21.80134714974122,
+      "wine": 20.332871307170375
+     },
+     {
+      "wine": 20.16529663748292
+     },
+     {
+      "wine": 20.249490585484796
+     },
+     {
+      "wine": 20.37011877459488
+     },
+     {
+      "wine": 20.545700551315626
+     },
+     {
+      "wine": 20.766293214007874
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 911.7234403369225
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 421.2048360559575,
+      "grain": 84.10640153003551
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 611.9725720706463
+     }
+    ],
+    "redwater__eastford": [
+     {
+      "cloth": 24.932682294065675,
+      "tools": 15.687082557349147,
+      "wine": 10.811961781931029
+     },
+     {
+      "cloth": 24.783329331829023,
+      "tools": 15.57482539154093,
+      "wine": 10.513682061853517
+     }
+    ],
+    "redwater__greenvale": [
+     {
+      "cloth": 3.4851274297033754,
+      "tools": 2.637395395116739
+     },
+     {
+      "cloth": 3.564687747109198,
+      "tools": 2.7834939537594847
+     },
+     {
+      "cloth": 3.6037231552328675,
+      "tools": 2.881789672900978
+     },
+     {
+      "cloth": 3.6877260498025337,
+      "tools": 2.97236990997075
+     },
+     {
+      "cloth": 3.7059920281001757,
+      "tools": 3.011197590529545
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 29.93553134733605,
+      "tools": 18.861155164668222,
+      "wine": 14.723844979477576
+     }
+    ],
+    "redwater__stonehaven": [
+     {
+      "cloth": 21.43250325699163
+     },
+     {
+      "cloth": 21.55136763998755
+     },
+     {
+      "cloth": 21.80631700037435
+     },
+     {
+      "cloth": 22.023598590689666
+     }
+    ],
+    "stonehaven__greenvale": [
+     {
+      "tools": 37.87017547634899
+     },
+     {
+      "tools": 38.01982244163781
+     },
+     {
+      "tools": 38.07381276203086
+     },
+     {
+      "tools": 38.04186607034817
+     },
+     {
+      "tools": 37.912233267885625
+     },
+     {
+      "tools": 37.74060997109717
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 21.409779697193084,
+      "tools": 20.30298581595846,
+      "wine": 9.092929911774405
+     }
+    ],
+    "stonehaven__redwater": [
+     {
+      "tools": 19.672484363326088
+     },
+     {
+      "tools": 19.507780592796486
+     },
+     {
+      "tools": 19.256528658838235
+     },
+     {
+      "tools": 19.02737896032
+     }
+    ]
+   }
+  },
+  {
+   "day": 55,
+   "stock": {
+    "eastford|cloth": 201.7438763039953,
+    "eastford|fish": 447.3748709162772,
+    "eastford|grain": 0.0,
+    "eastford|tools": 145.53448731925667,
+    "eastford|wine": 145.4109199380028,
+    "greenvale|cloth": 621.6915481574811,
+    "greenvale|fish": 1928.2093441422517,
+    "greenvale|grain": 0.0,
+    "greenvale|tools": 244.24550004141673,
+    "greenvale|wine": 440.3592483160692,
+    "greyrock|cloth": 165.74263832650942,
+    "greyrock|fish": 0.0,
+    "greyrock|grain": 1999.1937973944598,
+    "greyrock|tools": 231.02110500367658,
+    "greyrock|wine": 146.28749650342326,
+    "lakeside|cloth": 170.87196287421952,
+    "lakeside|fish": 1303.619491621941,
+    "lakeside|grain": 0.0,
+    "lakeside|tools": 80.18867763934492,
+    "lakeside|wine": 171.64721202414466,
+    "millbrook|cloth": 261.5938668295855,
+    "millbrook|fish": 0.0,
+    "millbrook|grain": 1628.0021800312315,
+    "millbrook|tools": 187.8009331546635,
+    "millbrook|wine": 188.98623690997158,
+    "redwater|cloth": 986.037639000327,
+    "redwater|fish": 0.0,
+    "redwater|grain": 0.0,
+    "redwater|tools": 691.8701368815268,
+    "redwater|wine": 510.74474669199327,
+    "stonehaven|cloth": 578.3414136473388,
+    "stonehaven|fish": 0.0,
+    "stonehaven|grain": 3538.775316765344,
+    "stonehaven|tools": 761.0246589046751,
+    "stonehaven|wine": 250.83284489566745
+   },
+   "multiplier": {
+    "eastford|cloth": 1.473418919199337,
+    "eastford|fish": 1.7623087226044334,
+    "eastford|grain": 1.799989947348941,
+    "eastford|tools": 1.0187975615509057,
+    "eastford|wine": 0.9469461073814184,
+    "greenvale|cloth": 1.3540117192667827,
+    "greenvale|fish": 1.4943167805532336,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 1.7221960608130065,
+    "greenvale|wine": 0.5531061177777215,
+    "greyrock|cloth": 1.9786857650960301,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 1.149104621739035,
+    "greyrock|tools": 0.7080917244521435,
+    "greyrock|wine": 1.2086975244837508,
+    "lakeside|cloth": 1.6167823920864726,
+    "lakeside|fish": 0.9929127581846058,
+    "lakeside|grain": 1.7999995455499347,
+    "lakeside|tools": 1.730841247867204,
+    "lakeside|wine": 0.665230628629008,
+    "millbrook|cloth": 1.3345135912842851,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 1.4739714305797518,
+    "millbrook|tools": 0.9272301483917299,
+    "millbrook|wine": 0.8916114491173381,
+    "redwater|cloth": 1.1923589946888933,
+    "redwater|fish": 1.7999958849462114,
+    "redwater|grain": 1.7999829710406183,
+    "redwater|tools": 0.8490248484113186,
+    "redwater|wine": 0.8614724182942509,
+    "stonehaven|cloth": 1.6191389509629028,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.5877437185337224,
+    "stonehaven|tools": 0.6156600392297811,
+    "stonehaven|wine": 1.5288023405845947
+   },
+   "prosperity": {
+    "eastford": 0.5414767996985601,
+    "greenvale": 0.4407842631055435,
+    "greyrock": 0.5720843893889361,
+    "lakeside": 0.545576602520123,
+    "millbrook": 0.5698462400641351,
+    "redwater": 0.47527946227814677,
+    "stonehaven": 0.44499730882526606
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 237.86916650755785,
+      "grain": 16.505523395143943
+     },
+     {
+      "fish": 277.4125772201191,
+      "grain": 59.600835735195965
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 21.258904050559835,
+      "tools": 10.361567834525099,
+      "wine": 16.942834130891043
+     }
+    ],
+    "greenvale__redwater": [
+     {
+      "wine": 11.39126370061153
+     },
+     {
+      "wine": 11.403167165386167
+     },
+     {
+      "wine": 11.390773513390604
+     },
+     {
+      "wine": 11.35376867237488
+     },
+     {
+      "wine": 11.291918919312812
+     }
+    ],
+    "greenvale__stonehaven": [
+     {
+      "wine": 21.656692296726405
+     },
+     {
+      "wine": 21.82435720823488
+     },
+     {
+      "wine": 21.978959279036427
+     },
+     {
+      "wine": 22.100431785179623
+     },
+     {
+      "wine": 22.19204277364226
+     },
+     {
+      "wine": 21.818570808681137
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 352.9744074667638
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 524.4352735161239,
+      "grain": 167.49470831396656
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 643.1636095547112
+     }
+    ],
+    "redwater__eastford": [
+     {
+      "cloth": 23.29915283104687,
+      "tools": 14.376285302640943,
+      "wine": 8.72612026684247
+     },
+     {
+      "cloth": 23.250534612419695,
+      "tools": 14.335713298623153,
+      "wine": 8.716142405614713
+     }
+    ],
+    "redwater__greenvale": [
+     {
+      "cloth": 5.388745540707642,
+      "tools": 4.316121326761347
+     },
+     {
+      "cloth": 5.346531207734312,
+      "tools": 4.343213257288452
+     },
+     {
+      "cloth": 5.303583504198645,
+      "tools": 4.3753286148861354
+     },
+     {
+      "cloth": 5.2691203519891445,
+      "tools": 4.409419369085222
+     },
+     {
+      "cloth": 5.2452799036322215,
+      "tools": 4.4402243339497804
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 29.882201842030014,
+      "tools": 18.446625266648464,
+      "wine": 14.035851714737095
+     }
+    ],
+    "redwater__stonehaven": [
+     {
+      "cloth": 25.539805907352637,
+      "wine": 1.7748954598575648
+     },
+     {
+      "cloth": 25.744821975238086,
+      "wine": 1.8719856743641123
+     },
+     {
+      "cloth": 25.94011699163649,
+      "wine": 1.96636807386263
+     },
+     {
+      "cloth": 25.9213609424664,
+      "wine": 1.6731434608400884
+     }
+    ],
+    "stonehaven__greenvale": [
+     {
+      "tools": 36.78464362270755
+     },
+     {
+      "tools": 36.68846358133993
+     },
+     {
+      "tools": 36.61416377996916
+     },
+     {
+      "tools": 36.553125842129134
+     },
+     {
+      "tools": 36.50326965454351
+     },
+     {
+      "tools": 36.58355826500121
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 22.480607608419387,
+      "tools": 20.866656176618097,
+      "wine": 9.517884272692022
+     }
+    ],
+    "stonehaven__redwater": [
+     {
+      "tools": 15.653573287080645
+     },
+     {
+      "tools": 15.508770019706
+     },
+     {
+      "tools": 15.371970425227817
+     },
+     {
+      "tools": 15.356061220265516
+     }
+    ]
+   }
+  },
+  {
+   "day": 89,
+   "stock": {
+    "eastford|cloth": 202.8203224565269,
+    "eastford|fish": 672.0139628475918,
+    "eastford|grain": 0.0,
+    "eastford|tools": 145.16245304705583,
+    "eastford|wine": 134.25126462975024,
+    "greenvale|cloth": 634.3091663992234,
+    "greenvale|fish": 2776.6146494904337,
+    "greenvale|grain": 0.0,
+    "greenvale|tools": 252.81896292815384,
+    "greenvale|wine": 468.44829674027585,
+    "greyrock|cloth": 173.91905705741954,
+    "greyrock|fish": 0.0,
+    "greyrock|grain": 1073.4678871104034,
+    "greyrock|tools": 233.65167216330858,
+    "greyrock|wine": 136.55910135275286,
+    "lakeside|cloth": 173.32948315872392,
+    "lakeside|fish": 2216.679800174072,
+    "lakeside|grain": 64.93476581492149,
+    "lakeside|tools": 84.6788128655076,
+    "lakeside|wine": 168.93088216550206,
+    "millbrook|cloth": 267.1925762335921,
+    "millbrook|fish": 0.0,
+    "millbrook|grain": 918.9955174229189,
+    "millbrook|tools": 190.443638742345,
+    "millbrook|wine": 184.0395229063368,
+    "redwater|cloth": 968.4751578183207,
+    "redwater|fish": 0.0,
+    "redwater|grain": 0.0,
+    "redwater|tools": 673.027384788983,
+    "redwater|wine": 435.6750368630312,
+    "stonehaven|cloth": 573.8936385987819,
+    "stonehaven|fish": 0.0,
+    "stonehaven|grain": 0.0,
+    "stonehaven|tools": 746.8036492046543,
+    "stonehaven|wine": 211.7961726597749
+   },
+   "multiplier": {
+    "eastford|cloth": 1.4296159972259261,
+    "eastford|fish": 1.3686748949100012,
+    "eastford|grain": 1.7999999999455982,
+    "eastford|tools": 0.9990062212430942,
+    "eastford|wine": 0.9673947014190831,
+    "greenvale|cloth": 1.3362449715944706,
+    "greenvale|fish": 1.2686721483223946,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 1.6792532641408005,
+    "greenvale|wine": 0.5377128733660713,
+    "greyrock|cloth": 1.8105400626547636,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 1.606306608104326,
+    "greyrock|tools": 0.6729344152926494,
+    "greyrock|wine": 1.1033295288367093,
+    "lakeside|cloth": 1.575861514756792,
+    "lakeside|fish": 0.7672261952544787,
+    "lakeside|grain": 1.7999999999975407,
+    "lakeside|tools": 1.6173905536877842,
+    "lakeside|wine": 0.6611603322829428,
+    "millbrook|cloth": 1.292729977510358,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 1.575050613803237,
+    "millbrook|tools": 0.9072519059045759,
+    "millbrook|wine": 0.9010244971280316,
+    "redwater|cloth": 1.1506096531145493,
+    "redwater|fish": 1.7999999999777305,
+    "redwater|grain": 1.7999999999078446,
+    "redwater|tools": 0.8287636080833454,
+    "redwater|wine": 0.8519793130420735,
+    "stonehaven|cloth": 1.5210933837374712,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.7999988098417758,
+    "stonehaven|tools": 0.5850836532520837,
+    "stonehaven|wine": 1.3475404495797103
+   },
+   "prosperity": {
+    "eastford": 0.5249385011243368,
+    "greenvale": 0.45179913305238695,
+    "greyrock": 0.5332148152662214,
+    "lakeside": 0.541481894900128,
+    "millbrook": 0.5583313210882592,
+    "redwater": 0.43564137257488017,
+    "stonehaven": 0.3891546748342715
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 114.62926489545956
+     },
+     {
+      "fish": 137.48268551750934
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 21.284940486861608,
+      "tools": 10.578615117570404,
+      "wine": 17.24322045225607
+     }
+    ],
+    "greenvale__redwater": [
+     {
+      "fish": 136.17970823450284,
+      "wine": 10.64703227563237
+     },
+     {
+      "fish": 135.97203437128871,
+      "wine": 10.086217876546973
+     },
+     {
+      "fish": 135.83080255065974,
+      "wine": 9.54166182530245
+     },
+     {
+      "fish": 135.73040922327613,
+      "wine": 8.979468417156625
+     },
+     {
+      "fish": 135.65679387300955,
+      "wine": 8.607473732069902
+     }
+    ],
+    "greenvale__stonehaven": [
+     {
+      "fish": 130.67270610816783,
+      "wine": 16.857714350306804
+     },
+     {
+      "fish": 130.36039704424414,
+      "wine": 16.806234018959973
+     },
+     {
+      "fish": 130.16002834877705,
+      "wine": 16.745939717384555
+     },
+     {
+      "fish": 130.02376840380919,
+      "wine": 16.72909843057639
+     },
+     {
+      "fish": 129.92690843106925,
+      "wine": 16.69841223743613
+     },
+     {
+      "fish": 129.8558798503826,
+      "wine": 16.663383492421918
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 440.21175396750175
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 785.9145460517663,
+      "grain": 357.85163535735427
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 155.69063151288026
+     }
+    ],
+    "redwater__eastford": [
+     {
+      "cloth": 23.947752039819374,
+      "tools": 14.918971887743428,
+      "wine": 9.889003309306538
+     },
+     {
+      "cloth": 23.803081987718734,
+      "tools": 14.837883940249199,
+      "wine": 9.622007927584674
+     }
+    ],
+    "redwater__greenvale": [
+     {
+      "cloth": 6.875221922214577,
+      "tools": 4.251803868519705
+     },
+     {
+      "cloth": 7.128765754690783,
+      "tools": 4.3823852510464665
+     },
+     {
+      "cloth": 7.335339066581497,
+      "tools": 4.5003962260222
+     },
+     {
+      "cloth": 7.559444013538629,
+      "tools": 4.61326051365318
+     },
+     {
+      "cloth": 7.696668713291492,
+      "tools": 4.675510582359958
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 29.946646374946052,
+      "tools": 18.636284960326538,
+      "wine": 13.665894258867052
+     }
+    ],
+    "redwater__stonehaven": [
+     {
+      "cloth": 22.156447674725623
+     },
+     {
+      "cloth": 22.21091299013602
+     },
+     {
+      "cloth": 22.27781138951114
+     },
+     {
+      "cloth": 22.2558098974779
+     }
+    ],
+    "stonehaven__greenvale": [
+     {
+      "tools": 38.277017987979626
+     },
+     {
+      "tools": 38.296143945382966
+     },
+     {
+      "tools": 38.32604732092114
+     },
+     {
+      "tools": 38.34958701007305
+     },
+     {
+      "tools": 38.36550754982689
+     },
+     {
+      "tools": 38.37253970412415
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 22.117708520165703,
+      "tools": 20.0628400472087,
+      "wine": 7.641639102713418
+     }
+    ],
+    "stonehaven__redwater": [
+     {
+      "tools": 16.947078732400406
+     },
+     {
+      "tools": 16.824058309511745
+     },
+     {
+      "tools": 16.69548588326329
+     },
+     {
+      "tools": 16.622121216302556
+     }
+    ]
+   }
+  },
+  {
+   "day": 144,
+   "stock": {
+    "eastford|cloth": 208.78268156910858,
+    "eastford|fish": 1358.2317836414568,
+    "eastford|grain": 275.35861855711374,
+    "eastford|tools": 150.09039411638662,
+    "eastford|wine": 147.34369231143137,
+    "greenvale|cloth": 639.3898294451672,
+    "greenvale|fish": 3073.3347823776626,
+    "greenvale|grain": 0.0,
+    "greenvale|tools": 257.7501934558096,
+    "greenvale|wine": 453.9874334999149,
+    "greyrock|cloth": 168.38022346116415,
+    "greyrock|fish": 0.0,
+    "greyrock|grain": 2438.475526371383,
+    "greyrock|tools": 227.93186451171076,
+    "greyrock|wine": 114.99637980860905,
+    "lakeside|cloth": 174.25675314274935,
+    "lakeside|fish": 2236.106290124577,
+    "lakeside|grain": 19.149794638782794,
+    "lakeside|tools": 88.15956953770116,
+    "lakeside|wine": 168.3997984750872,
+    "millbrook|cloth": 255.0390951433409,
+    "millbrook|fish": 0.0,
+    "millbrook|grain": 2500.9733012056645,
+    "millbrook|tools": 182.64908890117383,
+    "millbrook|wine": 156.67861913332123,
+    "redwater|cloth": 985.0810516860722,
+    "redwater|fish": 2624.1583781832974,
+    "redwater|grain": 4983.455988592217,
+    "redwater|tools": 680.8434499958213,
+    "redwater|wine": 438.57949142570607,
+    "stonehaven|cloth": 553.1129701398692,
+    "stonehaven|fish": 0.0,
+    "stonehaven|grain": 3449.101048267287,
+    "stonehaven|tools": 717.9809072594884,
+    "stonehaven|wine": 165.30161295366904
+   },
+   "multiplier": {
+    "eastford|cloth": 1.4510416040683105,
+    "eastford|fish": 0.9418467409034559,
+    "eastford|grain": 1.7999999999999998,
+    "eastford|tools": 1.0109328481351678,
+    "eastford|wine": 1.081395471211775,
+    "greenvale|cloth": 1.3282027836677448,
+    "greenvale|fish": 1.219940714852688,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 1.6448737105947229,
+    "greenvale|wine": 0.5710327624409853,
+    "greyrock|cloth": 1.799283019222331,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 1.1275710682650228,
+    "greyrock|tools": 0.6674070045219745,
+    "greyrock|wine": 1.261886962701541,
+    "lakeside|cloth": 1.5652701655109007,
+    "lakeside|fish": 0.7849020741767534,
+    "lakeside|grain": 1.7999999999999998,
+    "lakeside|tools": 1.5391008963314095,
+    "lakeside|wine": 0.6788283131471899,
+    "millbrook|cloth": 1.2969268810588552,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 1.1632666296115712,
+    "millbrook|tools": 0.9069317171708565,
+    "millbrook|wine": 0.96760836156154,
+    "redwater|cloth": 1.1578200940789778,
+    "redwater|fish": 1.5254269541674699,
+    "redwater|grain": 1.6525300863845713,
+    "redwater|tools": 0.8373912992568472,
+    "redwater|wine": 0.9750116476741822,
+    "stonehaven|cloth": 1.5082832942907862,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.746310286021688,
+    "stonehaven|tools": 0.5804713552791965,
+    "stonehaven|wine": 1.58666540962276
+   },
+   "prosperity": {
+    "eastford": 0.5775779582492967,
+    "greenvale": 0.4579176162156358,
+    "greyrock": 0.5208582002969492,
+    "lakeside": 0.547144985641896,
+    "millbrook": 0.5402703422553158,
+    "redwater": 0.47149542205298783,
+    "stonehaven": 0.3699984637848393
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 257.11211539542273,
+      "grain": 128.826588728723
+     },
+     {
+      "fish": 132.2519449576047,
+      "grain": 44.659884092623976
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 20.703770015106418,
+      "tools": 10.229609307858773,
+      "wine": 16.226989839141766
+     }
+    ],
+    "greenvale__redwater": [
+     {
+      "fish": 13.919860426226656,
+      "wine": 13.57297384060968
+     },
+     {
+      "fish": 15.691000033694973,
+      "wine": 13.97362152859266
+     },
+     {
+      "fish": 16.689128111808916,
+      "wine": 14.389680596961297
+     },
+     {
+      "fish": 38.14415898796105,
+      "wine": 14.818460054335727
+     },
+     {
+      "fish": 68.86009699098094,
+      "wine": 15.270145830648788
+     }
+    ],
+    "greenvale__stonehaven": [
+     {
+      "fish": 141.82384903267342,
+      "wine": 16.78296677304992
+     },
+     {
+      "fish": 158.56026774476763,
+      "wine": 16.933732859603662
+     },
+     {
+      "fish": 171.3800204142044,
+      "wine": 17.108520204375385
+     },
+     {
+      "fish": 181.1859980756302,
+      "wine": 17.296819733548592
+     },
+     {
+      "fish": 188.72553494947869,
+      "wine": 17.49276610443945
+     },
+     {
+      "fish": 190.1359449895667,
+      "wine": 17.704451065168122
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 882.3132651655874
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 769.5614064650019,
+      "grain": 357.8516353575638
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 776.1915130284543
+     }
+    ],
+    "redwater__eastford": [
+     {
+      "cloth": 24.6159873350372,
+      "tools": 15.433395079710955,
+      "wine": 10.879546727712592
+     },
+     {
+      "cloth": 24.425523908641026,
+      "tools": 15.325848417065794,
+      "wine": 10.592591709665216
+     }
+    ],
+    "redwater__greenvale": [
+     {
+      "cloth": 5.8899510709498095,
+      "tools": 3.6642184441945114
+     },
+     {
+      "cloth": 5.738123828397201,
+      "tools": 3.587702663231136
+     },
+     {
+      "cloth": 5.576361082776648,
+      "tools": 3.509394199614546
+     },
+     {
+      "cloth": 5.406295390803012,
+      "tools": 3.430471301502105
+     },
+     {
+      "cloth": 5.221158651272368,
+      "tools": 3.3465263118454716
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 28.888724893643076,
+      "tools": 18.08000432962428,
+      "wine": 12.89844268666675
+     }
+    ],
+    "redwater__stonehaven": [
+     {
+      "cloth": 19.966538885636297
+     },
+     {
+      "cloth": 19.913336060757008
+     },
+     {
+      "cloth": 19.865345653025024
+     },
+     {
+      "cloth": 19.821699640309173
+     }
+    ],
+    "stonehaven__greenvale": [
+     {
+      "tools": 38.18010048887655
+     },
+     {
+      "tools": 38.176650732040635
+     },
+     {
+      "tools": 38.16533192736265
+     },
+     {
+      "tools": 38.149171108549815
+     },
+     {
+      "tools": 38.130230535776285
+     },
+     {
+      "tools": 38.10302872612959
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 21.426330971746868,
+      "tools": 19.848853767220984,
+      "wine": 7.497304404840552
+     }
+    ],
+    "stonehaven__redwater": [
+     {
+      "tools": 18.42859593216905
+     },
+     {
+      "tools": 18.561772182448255
+     },
+     {
+      "tools": 18.693622358821855
+     },
+     {
+      "tools": 18.824387518790214
+     }
+    ]
+   }
+  },
+  {
+   "day": 200,
+   "stock": {
+    "eastford|cloth": 202.71543522051826,
+    "eastford|fish": 649.3639044180875,
+    "eastford|grain": 0.0,
+    "eastford|tools": 146.10944224430762,
+    "eastford|wine": 132.33175679738744,
+    "greenvale|cloth": 635.5130768825835,
+    "greenvale|fish": 2762.4119977237624,
+    "greenvale|grain": 0.0,
+    "greenvale|tools": 256.39995153617775,
+    "greenvale|wine": 475.6672957176694,
+    "greyrock|cloth": 169.24121303564144,
+    "greyrock|fish": 0.0,
+    "greyrock|grain": 937.1609391682892,
+    "greyrock|tools": 227.05141684811065,
+    "greyrock|wine": 113.64056248223524,
+    "lakeside|cloth": 173.77683529684617,
+    "lakeside|fish": 2158.4172699271735,
+    "lakeside|grain": 20.278800590935475,
+    "lakeside|tools": 86.94764028598473,
+    "lakeside|wine": 170.1951452515167,
+    "millbrook|cloth": 269.5219438601758,
+    "millbrook|fish": 0.0,
+    "millbrook|grain": 1637.0843099077615,
+    "millbrook|tools": 193.45953698567993,
+    "millbrook|wine": 186.88269640712872,
+    "redwater|cloth": 993.8881464261805,
+    "redwater|fish": 0.0,
+    "redwater|grain": 0.0,
+    "redwater|tools": 692.4179054602055,
+    "redwater|wine": 467.63380578021776,
+    "stonehaven|cloth": 551.8945764501387,
+    "stonehaven|fish": 0.0,
+    "stonehaven|grain": 0.0,
+    "stonehaven|tools": 719.1500710615451,
+    "stonehaven|wine": 163.85807926345657
+   },
+   "multiplier": {
+    "eastford|cloth": 1.4224426423561336,
+    "eastford|fish": 1.353112469812276,
+    "eastford|grain": 1.7999999999999998,
+    "eastford|tools": 0.9862093935216256,
+    "eastford|wine": 0.9536400769920741,
+    "greenvale|cloth": 1.3367189439883107,
+    "greenvale|fish": 1.2839064650595298,
+    "greenvale|grain": 1.8,
+    "greenvale|tools": 1.6579131495826782,
+    "greenvale|wine": 0.5281637470770166,
+    "greyrock|cloth": 1.7584825965835433,
+    "greyrock|fish": 1.8,
+    "greyrock|grain": 1.7809752075395195,
+    "greyrock|tools": 0.6535579468912756,
+    "greyrock|wine": 1.0950527682914384,
+    "lakeside|cloth": 1.574304951190695,
+    "lakeside|fish": 0.7953715969939613,
+    "lakeside|grain": 1.7999999999999998,
+    "lakeside|tools": 1.572158507852102,
+    "lakeside|wine": 0.6549748705401686,
+    "millbrook|cloth": 1.2850409732661099,
+    "millbrook|fish": 1.8,
+    "millbrook|grain": 1.4668248132566506,
+    "millbrook|tools": 0.8946147923907175,
+    "millbrook|wine": 0.8829179972863692,
+    "redwater|cloth": 1.1425335433109416,
+    "redwater|fish": 1.7999993959667557,
+    "redwater|grain": 1.7999999977851417,
+    "redwater|tools": 0.8204381265246863,
+    "redwater|wine": 0.8376042755413675,
+    "stonehaven|cloth": 1.4821787098506916,
+    "stonehaven|fish": 1.8,
+    "stonehaven|grain": 1.7999999993854279,
+    "stonehaven|tools": 0.5688041579836899,
+    "stonehaven|wine": 1.3648278207222684
+   },
+   "prosperity": {
+    "eastford": 0.5182249530106626,
+    "greenvale": 0.4531515300569699,
+    "greyrock": 0.48615585959613994,
+    "lakeside": 0.5419331106412262,
+    "millbrook": 0.5641242960140199,
+    "redwater": 0.4495190383107204,
+    "stonehaven": 0.344811757051833
+   },
+   "pipeline": {
+    "eastford__redwater": [
+     {
+      "fish": 95.83987767774312
+     },
+     {
+      "fish": 117.54847560499516
+     }
+    ],
+    "greenvale__lakeside": [
+     {
+      "cloth": 21.3703273883419,
+      "tools": 10.758801561738805,
+      "wine": 17.26990919588733
+     }
+    ],
+    "greenvale__redwater": [
+     {
+      "fish": 116.9293327417776,
+      "wine": 10.450830123323101
+     },
+     {
+      "fish": 122.62315530698665,
+      "wine": 9.939496887615363
+     },
+     {
+      "fish": 126.53413640686024,
+      "wine": 9.616868675608915
+     },
+     {
+      "fish": 129.25701095945143,
+      "wine": 9.406766934361931
+     },
+     {
+      "fish": 131.17061932587353,
+      "wine": 9.280341432264981
+     }
+    ],
+    "greenvale__stonehaven": [
+     {
+      "fish": 103.72393994747976,
+      "wine": 14.383259669488494
+     },
+     {
+      "fish": 111.82137393159775,
+      "wine": 14.358881618474525
+     },
+     {
+      "fish": 117.30521898177766,
+      "wine": 14.347200835854268
+     },
+     {
+      "fish": 121.07242408419984,
+      "wine": 14.360514467794097
+     },
+     {
+      "fish": 123.69517801649992,
+      "wine": 14.364077444816017
+     },
+     {
+      "fish": 125.53825229798426,
+      "wine": 14.373756964678865
+     }
+    ],
+    "greyrock__stonehaven": [
+     {
+      "grain": 631.0019364615995
+     }
+    ],
+    "lakeside__greenvale": [
+     {
+      "fish": 782.8791621060034,
+      "grain": 357.8516353575638
+     }
+    ],
+    "millbrook__redwater": [
+     {
+      "grain": 643.3818991330292
+     }
+    ],
+    "redwater__eastford": [
+     {
+      "cloth": 23.83297611988733,
+      "tools": 14.880619512733617,
+      "wine": 9.421681969803931
+     },
+     {
+      "cloth": 23.685223358789234,
+      "tools": 14.78262729773413,
+      "wine": 9.12790652633797
+     }
+    ],
+    "redwater__greenvale": [
+     {
+      "cloth": 7.4115440455764645,
+      "tools": 4.348741596675439
+     },
+     {
+      "cloth": 7.658391292521228,
+      "tools": 4.464605855001393
+     },
+     {
+      "cloth": 7.797888980130123,
+      "tools": 4.540906515758085
+     },
+     {
+      "cloth": 7.904125692792737,
+      "tools": 4.590654532976371
+     },
+     {
+      "cloth": 7.973624862081953,
+      "tools": 4.624581063118312
+     }
+    ],
+    "redwater__millbrook": [
+     {
+      "cloth": 30.41155834380411,
+      "tools": 18.924172814282617,
+      "wine": 14.158882404160146
+     }
+    ],
+    "redwater__stonehaven": [
+     {
+      "cloth": 19.696658722667696
+     },
+     {
+      "cloth": 19.73021675041607
+     },
+     {
+      "cloth": 19.754942772364736
+     },
+     {
+      "cloth": 19.763450809245104
+     }
+    ],
+    "stonehaven__greenvale": [
+     {
+      "tools": 38.68712636379161
+     },
+     {
+      "tools": 38.71122542873511
+     },
+     {
+      "tools": 38.73571475104651
+     },
+     {
+      "tools": 38.75647640395226
+     },
+     {
+      "tools": 38.769692787774964
+     },
+     {
+      "tools": 38.774410296981415
+     }
+    ],
+    "stonehaven__greyrock": [
+     {
+      "cloth": 21.340090559198497,
+      "tools": 19.263766129918444,
+      "wine": 6.279139983825131
+     }
+    ],
+    "stonehaven__redwater": [
+     {
+      "tools": 18.016613694600313
+     },
+     {
+      "tools": 17.9124274717535
+     },
+     {
+      "tools": 17.83482224022973
+     },
+     {
+      "tools": 17.77033063748915
+     }
+    ]
+   }
+  }
+ ],
+ "fired": [
+  {
+   "source": "бандиты",
+   "target": "eastford__redwater",
+   "start_day": 194
+  },
+  {
+   "source": "бандиты",
+   "target": "greenvale__redwater",
+   "start_day": 197
+  },
+  {
+   "source": "бандиты",
+   "target": "greenvale__stonehaven",
+   "start_day": 195
+  },
+  {
+   "source": "бандиты",
+   "target": "greyrock__stonehaven",
+   "start_day": 193
+  },
+  {
+   "source": "бандиты",
+   "target": "lakeside__greenvale",
+   "start_day": 193
+  },
+  {
+   "source": "бандиты",
+   "target": "redwater__eastford",
+   "start_day": 195
+  },
+  {
+   "source": "бандиты",
+   "target": "stonehaven__redwater",
+   "start_day": 196
+  },
+  {
+   "source": "неурожай",
+   "target": "eastford",
+   "start_day": 193
+  },
+  {
+   "source": "неурожай",
+   "target": "eastford",
+   "start_day": 198
+  },
+  {
+   "source": "неурожай",
+   "target": "greenvale",
+   "start_day": 198
+  },
+  {
+   "source": "неурожай",
+   "target": "greyrock",
+   "start_day": 186
+  },
+  {
+   "source": "неурожай",
+   "target": "greyrock",
+   "start_day": 188
+  },
+  {
+   "source": "неурожай",
+   "target": "millbrook",
+   "start_day": 187
+  },
+  {
+   "source": "неурожай",
+   "target": "redwater",
+   "start_day": 194
+  },
+  {
+   "source": "неурожай",
+   "target": "stonehaven",
+   "start_day": 188
+  },
+  {
+   "source": "неурожай",
+   "target": "stonehaven",
+   "start_day": 193
+  }
+ ]
+}
