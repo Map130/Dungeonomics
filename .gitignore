@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Simulation session state (auto-saved, not versioned)
+state.toml
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
