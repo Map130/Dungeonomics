@@ -4,15 +4,43 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-This is a **design-stage project**: there is no code, build system, or tests yet. The
-repository currently holds two Russian-language specs that define what gets built:
+The **Python prototype of the simulation core is implemented** (Milestone 1): the full
+single-region model from `MODEL.md` §4–5.12 runs and passes the stability autotests §8.1–8.4.
+No UI yet; production chains (§5.13) are deferred to v1.1. Next milestone is porting the core
+to Rust → WASM. Specs remain the source of truth:
 
 - `REQUIREMENTS.md` — product requirements v1 (goal, scope, functional/non-functional reqs, risks, open questions).
 - `MODEL.md` — the mathematical model v1 (variables, per-tick update order, formulas, stability analysis, default parameters, acceptance tests). Complements `REQUIREMENTS.md`.
 
 Both are marked *черновик* (draft). Items tagged *(предложено)* are proposals the author has
-not yet confirmed — do not treat them as decided. When these docs disagree with written code,
-the docs are the source of truth until code exists.
+not yet confirmed — do not treat them as decided. Code references spec sections as `§5.6` etc.
+The specs are Russian; so are code comments and commit discussion. When specs disagree with code,
+the specs win unless a decision has been recorded.
+
+## Commands
+
+```bash
+python3 -m venv .venv && .venv/bin/python -m pip install -e ".[dev]"   # setup
+.venv/bin/python -m pytest -q                       # all tests (stability suite §8 lives here)
+.venv/bin/python -m pytest tests/test_single_node.py -q   # one test file
+.venv/bin/python -m pytest -q -k runaway             # tests matching a name
+.venv/bin/python -m jupyter nbconvert --to notebook --execute notebooks/calibration.ipynb  # run notebook
+python3 scripts/extract_gear.py                      # regenerate references/gear.csv from the HTML
+```
+
+## Code map (`ddeco/`, stdlib-only core)
+
+- `goods.py` / `world.py` — data model: good params (§7 price-class defaults), graph of nodes/edges, `GlobalParams`.
+- `state.py` — `SimState` (stocks, multipliers, prosperity, transit pipelines, effects, caravans) with `clone()` for rollback.
+- `effects.py` — parametric effects: decay weights and the `clamp(base·Π+Σ)` composition (§3); `effective()` resolves a parameter.
+- `formulas.py` — pure functions §5.1–5.8 (demand, production, spoilage, price, prosperity).
+- `tick.py` — `step_day` orchestrates the fixed §4 order; `run()` loops; also the effective-parameter helpers.
+- `trade.py` — arbitrage with in-transit damping + hub delivery (§5.6); conveyor insertion.
+- `calibration.py` — equilibrium seed + `warmup()` (§5.14). `rng.py` — counter-based RNG (§5.11). `shocks.py` — background shocks.
+- `purchase.py` (§5.7), `caravans.py` (§5.10), `reasons.py` (§5.12), `events.py` (one-shot events), `loader.py`/`persistence.py` (TOML I/O + autosave).
+
+Tests mirror the spec: `tests/test_single_node.py` (§8.1), `test_multi_node.py` (§8.2),
+`test_runaway.py` (§8.3), `test_determinism.py` (§8.4). `tests/single_node.py` is a shared helper, not a test.
 
 ## What this is
 
@@ -22,13 +50,14 @@ drive prices, availability, and trade flows automatically — no manual bookkeep
 Mount & Blade: Bannerlord's economy. Target scope v1: one region, 3–4 cities, ~10–20 nodes,
 local single-user operation.
 
-## Intended architecture (not yet built)
+## Architecture
 
-- **Core:** a Rust library — simulation, effects, and the "reasons log". UI-independent.
-- **Web UI:** core compiled to WASM, static offline PWA; world saved/loaded as a single file.
-- **Desktop:** same UI packaged as an executable (e.g. Tauri) at release time.
-- **Math prototype:** optionally Python first, then ported to Rust. A reference prototype in
-  another language is expected to produce "golden runs" used to verify the main implementation.
+- **Core:** currently the Python prototype in `ddeco/` (stdlib-only, UI-independent). It is the
+  reference implementation; its "golden runs" will verify the planned Rust port.
+- **Rust core (next):** same logic ported to Rust for WASM. Pure Python with explicit, sorted
+  iteration was chosen precisely so the port is mechanical and determinism (§9) is preserved.
+- **Web UI (later):** Rust core compiled to WASM, static offline PWA; world saved/loaded as a file.
+- **Desktop (later):** same UI packaged as an executable (e.g. Tauri) at release time.
 
 ## Core model concepts (read before touching simulation logic)
 

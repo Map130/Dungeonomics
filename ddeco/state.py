@@ -32,11 +32,13 @@ class SimState:
     effects: list[Effect] = field(default_factory=list)
     # Накопленная стоимость потока по дуге с последней материализации (§5.10).
     caravan_accum: dict[str, float] = field(default_factory=dict)
+    # Материализованные караваны (лента мастеру, §5.10). Элементы — frozen dataclass.
+    caravans: list = field(default_factory=list)
 
     def clone(self) -> "SimState":
-        """Глубокий снимок для отката/повтора. Effect неизменяем → список копируем
-        поверхностно; остальное — вручную, чтобы не тянуть copy.deepcopy и держать
-        поведение явным и детерминированным."""
+        """Глубокий снимок для отката/повтора. Effect/Caravan неизменяемы → списки
+        копируем поверхностно; остальное — вручную, чтобы не тянуть copy.deepcopy и
+        держать поведение явным и детерминированным."""
         return SimState(
             day=self.day,
             stock=dict(self.stock),
@@ -45,6 +47,7 @@ class SimState:
             pipeline={e: [dict(slot) for slot in slots] for e, slots in self.pipeline.items()},
             effects=list(self.effects),
             caravan_accum=dict(self.caravan_accum),
+            caravans=list(self.caravans),
         )
 
     def in_transit_to(self, world: World, node_id: str, good_id: str) -> float:

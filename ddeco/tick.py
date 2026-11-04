@@ -22,6 +22,7 @@
 
 from __future__ import annotations
 
+from . import caravans as caravans_mod
 from . import formulas as F
 from . import shocks as shocks_mod
 from . import trade
@@ -160,10 +161,6 @@ def _prosperity(world: World, state: SimState, star: dict) -> None:
         state.prosperity[n] = F.smooth_prosperity(state.prosperity[n], target, p.mu)
 
 
-def _caravans(world: World, state: SimState) -> None:
-    """Шаг 9: материализация караванов (§5.10) — задача 6."""
-
-
 def step_day(world: World, state: SimState, shocks=()) -> SimState:
     """Продвинуть состояние на один день. Мутирует state и возвращает его.
 
@@ -181,7 +178,7 @@ def step_day(world: World, state: SimState, shocks=()) -> SimState:
     trade.dispatch(world, state, star, produced)      # 6
     _prosperity(world, state, star)                   # 7
     _prices(world, state, star)                       # 8
-    _caravans(world, state)                           # 9
+    caravans_mod.materialize(world, state)            # 9
     state.day += 1
     return state
 

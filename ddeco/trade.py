@@ -50,6 +50,7 @@ def hub_deliveries(world: World, state: SimState, produced: dict) -> None:
                 continue
             state.stock[(n, g)] -= amount
             add_to_pipeline(state, edge_id, tau, g, amount)
+            state.caravan_accum[edge_id] = state.caravan_accum.get(edge_id, 0.0) + world.catalog[g].base_price * amount
 
 
 def _expected_multiplier(world: World, state: SimState, node: str, good: str, star: float) -> float:
@@ -123,6 +124,7 @@ def arbitrage(world: World, state: SimState, star: dict) -> None:
                 continue
             state.stock[(edge.src, g)] -= f
             add_to_pipeline(state, e, tau, g, f)
+            state.caravan_accum[e] = state.caravan_accum.get(e, 0.0) + world.catalog[g].base_price * f
 
 
 def dispatch(world: World, state: SimState, star: dict, produced: dict) -> None:
