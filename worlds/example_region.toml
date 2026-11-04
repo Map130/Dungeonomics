@@ -1,6 +1,10 @@
 # Пример региона: 3 города и привязанные деревни (REQUIREMENTS §11, шаг 2).
 # Числа — стартовые для калибровки, не решения. Деревни производят еду,
 # города — ремесло и роскошь; торговля выравнивает цены через арбитраж.
+#
+# base_price (P0_g) взяты из прайс-листа D&D (gp) — см. references/gear.csv,
+# сгенерированный scripts/extract_gear.py. Модель относительна к этому списку (§2),
+# поэтому абсолютный масштаб не важен, но реальные соотношения дают честную проверку.
 
 seed = 42
 
@@ -10,7 +14,7 @@ seed = 42
 [goods.grain]
 category = "food"
 price_class = "necessity"
-base_price = 1.0
+base_price = 0.01        # Пшеница, 0.01 gp
 per_capita = 1.0
 in_food_basket = true
 basket_weight = 0.6
@@ -18,7 +22,7 @@ basket_weight = 0.6
 [goods.fish]
 category = "food"
 price_class = "necessity"
-base_price = 2.0
+base_price = 0.1         # нет товарной позиции в PHB; proxy ~ сыр/кусок 0.1 gp
 per_capita = 0.5
 in_food_basket = true
 basket_weight = 0.4
@@ -27,21 +31,21 @@ spoilage = 0.03          # рыба портится быстрее (перео�
 [goods.cloth]
 category = "cloth"
 price_class = "common"
-base_price = 5.0
+base_price = 0.5         # Ткань хлопчатобумажная, 0.5 gp
 per_capita = 0.10
 basket_weight = 0.4
 
 [goods.tools]
 category = "weapons"
 price_class = "common"
-base_price = 8.0
+base_price = 5.0         # инструменты ремесленника, порядок 5 gp
 per_capita = 0.05
 basket_weight = 0.3
 
 [goods.wine]
 category = "luxury"
 price_class = "luxury"
-base_price = 15.0
+base_price = 10.0        # Вино изысканное (бутылка), 10 gp
 per_capita = 0.03
 basket_weight = 0.3
 
