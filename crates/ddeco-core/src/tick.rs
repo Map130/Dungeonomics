@@ -1,7 +1,7 @@
 //! Оркестрация одного дня (MODEL.md §4). Порт `ddeco/tick.py`.
 //!
-//! Порядок шагов фиксирован. Торговля (6) и караваны (9) подключаются в R5; сейчас
-//! это локальные заглушки, не влияющие на одноузловые сценарии (нет дуг → нет потоков).
+//! Порядок шагов фиксирован. Торговля (6) и материализация караванов (9) — полные
+//! (§5.6, §5.10). Параметры дуги и спред берутся базовыми, как в Python-эталоне.
 
 use std::collections::BTreeMap;
 
@@ -58,57 +58,6 @@ fn eff_garrison(world: &World, effects: &[Effect], day: i64, node: &str, good: &
         day,
         Some(good),
         Some(cat),
-        0.0,
-        f64::INFINITY,
-    )
-}
-
-#[allow(dead_code)] // используется в R5 (purchase)
-pub(crate) fn eff_spread(world: &World, effects: &[Effect], day: i64, node: &str) -> f64 {
-    let base = world.nodes[node].spread;
-    effective(
-        base,
-        effects,
-        "spread",
-        TargetKind::Node,
-        node,
-        day,
-        None,
-        None,
-        0.0,
-        f64::INFINITY,
-    )
-}
-
-#[allow(dead_code)] // используется в R5 (trade)
-pub(crate) fn eff_difficulty(world: &World, effects: &[Effect], day: i64, edge: &str) -> f64 {
-    let base = world.edges[edge].difficulty;
-    effective(
-        base,
-        effects,
-        "difficulty",
-        TargetKind::Edge,
-        edge,
-        day,
-        None,
-        None,
-        0.0,
-        f64::INFINITY,
-    )
-}
-
-#[allow(dead_code)] // используется в R5 (trade)
-pub(crate) fn eff_capacity(world: &World, effects: &[Effect], day: i64, edge: &str) -> f64 {
-    let base = world.edges[edge].capacity;
-    effective(
-        base,
-        effects,
-        "capacity",
-        TargetKind::Edge,
-        edge,
-        day,
-        None,
-        None,
         0.0,
         f64::INFINITY,
     )

@@ -12,15 +12,16 @@
 pub mod calibration;
 pub mod caravans;
 pub mod effects;
+pub mod events;
 pub mod formulas;
 pub mod goods;
 pub mod loader;
 pub mod mathf;
+pub mod purchase;
+pub mod reasons;
 pub mod rng;
 pub mod shocks;
 pub mod state;
 pub mod tick;
 pub mod trade;
 pub mod world;
-
-// Подключаются в R5: purchase, reasons, events.
