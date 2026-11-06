@@ -24,7 +24,7 @@ from ddeco import events
 from ddeco.calibration import seed_state
 from ddeco.effects import Decay, Effect, Op, TargetKind
 from ddeco.goods import Catalog, GoodParams
-from ddeco.loader import load_world
+from ddeco.loader import load_world, state_to_toml
 from ddeco.purchase import apply as trade_apply
 from ddeco.rng import chance, uniform
 from ddeco.shocks import ShockTemplate
@@ -166,6 +166,28 @@ def scenario_events() -> dict:
     return {"steps": steps}
 
 
+def scenario_state() -> dict:
+    """Round-trip состояния: Python-эмиттер пишет golden/state.toml, а Rust читает его
+    и сверяет с этим снимком (кросс-языковая совместимость формата, R6)."""
+    w = load_world(WORLD)
+    st = seed_state(w)
+    for _ in range(30):
+        step_day(w, st)
+    # Имя не "state.toml": так называется автосейв сессии (в .gitignore).
+    (GOLDEN / "state_dump.toml").write_text(state_to_toml(st), encoding="utf-8")
+    return {
+        "day": st.day,
+        "stock": {f"{n}|{g}": v for (n, g), v in sorted(st.stock.items())},
+        "multiplier": {f"{n}|{g}": v for (n, g), v in sorted(st.multiplier.items())},
+        "prosperity": dict(sorted(st.prosperity.items())),
+        "caravan_accum": dict(sorted(st.caravan_accum.items())),
+        "pipeline": {
+            e: [dict(sorted(slot.items())) for slot in slots]
+            for e, slots in sorted(st.pipeline.items())
+        },
+    }
+
+
 def scenario_rng() -> dict:
     """Чистый RNG: сетка входов → uniform и chance. Проверяется бит-в-бит (R4)."""
     seed = 42
@@ -197,6 +219,7 @@ def main() -> None:
     write("example_run", scenario_example_run())
     write("shocks_run", scenario_shocks())
     write("events", scenario_events())
+    write("state_dump", scenario_state())
     write("rng", scenario_rng())
 
 

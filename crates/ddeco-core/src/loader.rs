@@ -1,14 +1,19 @@
-//! Загрузка мира из TOML (REQUIREMENTS §5.9). Порт чтения `ddeco/loader.py`.
+//! Загрузка мира и состояния из TOML (REQUIREMENTS §5.9). Порт `ddeco/loader.py`.
 //!
 //! Схема описана в `ddeco/loader.py` и `worlds/example_region.toml`. Неизвестные
 //! поля товаров serde игнорирует (в Python они трактовались как переопределения §7;
 //! известные override-поля мы разбираем явно).
+//!
+//! I/O (чтение файла, атомарная запись) остаётся на вызывающем — ядро целится в WASM
+//! и работает со строками: `world_from_toml`/`state_from_toml` берут `&str`,
+//! `state_to_toml` возвращает `String`.
 
 use std::collections::BTreeMap;
 
 use serde::Deserialize;
 
 use crate::goods::{defaults_for, Catalog, GoodParams, PriceClass};
+use crate::state::SimState;
 use crate::world::{Edge, GlobalParams, Node, NodeKind, World};
 
 #[derive(Debug, Deserialize)]
@@ -211,4 +216,123 @@ fn build_params(raw: RawParams) -> GlobalParams {
         }
     }
     p
+}
+
+// --- Сохранение/загрузка состояния (§5.9) -------------------------------------
+//
+// Эффекты и материализованные караваны НЕ сериализуются (их восстанавливает
+// мастер/лог сценария, v1). Откат/повтор внутри сессии идёт по in-memory снимкам
+// (`SimState::clone`), поэтому файл не влияет на детерминизм прогона.
+
+#[derive(Debug, Default, Deserialize)]
+struct RawState {
+    #[serde(default)]
+    day: i64,
+    #[serde(default)]
+    prosperity: BTreeMap<String, f64>,
+    #[serde(default)]
+    stock: BTreeMap<String, BTreeMap<String, f64>>,
+    #[serde(default)]
+    multiplier: BTreeMap<String, BTreeMap<String, f64>>,
+    #[serde(default)]
+    pipeline: BTreeMap<String, Vec<BTreeMap<String, f64>>>,
+    #[serde(default)]
+    caravan_accum: BTreeMap<String, f64>,
+}
+
+/// Разобрать снимок состояния из TOML.
+pub fn state_from_toml(text: &str) -> Result<SimState, toml::de::Error> {
+    let raw: RawState = toml::from_str(text)?;
+    let mut st = SimState {
+        day: raw.day,
+        ..Default::default()
+    };
+    for (node, goods) in raw.stock {
+        for (good, v) in goods {
+            st.stock.insert((node.clone(), good), v);
+        }
+    }
+    for (node, goods) in raw.multiplier {
+        for (good, v) in goods {
+            st.multiplier.insert((node.clone(), good), v);
+        }
+    }
+    st.prosperity = raw.prosperity;
+    st.caravan_accum = raw.caravan_accum;
+    st.pipeline = raw.pipeline;
+    Ok(st)
+}
+
+/// Компактный TOML под схему `SimState`. Ключи сортируются (стабильные диффы);
+/// формат совпадает с Python-эмиттером (`ddeco/loader.py:state_to_toml`).
+pub fn state_to_toml(st: &SimState) -> String {
+    let mut lines: Vec<String> = vec![format!("day = {}", st.day), String::new()];
+
+    lines.push("[prosperity]".into());
+    for (node, v) in &st.prosperity {
+        lines.push(format!("{node} = {}", num(*v)));
+    }
+    lines.push(String::new());
+
+    for (table, data) in [("stock", &st.stock), ("multiplier", &st.multiplier)] {
+        let mut by_node: BTreeMap<&str, BTreeMap<&str, f64>> = BTreeMap::new();
+        for ((node, good), v) in data {
+            by_node.entry(node).or_default().insert(good, *v);
+        }
+        for (node, goods) in by_node {
+            lines.push(format!("[{table}.{node}]"));
+            for (good, v) in goods {
+                lines.push(format!("{good} = {}", num(v)));
+            }
+            lines.push(String::new());
+        }
+    }
+
+    if st.pipeline.values().any(|slots| !slots.is_empty()) {
+        lines.push("[pipeline]".into());
+        for (e, slots) in &st.pipeline {
+            let inner: Vec<String> = slots
+                .iter()
+                .map(|slot| {
+                    let goods: Vec<String> = slot
+                        .iter()
+                        .map(|(g, v)| format!("{g} = {}", num(*v)))
+                        .collect();
+                    format!("{{{}}}", goods.join(", "))
+                })
+                .collect();
+            lines.push(format!("{e} = [{}]", inner.join(", ")));
+        }
+        lines.push(String::new());
+    }
+
+    lines.push("[caravan_accum]".into());
+    for (e, v) in &st.caravan_accum {
+        lines.push(format!("{e} = {}", num(*v)));
+    }
+    lines.push(String::new());
+
+    let mut s = lines.join("\n");
+    s.push('\n');
+    s
+}
+
+/// Float как валидный TOML-float с полной точностью (shortest round-trip).
+///
+/// Rust `{}` для f64 даёт кратчайшее представление, которое парсится обратно в тот же
+/// f64 (как `repr` в Python). Гарантируем наличие точки/экспоненты — иначе TOML счёл
+/// бы «1» целым, и десериализация в f64 упала бы.
+fn num(x: f64) -> String {
+    if x == f64::INFINITY {
+        return "inf".into();
+    }
+    if x == f64::NEG_INFINITY {
+        return "-inf".into();
+    }
+    let s = format!("{x}");
+    if s.contains(['.', 'e', 'E']) || s.contains("inf") || s.contains("nan") {
+        s
+    } else {
+        format!("{s}.0")
+    }
 }

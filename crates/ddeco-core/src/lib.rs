@@ -17,6 +17,7 @@ pub mod formulas;
 pub mod goods;
 pub mod loader;
 pub mod mathf;
+pub mod persistence;
 pub mod purchase;
 pub mod reasons;
 pub mod rng;
