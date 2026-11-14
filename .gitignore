@@ -24,8 +24,11 @@ pkg/
 pkg-node/
 crates/*/pkg/
 crates/*/pkg-node/
-# Node
+web/src/pkg/
+# Node / Vite
 node_modules/
+web/dist/
+web/dev-dist/
 
 # Editor / OS
 .vscode/

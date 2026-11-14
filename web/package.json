@@ -1,0 +1,23 @@
+{
+  "name": "ddeco-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Веб-UI живой экономики для D&D: офлайн-PWA поверх WASM-ядра (ddeco-wasm)",
+  "scripts": {
+    "dev": "vite",
+    "build": "svelte-check --tsconfig ./tsconfig.json && vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "wasm": "wasm-pack build ../crates/ddeco-wasm --target web --out-dir ../../web/src/pkg"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@tsconfig/svelte": "^5.0.4",
+    "svelte": "^5.19.0",
+    "svelte-check": "^4.1.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11",
+    "vite-plugin-pwa": "^0.21.1"
+  }
+}

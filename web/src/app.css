@@ -1,0 +1,127 @@
+:root {
+  --bg: #1b1b1f;
+  --panel: #26262c;
+  --panel-2: #2f2f37;
+  --line: #3a3a44;
+  --fg: #e6e6ea;
+  --muted: #9a9aa8;
+  --accent: #7aa2f7;
+  --warn: #e0af68;
+  --bad: #f7768e;
+  --good: #9ece6a;
+  font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 14px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+button {
+  background: var(--panel-2);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  font-size: 13px;
+}
+button:hover {
+  border-color: var(--accent);
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input,
+select {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.3rem 0.4rem;
+  font-size: 13px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.85rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+th,
+td {
+  text-align: right;
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+th:first-child,
+td:first-child {
+  text-align: left;
+}
+th {
+  color: var(--muted);
+  font-weight: 500;
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+}
+
+.tag {
+  display: inline-block;
+  padding: 0 0.4rem;
+  border-radius: 4px;
+  font-size: 11px;
+  border: 1px solid var(--line);
+}
+.tag.bad {
+  color: var(--bad);
+  border-color: var(--bad);
+}
+.tag.good {
+  color: var(--good);
+  border-color: var(--good);
+}
+.tag.norm {
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.clickable {
+  cursor: pointer;
+}
+.clickable:hover {
+  color: var(--accent);
+}
