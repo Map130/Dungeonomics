@@ -6,7 +6,9 @@ Open-source инструмент для мастера настольных RPG 
 
 ## Статус
 
-**Стадия дизайна.** Идёт разработка Python-прототипа ядра симуляции.
+**Порт ядра в Rust.** Python-прототип ядра реализован и проходит автотесты устойчивости
+(эталон). Ядро портировано в Rust (`crates/ddeco-core`) с golden-паритетом к Python и собирается
+в WASM; поверх него — фасад `Sim` для веб-UI (`crates/ddeco-wasm`). Следующий шаг — сам UI (PWA).
 
 Документация:
 - [`REQUIREMENTS.md`](REQUIREMENTS.md) — продуктовые требования v1
@@ -26,9 +28,23 @@ Open-source инструмент для мастера настольных RPG 
 Python-прототип → порт ядра в Rust → компиляция в WASM → офлайн-PWA
 ```
 
-- **Ядро (ddeco/):** Python-библиотека — симуляция, эффекты, лог причин.
+- **Ядро (ddeco/):** Python-библиотека — симуляция, эффекты, лог причин (эталон).
+- **Ядро Rust (crates/ddeco-core):** порт для WASM, golden-паритет с Python.
+- **WASM-фасад (crates/ddeco-wasm):** `Sim` над ядром для веб-UI (wasm-bindgen).
 - **Notebook (notebooks/):** калибровка параметров, визуализация, сверка с аналитикой.
 - **Мир:** два TOML-файла — `world.toml` (описание, версионируется) и `state.toml` (состояние, автосохранение).
+
+## Сборка
+
+```bash
+cargo test --workspace                    # ядро + фасад (эталонные Python-тесты: pytest -q)
+cargo build -p ddeco-wasm --target wasm32-unknown-unknown   # проверка WASM-совместимости
+
+# Упаковка WASM для UI (нужен wasm-pack: `cargo install wasm-pack`):
+wasm-pack build crates/ddeco-wasm --target web --out-dir web/src/pkg    # пакет для браузера (PWA)
+wasm-pack build crates/ddeco-wasm --target nodejs --out-dir pkg-node    # пакет для Node
+node crates/ddeco-wasm/smoke/smoke.cjs    # smoke-тест формы JSON упакованного пакета
+```
 
 ## Лицензия
 

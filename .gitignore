@@ -19,6 +19,14 @@ state.toml
 /target/
 # Cargo.lock намеренно коммитится: воспроизводимость CI и детерминизм сборки.
 
+# WASM — сгенерированные wasm-pack пакеты (не версионируются, собираются из ядра)
+pkg/
+pkg-node/
+crates/*/pkg/
+crates/*/pkg-node/
+# Node
+node_modules/
+
 # Editor / OS
 .vscode/
 .idea/

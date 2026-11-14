@@ -46,6 +46,24 @@ jobs:
       # Биндинги для UI собираются в тот же target.
       - run: cargo build -p ddeco-wasm --target wasm32-unknown-unknown
 
+  wasm-pack:
+    name: WASM pack + node smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - uses: jetli/wasm-pack-action@v0.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      # Упаковка под Node и smoke-тест формы JSON (слой serde-wasm-bindgen,
+      # который host-тесты фасада проверить не могут).
+      - run: wasm-pack build crates/ddeco-wasm --target nodejs --out-dir pkg-node
+      - run: node crates/ddeco-wasm/smoke/smoke.cjs
+
   python:
     name: Python reference (pytest)
     runs-on: ubuntu-latest
