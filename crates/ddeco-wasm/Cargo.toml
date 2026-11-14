@@ -1,0 +1,18 @@
+[package]
+name = "ddeco-wasm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "WASM-биндинги ядра «живой экономики» для веб-UI (обёртка над ddeco-core)"
+
+[lib]
+# cdylib — для сборки в WASM; rlib — чтобы крейт можно было тестировать на хосте.
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+ddeco-core = { path = "../ddeco-core" }
+serde = { workspace = true }
+wasm-bindgen = { workspace = true }
+serde-wasm-bindgen = { workspace = true }
+console_error_panic_hook = { workspace = true }

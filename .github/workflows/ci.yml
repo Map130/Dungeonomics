@@ -43,6 +43,8 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       # Ядро обязано быть WASM-совместимо (цель §7: компиляция в WASM).
       - run: cargo build -p ddeco-core --target wasm32-unknown-unknown
+      # Биндинги для UI собираются в тот же target.
+      - run: cargo build -p ddeco-wasm --target wasm32-unknown-unknown
 
   python:
     name: Python reference (pytest)

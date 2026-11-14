@@ -12,7 +12,9 @@ use std::collections::BTreeMap;
 
 use serde::Deserialize;
 
+use crate::effects::{Decay, Op, TargetKind};
 use crate::goods::{defaults_for, Catalog, GoodParams, PriceClass};
+use crate::shocks::ShockTemplate;
 use crate::state::SimState;
 use crate::world::{Edge, GlobalParams, Node, NodeKind, World};
 
@@ -317,6 +319,92 @@ pub fn state_to_toml(st: &SimState) -> String {
     s
 }
 
+// --- Шаблоны фоновых шоков (§5.11) --------------------------------------------
+//
+// Необязательная секция `[[shocks]]` в файле мира. Генератор по умолчанию выключен
+// (пустой список = нет шоков), поэтому секция аддитивна и golden-прогоны не меняет.
+// Перечисления Op/Decay/TargetKind не реализуют Deserialize — разбираем строки и
+// маплем явно, как `build_params`.
+
+#[derive(Debug, Deserialize)]
+struct RawShockFile {
+    #[serde(default)]
+    shocks: Vec<RawShock>,
+}
+
+#[derive(Debug, Deserialize)]
+struct RawShock {
+    id: String,
+    target_kind: String,
+    param: String,
+    op: String,
+    value: f64,
+    duration: f64,
+    rate: f64,
+    #[serde(default = "default_decay")]
+    decay: String,
+    #[serde(default = "one")]
+    tau: f64,
+    good: Option<String>,
+    category: Option<String>,
+    #[serde(default)]
+    source: String,
+}
+
+fn default_decay() -> String {
+    "step".into()
+}
+
+fn parse_target_kind(s: &str) -> Result<TargetKind, String> {
+    match s {
+        "node" => Ok(TargetKind::Node),
+        "edge" => Ok(TargetKind::Edge),
+        other => Err(format!("неизвестный target_kind шока: {other}")),
+    }
+}
+
+fn parse_op(s: &str) -> Result<Op, String> {
+    match s {
+        "mult" => Ok(Op::Mult),
+        "add" => Ok(Op::Add),
+        other => Err(format!("неизвестный op шока: {other}")),
+    }
+}
+
+fn parse_decay(s: &str) -> Result<Decay, String> {
+    match s {
+        "step" => Ok(Decay::Step),
+        "linear" => Ok(Decay::Linear),
+        "exp" => Ok(Decay::Exp),
+        other => Err(format!("неизвестный decay шока: {other}")),
+    }
+}
+
+/// Разобрать шаблоны фоновых шоков из TOML мира. Прочие секции serde игнорирует;
+/// отсутствие `[[shocks]]` даёт пустой список (генератор выключен).
+pub fn shocks_from_toml(text: &str) -> Result<Vec<ShockTemplate>, String> {
+    let raw: RawShockFile = toml::from_str(text).map_err(|e| e.to_string())?;
+    raw.shocks
+        .into_iter()
+        .map(|s| {
+            Ok(ShockTemplate {
+                target_kind: parse_target_kind(&s.target_kind)?,
+                op: parse_op(&s.op)?,
+                decay: parse_decay(&s.decay)?,
+                id: s.id,
+                param: s.param,
+                value: s.value,
+                duration: s.duration,
+                rate: s.rate,
+                tau: s.tau,
+                good: s.good,
+                category: s.category,
+                source: s.source,
+            })
+        })
+        .collect()
+}
+
 /// Float как валидный TOML-float с полной точностью (shortest round-trip).
 ///
 /// Rust `{}` для f64 даёт кратчайшее представление, которое парсится обратно в тот же
@@ -334,5 +422,59 @@ fn num(x: f64) -> String {
         s
     } else {
         format!("{s}.0")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn no_shocks_section_is_empty() {
+        // Файл мира без [[shocks]] — генератор выключен.
+        assert!(shocks_from_toml("seed = 1\n").unwrap().is_empty());
+    }
+
+    #[test]
+    fn parses_shock_template() {
+        let toml = r#"
+            seed = 1
+            [[shocks]]
+            id = "blight"
+            target_kind = "node"
+            param = "pcap"
+            op = "mult"
+            value = 0.3
+            duration = 30.0
+            rate = 0.008
+            decay = "linear"
+            category = "food"
+            source = "неурожай"
+        "#;
+        let s = shocks_from_toml(toml).unwrap();
+        assert_eq!(s.len(), 1);
+        let t = &s[0];
+        assert_eq!(t.id, "blight");
+        assert_eq!(t.target_kind, TargetKind::Node);
+        assert_eq!(t.op, Op::Mult);
+        assert_eq!(t.decay, Decay::Linear);
+        assert_eq!(t.category.as_deref(), Some("food"));
+        assert_eq!(t.good, None);
+        assert_eq!(t.tau, 1.0, "tau по умолчанию 1.0");
+    }
+
+    #[test]
+    fn rejects_unknown_enum() {
+        let toml = r#"
+            [[shocks]]
+            id = "x"
+            target_kind = "planet"
+            param = "pcap"
+            op = "mult"
+            value = 1.0
+            duration = 1.0
+            rate = 0.1
+        "#;
+        assert!(shocks_from_toml(toml).is_err());
     }
 }

@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/ddeco-core"]
+members = ["crates/ddeco-core", "crates/ddeco-wasm"]
 
 [workspace.package]
 version = "0.1.0"
@@ -15,6 +15,9 @@ toml = "0.8"
 blake2 = "0.10"
 libm = "0.2"
 criterion = "0.5"
+wasm-bindgen = "0.2"
+serde-wasm-bindgen = "0.6"
+console_error_panic_hook = "0.1"
 
 [profile.release]
 # Детерминизм важнее микрооптимизаций: без agressive fast-math (его в rustc и нет),
