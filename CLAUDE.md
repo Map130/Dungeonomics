@@ -4,10 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-The **Python prototype of the simulation core is implemented** (Milestone 1): the full
-single-region model from `MODEL.md` §4–5.12 runs and passes the stability autotests §8.1–8.4.
-No UI yet; production chains (§5.13) are deferred to v1.1. Next milestone is porting the core
-to Rust → WASM. Specs remain the source of truth:
+Milestones closed (plans in `docs/plans/`):
+- **M1** `m1-python-prototype.md` — Python prototype of the core: single-region model `MODEL.md`
+  §4–5.12, stability autotests §8.1–8.4. Stays the reference oracle (golden fixtures).
+- **M2** `m2-rust-port.md` — Rust port of the core, R0–R6.
+- **M3** `m3-wasm-web-ui.md` — WASM facade, wasm-pack packaging, offline PWA web UI, R7–R9.
+
+Production chains (§5.13) are deferred to v1.1. Next milestone is not planned yet — a new plan
+goes to `docs/plans/m4-<name>.md`, stages continue the numbering from R10. Decisions go to
+`DECISIONS.md` (create on first decision). Specs remain the source of truth:
 
 - `REQUIREMENTS.md` — product requirements v1 (goal, scope, functional/non-functional reqs, risks, open questions).
 - `MODEL.md` — the mathematical model v1 (variables, per-tick update order, formulas, stability analysis, default parameters, acceptance tests). Complements `REQUIREMENTS.md`.
