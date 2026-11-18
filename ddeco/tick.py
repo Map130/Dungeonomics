@@ -26,6 +26,7 @@ from . import caravans as caravans_mod
 from . import formulas as F
 from . import shocks as shocks_mod
 from . import trade
+from .trade import effective_capacity, effective_difficulty  # noqa: F401 (re-export)
 from .effects import TargetKind, effective
 from .state import SimState
 from .world import World
@@ -60,20 +61,6 @@ def effective_spread(world: World, state: SimState, node: str) -> float:
     base = world.nodes[node].spread
     return effective(
         base, state.effects, "spread", TargetKind.NODE, node, state.day, lo=0.0,
-    )
-
-
-def effective_difficulty(world: World, state: SimState, edge: str) -> float:
-    base = world.edges[edge].difficulty
-    return effective(
-        base, state.effects, "difficulty", TargetKind.EDGE, edge, state.day, lo=0.0,
-    )
-
-
-def effective_capacity(world: World, state: SimState, edge: str) -> float:
-    base = world.edges[edge].capacity
-    return effective(
-        base, state.effects, "capacity", TargetKind.EDGE, edge, state.day, lo=0.0,
     )
 
 

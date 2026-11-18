@@ -1,7 +1,7 @@
 //! Orchestration of one day (MODEL.md §4). Port of `ddeco/tick.py`.
 //!
 //! The order of steps is fixed. Trade (6) and caravan materialisation (9) are complete
-//! (§5.6, §5.10). Arc parameters and the spread are taken at base values, as in the Python reference.
+//! (§5.6, §5.10). Arc parameters k_e, cap_e (see `trade`) and the node parameters are effective values (§2).
 
 use std::collections::BTreeMap;
 

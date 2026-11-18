@@ -10,6 +10,7 @@ use std::collections::BTreeMap;
 
 use crate::rng;
 use crate::state::SimState;
+use crate::trade::eff_difficulty;
 use crate::world::World;
 
 /// A materialised caravan — the face of a flow already under way along an arc.
@@ -49,9 +50,9 @@ pub fn materialize(world: &World, state: &mut SimState) -> Vec<Caravan> {
         }
         let edge = &world.edges[&e];
         // Road danger k_e scales the guard strength; noise from the counter-based RNG.
-        let guard =
-            edge.difficulty * (0.5 + rng::uniform(world.seed, state.day, &[&e, "caravan_guard"]));
-        let tau = edge.delay_days() as i64;
+        let k_eff = eff_difficulty(world, &state.effects, state.day, &e);
+        let guard = k_eff * (0.5 + rng::uniform(world.seed, state.day, &[&e, "caravan_guard"]));
+        let tau = edge.delay_days_with(k_eff) as i64;
         let caravan = Caravan {
             edge: e.clone(),
             day_departed: state.day,

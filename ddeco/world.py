@@ -52,9 +52,12 @@ class Edge:
     difficulty: float = 1.0  # k_e, difficulty multiplier (effective value)
     capacity: float = math.inf  # cap_e, throughput (volume/day)
 
-    def delay_days(self) -> int:
-        """τ_e = max(1, ceil(L_e · k_e)) — pipeline delay (§5.6)."""
-        return max(1, math.ceil(self.travel_time * self.difficulty))
+    def delay_days(self, difficulty: float | None = None) -> int:
+        """τ_e = max(1, ceil(L_e · k_e)) — pipeline delay (§5.6).
+
+        `difficulty` is the effective k_e; the base value is used when omitted."""
+        k = self.difficulty if difficulty is None else difficulty
+        return max(1, math.ceil(self.travel_time * k))
 
 
 @dataclass(frozen=True, slots=True)

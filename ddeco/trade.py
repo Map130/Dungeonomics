@@ -7,14 +7,32 @@ ship is taken on the *expected* multiplier, accounting for goods already in tran
 
 Everything is computed from a synchronous snapshot of stocks at the start of step 6: first the
 mandatory village deliveries to the hub, then arbitrage on the remainder. The order of arcs/goods
-is fixed (§9), so the result is reproducible.
+is fixed (§9), so the result is reproducible. Arc parameters k_e and cap_e are the effective
+values (after effects) on the day of the step (§2).
 """
 
 from __future__ import annotations
 
 from . import formulas as F
+from .effects import TargetKind, effective
 from .state import SimState
 from .world import World
+
+
+def effective_difficulty(world: World, state: SimState, edge: str) -> float:
+    """k_e after effects, at the start-of-step day (§2)."""
+    base = world.edges[edge].difficulty
+    return effective(
+        base, state.effects, "difficulty", TargetKind.EDGE, edge, state.day, lo=0.0,
+    )
+
+
+def effective_capacity(world: World, state: SimState, edge: str) -> float:
+    """cap_e after effects, at the start-of-step day (§2)."""
+    base = world.edges[edge].capacity
+    return effective(
+        base, state.effects, "capacity", TargetKind.EDGE, edge, state.day, lo=0.0,
+    )
 
 
 def add_to_pipeline(state: SimState, edge_id: str, tau: int, good: str, amount: float) -> None:
@@ -40,7 +58,7 @@ def hub_deliveries(world: World, state: SimState, produced: dict) -> None:
         edge = world.edges.get(edge_id)
         if edge is None:
             continue  # no village→hub road — skip the delivery
-        tau = edge.delay_days()
+        tau = edge.delay_days(effective_difficulty(world, state, edge_id))
         for g in world.catalog.ids():
             p = produced.get((n, g), 0.0)
             if p <= 0.0:
@@ -87,7 +105,8 @@ def arbitrage(world: World, state: SimState, star: dict) -> None:
     u: dict[tuple[str, str], float] = {}
     for e in world.edge_ids():
         edge = world.edges[e]
-        gamma = p.c_gamma * edge.travel_time * edge.difficulty
+        k_eff = effective_difficulty(world, state, e)
+        gamma = p.c_gamma * edge.travel_time * k_eff
         for g in goods:
             good_p = world.catalog[g]
             delta_over_p0 = mhat[(edge.dst, g)] - mhat[(edge.src, g)] - gamma * good_p.weight
@@ -113,8 +132,8 @@ def arbitrage(world: World, state: SimState, star: dict) -> None:
             world.catalog[g].volume * psi[(edge.src, g)] * u.get((e, g), 0.0)
             for g in goods
         )
-        phi = min(1.0, edge.capacity / vol_sum) if vol_sum > 0.0 else 1.0
-        tau = edge.delay_days()
+        phi = min(1.0, effective_capacity(world, state, e) / vol_sum) if vol_sum > 0.0 else 1.0
+        tau = edge.delay_days(effective_difficulty(world, state, e))
         for g in goods:
             ueg = u.get((e, g), 0.0)
             if ueg <= 0.0:

@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 
 from . import rng
 from .state import SimState
+from .trade import effective_difficulty
 from .world import World
 
 
@@ -46,8 +47,9 @@ def materialize(world: World, state: SimState) -> list[Caravan]:
             continue
         edge = world.edges[e]
         # Road danger k_e scales the guard strength; noise from the counter-based RNG.
-        guard = edge.difficulty * (0.5 + rng.uniform(world.seed, state.day, e, "caravan_guard"))
-        tau = edge.delay_days()
+        k_eff = effective_difficulty(world, state, e)
+        guard = k_eff * (0.5 + rng.uniform(world.seed, state.day, e, "caravan_guard"))
+        tau = edge.delay_days(k_eff)
         caravan = Caravan(
             edge=e,
             day_departed=state.day,

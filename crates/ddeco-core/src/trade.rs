@@ -7,14 +7,49 @@
 //!
 //! Everything is computed from a synchronous snapshot of stocks at the start of step 6: first
 //! the mandatory village deliveries to the hub, then arbitrage on the remainder. The order of
-//! arcs/goods is fixed (§9), so the result is reproducible. Arc parameters
-//! (travel_time, difficulty, capacity) are taken at base values — as in the Python reference.
+//! arcs/goods is fixed (§9), so the result is reproducible. Arc parameters k_e and cap_e are the
+//! effective values (after effects) on the day of the step (§2), as in the Python reference.
 
 use std::collections::BTreeMap;
 
+use crate::effects::{effective, Effect, TargetKind};
 use crate::mathf::{self, clamp};
 use crate::state::{Key, SimState};
 use crate::world::World;
+
+/// k_e after effects, on the given day (§2).
+pub fn eff_difficulty(world: &World, effects: &[Effect], day: i64, edge: &str) -> f64 {
+    let base = world.edges[edge].difficulty;
+    effective(
+        base,
+        effects,
+        "difficulty",
+        TargetKind::Edge,
+        edge,
+        day,
+        None,
+        None,
+        0.0,
+        f64::INFINITY,
+    )
+}
+
+/// cap_e after effects, on the given day (§2).
+pub fn eff_capacity(world: &World, effects: &[Effect], day: i64, edge: &str) -> f64 {
+    let base = world.edges[edge].capacity;
+    effective(
+        base,
+        effects,
+        "capacity",
+        TargetKind::Edge,
+        edge,
+        day,
+        None,
+        None,
+        0.0,
+        f64::INFINITY,
+    )
+}
 
 /// Put cargo into the arc's pipeline with delay τ (arrives in τ days).
 ///
@@ -43,7 +78,7 @@ fn hub_deliveries(world: &World, state: &mut SimState, produced: &BTreeMap<Key, 
             Some(e) => e,
             None => continue, // no village→hub road — skip the delivery
         };
-        let tau = edge.delay_days();
+        let tau = edge.delay_days_with(eff_difficulty(world, &state.effects, state.day, &edge_id));
         let hub_share = node.hub_share;
         for g in world.catalog.ids().cloned().collect::<Vec<_>>() {
             let key = (n.clone(), g.clone());
@@ -100,7 +135,8 @@ fn arbitrage(world: &World, state: &mut SimState, star: &BTreeMap<Key, f64>) {
     let mut u: BTreeMap<(String, String), f64> = BTreeMap::new();
     for e in world.edge_ids() {
         let edge = &world.edges[e];
-        let gamma = p.c_gamma * edge.travel_time * edge.difficulty;
+        let k_eff = eff_difficulty(world, &state.effects, state.day, e);
+        let gamma = p.c_gamma * edge.travel_time * k_eff;
         for g in world.catalog.ids() {
             let good_p = world.catalog.get(g);
             let dst = (edge.dst.clone(), g.clone());
@@ -138,7 +174,11 @@ fn arbitrage(world: &World, state: &mut SimState, star: &BTreeMap<Key, f64>) {
     for e in world.edge_ids().cloned().collect::<Vec<_>>() {
         let (src, capacity, tau) = {
             let edge = &world.edges[&e];
-            (edge.src.clone(), edge.capacity, edge.delay_days())
+            (
+                edge.src.clone(),
+                eff_capacity(world, &state.effects, state.day, &e),
+                edge.delay_days_with(eff_difficulty(world, &state.effects, state.day, &e)),
+            )
         };
         let mut vol_sum = 0.0;
         for g in world.catalog.ids() {

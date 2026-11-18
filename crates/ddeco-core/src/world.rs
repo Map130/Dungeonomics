@@ -54,7 +54,12 @@ pub struct Edge {
 impl Edge {
     /// τ_e = max(1, ceil(L_e · k_e)) — pipeline delay (§5.6).
     pub fn delay_days(&self) -> usize {
-        let raw = (self.travel_time * self.difficulty).ceil() as i64;
+        self.delay_days_with(self.difficulty)
+    }
+
+    /// Same as `delay_days` with an explicit (effective) k_e.
+    pub fn delay_days_with(&self, difficulty: f64) -> usize {
+        let raw = (self.travel_time * difficulty).ceil() as i64;
         raw.max(1) as usize
     }
 }
