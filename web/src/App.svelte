@@ -34,7 +34,7 @@
 </script>
 
 <header class="panel" style="border-radius:0; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
-  <h1 style="margin:0; font-size:1.1rem;">D&D Eco</h1>
+  <h1 style="margin:0; font-size:1.1rem;">Dungeonomics</h1>
   {#if app.ready && app.sim}
     <span class="tag">день {app.day}</span>
     <div class="row">

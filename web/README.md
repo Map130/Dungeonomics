@@ -1,4 +1,4 @@
-# D&D Eco — веб-UI
+# Dungeonomics — веб-UI
 
 Статический офлайн-PWA поверх WASM-ядра (`crates/ddeco-wasm`). Vite + TypeScript +
 Svelte 5. Всё считается в браузере; мир и состояние — файлы TOML.

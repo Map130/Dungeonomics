@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Веб-UI живой экономики для D&D: офлайн-PWA поверх WASM-ядра (ddeco-wasm)",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "svelte-check --tsconfig ./tsconfig.json && vite build",

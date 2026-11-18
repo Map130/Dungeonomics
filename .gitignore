@@ -34,3 +34,9 @@ web/dev-dist/
 .vscode/
 .idea/
 .DS_Store
+
+# Сохранённая чужая страница-источник прайс-листа (не наша, не публикуем; gear.csv коммитится)
+references/*.html
+
+# Claude Code: локальные настройки конкретной машины
+.claude/settings.local.json

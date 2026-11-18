@@ -22,3 +22,10 @@ CSV генерируется скриптом `scripts/extract_gear.py` из с�
 к D_ig без переделки тика.
 Почему: сначала нужно добиться устойчивости одноуровневой модели, цепочки её усложняют.
 Затронуто: REQUIREMENTS §10.2; MODEL §5.13, §10.2. План `m1-python-prototype.md`.
+
+## D4 · 2026-11-18 · Название — Dungeonomics, лицензия — MIT
+Публичное имя проекта и репозитория — Dungeonomics (`dungeonomics`), без амперсанда.
+Внутренние имена пакетов (`ddeco`, `ddeco-core`, `ddeco-wasm`, `ddeco-web`) не меняются.
+Лицензия MIT (было `MIT OR Apache-2.0` в Cargo, TBD в README).
+Почему: проект открывается на GitHub; MIT — самая простая для инструмента ГМов.
+Затронуто: REQUIREMENTS §10.7.

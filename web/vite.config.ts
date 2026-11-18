@@ -15,8 +15,8 @@ export default defineConfig({
       // .wasm попадает в precache (нужен офлайн); по умолчанию workbox его не берёт.
       workbox: { globPatterns: ["**/*.{js,css,html,wasm}"] },
       manifest: {
-        name: "D&D Eco — живая экономика",
-        short_name: "D&D Eco",
+        name: "Dungeonomics — живая экономика",
+        short_name: "Dungeonomics",
         description: "Живая региональная экономика для настольных RPG",
         theme_color: "#1b1b1f",
         background_color: "#1b1b1f",
