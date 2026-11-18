@@ -2,6 +2,19 @@
   import { app } from "../store.svelte";
   import { paramLabel, t } from "../i18n/index.svelte";
 
+  // `node`: show only effects on this settlement or on roads touching it (node page);
+  // `showForm`: the manual "add effect" form (world overview only).
+  let { node = "", showForm = true }: { node?: string; showForm?: boolean } = $props();
+
+  const arcEnds = $derived(new Map((app.world?.edges ?? []).map((e) => [e.id, [e.src, e.dst]])));
+  const shown = $derived(
+    node
+      ? app.effects.filter((e) =>
+          e.target_kind === "node" ? e.target_id === node : (arcEnds.get(e.target_id) ?? []).includes(node),
+        )
+      : app.effects,
+  );
+
   let targetKind = $state<"node" | "edge">("node");
   let targetId = $state("");
   let param = $state("pcap");
@@ -47,11 +60,11 @@
 </script>
 
 <div class="panel">
-  <h2>{t("effects.title")} <span class="muted">· {t("effects.active")}</span></h2>
+  <h2>{node ? t("node.effects") : t("effects.title")} <span class="muted">· {t("effects.active")}</span></h2>
 
-  {#if app.effects.length}
+  {#if shown.length}
     <ul style="margin:0 0 .6rem; padding-left: 1.1rem;">
-      {#each app.effects as e}
+      {#each shown as e}
         <li class="row" style="justify-content: space-between;">
           <span>
             <strong>{e.factor}</strong> {paramLabel(e.param)} · {t(e.target_kind === "edge" ? "effects.edge" : "effects.node")} {e.target_id}
@@ -67,6 +80,7 @@
     <p class="muted" style="margin:.2rem 0 .6rem;">{t("effects.none")}</p>
   {/if}
 
+  {#if showForm}
   <h3>{t("effects.add")}</h3>
   <div class="row">
     <select bind:value={targetKind}>
@@ -101,4 +115,5 @@
     <input bind:value={source} placeholder={t("effects.source")} style="width:8rem;" />
     <button onclick={submit}>{t("effects.submit")}</button>
   </div>
+  {/if}
 </div>

@@ -9,6 +9,9 @@ export interface GoodView {
   buy_price: number; // price·(1+spread)
   sell_price: number; // price·(1−spread)
   in_transit: number;
+  /** r = s/s* (Infinity when there is no demand). */
+  provisioning: number;
+  verdict: Verdict;
 }
 
 export interface NodeView {
@@ -30,6 +33,8 @@ export interface NodeInfo {
   population: number;
   spread: number;
   hub: string | null;
+  /** Goods the node can produce (base capacity > 0), sorted. */
+  produces: string[];
 }
 
 export interface GoodInfo {

@@ -16,7 +16,17 @@ import type {
   WorldInfo,
 } from "./types";
 
+/** Which screen is shown: the world overview or one settlement's page (synced with the URL hash). */
+export type View = { kind: "world" } | { kind: "node"; id: string };
+
+function viewFromHash(hash: string): View {
+  const m = /^#\/node\/(.+)$/.exec(hash);
+  return m ? { kind: "node", id: decodeURIComponent(m[1]) } : { kind: "world" };
+}
+
 class AppStore {
+  view = $state<View>(typeof location === "undefined" ? { kind: "world" } : viewFromHash(location.hash));
+
   ready = $state(false);
   error = $state<string | null>(null);
 
@@ -37,7 +47,19 @@ class AppStore {
   report = $state<PriceReport | null>(null);
   lastTrade = $state<TradeResult | null>(null);
 
+  /** Open a settlement's page (pushes a history entry, so Back returns to the overview). */
+  openNode(id: string): void {
+    location.hash = `#/node/${encodeURIComponent(id)}`;
+  }
+  openWorld(): void {
+    location.hash = "";
+  }
+
   async init() {
+    window.addEventListener("hashchange", () => {
+      this.view = viewFromHash(location.hash);
+      this.report = null;
+    });
     await initWasm();
     this.ready = true;
   }

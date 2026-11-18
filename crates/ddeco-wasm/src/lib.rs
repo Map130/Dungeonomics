@@ -130,6 +130,13 @@ impl Sim {
                     population: n.population,
                     spread: n.spread,
                     hub: n.hub.clone(),
+                    // Goods the node can produce (base capacity > 0), sorted (BTreeMap order).
+                    produces: n
+                        .capacity
+                        .iter()
+                        .filter(|(_, &c)| c > 0.0)
+                        .map(|(g, _)| g.clone())
+                        .collect(),
                 })
                 .collect(),
             goods: self
@@ -180,6 +187,8 @@ impl Sim {
                         let key = (n.id.clone(), g.clone());
                         let m = self.state.multiplier[&key];
                         let price = good.base_price * m;
+                        // Provisioning and verdict as in the reasons log (§5.12).
+                        let rep = reasons::explain_price(&self.world, &self.state, &n.id, g);
                         GoodView {
                             good: g.clone(),
                             stock: self.state.stock[&key],
@@ -188,6 +197,8 @@ impl Sim {
                             buy_price: price * (1.0 + n.spread),
                             sell_price: price * (1.0 - n.spread),
                             in_transit: self.state.in_transit_to(&self.world, &n.id, g),
+                            provisioning: rep.provisioning,
+                            verdict: rep.verdict.code(),
                         }
                     })
                     .collect(),
@@ -577,6 +588,8 @@ struct GoodView {
     buy_price: f64,  // price for a player buying: price·(1+spread)
     sell_price: f64, // price for a player selling: price·(1−spread)
     in_transit: f64,
+    provisioning: f64,     // r = s/s* (may be +inf when there is no demand)
+    verdict: &'static str, // "shortage" | "surplus" | "normal"
 }
 
 #[derive(Serialize)]
@@ -594,6 +607,7 @@ struct NodeInfo {
     population: f64,
     spread: f64,
     hub: Option<String>,
+    produces: Vec<String>,
 }
 
 #[derive(Serialize)]

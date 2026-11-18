@@ -36,7 +36,8 @@ assert.strictEqual(Number(sim.day), 6, "after run(5) day = 6");
 const info = sim.world_info();
 has(info, ["seed", "nodes", "goods", "edges"], "world_info");
 assert.ok(Array.isArray(info.nodes) && info.nodes.length > 0, "world_info.nodes is non-empty");
-has(info.nodes[0], ["id", "kind", "population", "spread", "hub"], "world_info.nodes[0]");
+has(info.nodes[0], ["id", "kind", "population", "spread", "hub", "produces"], "world_info.nodes[0]");
+assert.ok(info.nodes.some((n) => n.produces.length > 0), "some node produces goods");
 has(info.goods[0], ["id", "category", "base_price"], "world_info.goods[0]");
 const node = info.nodes[0].id;
 const good = info.goods[0].id;
@@ -46,7 +47,8 @@ const snap = sim.snapshot();
 has(snap, ["day", "nodes"], "snapshot");
 assert.strictEqual(Number(snap.day), 6, "snapshot.day is consistent");
 const g0 = snap.nodes[0].goods[0];
-has(g0, ["good", "stock", "multiplier", "price", "buy_price", "sell_price", "in_transit"], "GoodView");
+has(g0, ["good", "stock", "multiplier", "price", "buy_price", "sell_price", "in_transit", "provisioning", "verdict"], "GoodView");
+assert.ok(["shortage", "surplus", "normal"].includes(g0.verdict), "GoodView.verdict is a code");
 assert.ok(g0.buy_price >= g0.sell_price, "buy_price >= sell_price (spread)");
 
 // --- explain (§5.12) ----------------------------------------------------------

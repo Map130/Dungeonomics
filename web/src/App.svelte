@@ -1,12 +1,8 @@
 <script lang="ts">
   import { app } from "./store.svelte";
   import defaultWorld from "./defaultWorld";
-  import PriceTable from "./components/PriceTable.svelte";
-  import ReasonsPanel from "./components/ReasonsPanel.svelte";
-  import EffectsPanel from "./components/EffectsPanel.svelte";
-  import PresetsPanel from "./components/PresetsPanel.svelte";
-  import FlowsPanel from "./components/FlowsPanel.svelte";
-  import GmPanel from "./components/GmPanel.svelte";
+  import WorldView from "./components/WorldView.svelte";
+  import NodeView from "./components/NodeView.svelte";
   import { i18n, LANGS, t, type Lang } from "./i18n/index.svelte";
 
   let runDays = $state(30);
@@ -80,17 +76,8 @@
   </div>
 {/if}
 
-<main
-  style="padding: 1rem; display:grid; gap:1rem; grid-template-columns: 2fr 1fr; align-items:start;"
->
-  <div style="display:grid; gap:1rem;">
-    <PriceTable />
-    <FlowsPanel />
-  </div>
-  <div style="display:grid; gap:1rem;">
-    <ReasonsPanel />
-    <GmPanel />
-    <PresetsPanel />
-    <EffectsPanel />
-  </div>
-</main>
+{#if app.view.kind === "node"}
+  <NodeView id={app.view.id} />
+{:else}
+  <WorldView />
+{/if}

@@ -1,4 +1,4 @@
-> **Status:** in progress — stages R19–R21.
+> **Status:** closed — stages R19–R21.
 
 # Plan: M6 — world overview + node pages, prices in coins
 
@@ -21,6 +21,7 @@ Calls made by the planner (easy to revisit):
 - Overview rows also carry a small shortage badge (the worst `r < 0.9` good), since the first
   proposal had it and the user said "норм".
 - Navigation is a URL hash (`#/node/<id>`), so the browser Back button works; no router library.
+- The facade snapshot also gained `provisioning` and `verdict` per good (for the badge and the stock column).
 - The cross-node comparison table is removed. A per-good "cheapest at X" hint is not built (not asked).
 - RU coin labels: зм / см / мм; EN: gp / sp / cp.
 
@@ -37,7 +38,7 @@ Calls made by the planner (easy to revisit):
 
 **Done when:** tests pass, both catalogs have the labels.
 
-## R20 — World overview
+## R20 — World overview ✅
 
 - Facade: `world_info().nodes[].produces: string[]` — goods with base capacity > 0, sorted; smoke
   checks the field.
@@ -48,7 +49,7 @@ Calls made by the planner (easy to revisit):
 
 **Done when:** the overview shows no per-good price table; clicking a settlement opens its page.
 
-## R21 — Node page
+## R21 — Node page ✅
 
 - `NodeView.svelte`: back link, node header (kind, population, π, hub), goods grouped by category
   with buy / sell in one coin, stock % of target via `explain`, shortage/surplus colour; a row click

@@ -83,6 +83,12 @@ export function causeText(c: Cause): string {
   return `${label} ${factor}${c.source ? ` (${c.source})` : ""}`;
 }
 
+/** Translate a label with a known key prefix, falling back to the raw value (free-form world data). */
+export function labelOf(prefix: "kind" | "category", value: string): string {
+  const key = `${prefix}.${value}` as MessageKey;
+  return key in en ? t(key) : value;
+}
+
 /** Coin labels in the current language (gp/sp/cp or зм/см/мм). */
 export function coins(): CoinLabels {
   return { gp: t("coin.gp"), sp: t("coin.sp"), cp: t("coin.cp") };

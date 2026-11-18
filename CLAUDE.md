@@ -12,9 +12,10 @@ Milestones closed (plans in `docs/plans/`):
 - **M4** `m4-open-source.md` — open-source readiness, R10–R14: SRD 5.1 price list, structured
   reasons log, EN/RU UI i18n, code and docs in English.
 - **M5** `m5-event-presets.md` — event presets + road effects in trade, R15–R18.
+- **M6** `m6-node-view-ui.md` — UI split into world overview + settlement pages, prices in coins, R19–R21.
 
 Production chains (§5.13) are deferred to v1.1. The next milestone is not planned yet — a new plan
-goes to `docs/plans/m6-<name>.md`, stages continue from R19. Decisions go to `DECISIONS.md`
+goes to `docs/plans/m7-<name>.md`, stages continue from R22. Decisions go to `DECISIONS.md`
 (D1 TOML, D2 price list, D3 chains → v1.1, D4 name Dungeonomics + MIT, D5 English + i18n + SRD,
 D6 event presets instead of chains in M5, D7 hub delivery ignores road capacity).
 Specs remain the source of truth:

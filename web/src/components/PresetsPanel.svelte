@@ -3,23 +3,29 @@
   import { t } from "../i18n/index.svelte";
   import { PRESETS, expandPresetOnTargets, presetName, roadsFromEdges } from "../presets";
 
-  let presetId = $state(PRESETS[0].id);
+  // `mode="edge"`: road presets on the world overview (pick a road, both arcs).
+  // `mode="node"`: settlement presets on a node page, targeting `node`.
+  let { mode, node = "" }: { mode: "node" | "edge"; node?: string } = $props();
+
+  const presets = $derived(PRESETS.filter((p) => p.target === mode));
+  let presetId = $state(PRESETS.find((p) => p.target === mode)?.id ?? PRESETS[0].id);
   let targetId = $state("");
   let good = $state("");
   let duration = $state(PRESETS[0].duration);
 
-  const preset = $derived(PRESETS.find((p) => p.id === presetId) ?? PRESETS[0]);
-  // Node presets list nodes; road presets list roads (one per unordered pair, both arcs).
+  const preset = $derived(presets.find((p) => p.id === presetId) ?? presets[0]);
   const targets = $derived(
-    preset.target === "node"
-      ? (app.world?.nodes.map((n) => ({ key: n.id, label: n.id, arcs: [n.id] })) ?? [])
+    mode === "node"
+      ? node
+        ? [{ key: node, label: node, arcs: [node] }]
+        : []
       : roadsFromEdges(app.world?.edges ?? []),
   );
   const goods = $derived(app.world?.goods.map((g) => g.id) ?? []);
   const durationOk = $derived(Number.isFinite(duration) && duration >= 1);
-  const blocked = $derived((preset.needsGood && !good) || !targetId || !durationOk);
+  const blocked = $derived(!preset || (preset.needsGood && !good) || !targetId || !durationOk);
 
-  // Keep targetId valid when the preset (and so the target kind) changes.
+  // Keep targetId valid when the target list changes (another node, another world).
   $effect(() => {
     const keys = targets.map((r) => r.key);
     if (keys.length && !keys.includes(targetId)) targetId = keys[0];
@@ -33,14 +39,14 @@
 
   // Reset duration to the preset default on preset change.
   $effect(() => {
-    duration = preset.duration;
+    if (preset) duration = preset.duration;
   });
 
   function apply() {
-    const road = targets.find((r) => r.key === targetId);
-    if (!road || blocked) return;
+    const target = targets.find((r) => r.key === targetId);
+    if (!target || blocked) return;
     app.addEffects(
-      expandPresetOnTargets(preset, road.arcs, {
+      expandPresetOnTargets(preset, target.arcs, {
         good: good || undefined,
         duration,
         source: presetName(preset.id),
@@ -50,21 +56,23 @@
 </script>
 
 <div class="panel">
-  <h2>{t("presets.title")}</h2>
+  <h3>{t("presets.title")}</h3>
   <div class="row">
     <select bind:value={presetId}>
-      {#each PRESETS as p}<option value={p.id}>{presetName(p.id)}</option>{/each}
+      {#each presets as p}<option value={p.id}>{presetName(p.id)}</option>{/each}
     </select>
-    <select bind:value={targetId}>
-      {#each targets as r}<option value={r.key}>{r.label}</option>{/each}
-    </select>
-    {#if preset.needsGood}
+    {#if mode === "edge"}
+      <select bind:value={targetId}>
+        {#each targets as r}<option value={r.key}>{r.label}</option>{/each}
+      </select>
+    {/if}
+    {#if preset?.needsGood}
       <select bind:value={good} aria-label={t("presets.good")}>
         <option value="">{t("presets.good")}…</option>
         {#each goods as g}<option value={g}>{g}</option>{/each}
       </select>
     {/if}
     <label class="muted">{t("effects.days")} <input type="number" min="1" bind:value={duration} style="width:4rem;" /></label>
-    <button onclick={apply} disabled={blocked} title={preset.needsGood && !good ? t("presets.needsGood") : ""}>{t("presets.apply")}</button>
+    <button onclick={apply} disabled={blocked} title={preset?.needsGood && !good ? t("presets.needsGood") : ""}>{t("presets.apply")}</button>
   </div>
 </div>
