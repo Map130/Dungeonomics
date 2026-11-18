@@ -13,6 +13,12 @@ put("luxury", [
 ]);
 put("tools", ["iron-1-lb", "copper-1-lb"]);
 
+const CLOTH = ["clothes", "robe", "cloak", "blanket", "bedroll", "tent", "sack", "backpack", "pouch", "rope", "cloth", "net"];
+const FOOD = ["rations", "waterskin"];
+const LUXURY = ["perfume", "signet", "ring", "mirror", "spyglass", "book", "ink", "paper", "parchment"];
+/** Whole id segments only (split on "-"), so "signet-ring" is not a "net". */
+const hasWord = (id: string, words: string[]) => id.split("-").some((w) => words.includes(w));
+
 export function roleOf(item: ShopItem): Role | null {
   const { id, category, subcategory } = item;
   switch (category) {
@@ -36,9 +42,9 @@ export function roleOf(item: ShopItem): Role | null {
         case "Holy Symbols":
           return "luxury";
         case "Standard Gear":
-          if (/clothes|robe|cloak|blanket|bedroll|tent|sack|backpack|pouch|rope|cloth|net/.test(id)) return "cloth";
-          if (/rations|waterskin/.test(id)) return "food";
-          if (/perfume|signet|ring|mirror|spyglass|book|ink|paper|parchment/.test(id)) return "luxury";
+          if (hasWord(id, CLOTH)) return "cloth";
+          if (hasWord(id, FOOD)) return "food";
+          if (hasWord(id, LUXURY)) return "luxury";
           return "tools";
         default:
           return null;

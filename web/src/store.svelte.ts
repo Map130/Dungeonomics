@@ -133,7 +133,7 @@ class AppStore {
     const t = this.guard((s) => s.trade(node, good, qty, sell) as TradeResult);
     if (t) this.lastTrade = t;
     this.refresh();
-    return t ?? undefined;
+    return t;
   }
 
   addEffect(

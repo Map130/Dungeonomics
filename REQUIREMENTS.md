@@ -147,7 +147,7 @@ Reason: in Bannerlord, without major wars central cities run away — prosperity
 3. Caravan materialisation rules: flow threshold, frequency, how guard strength is set.
 4. ~~Where the base price list comes from: a built-in PHB template, import or manual entry.~~ Decided: SRD 5.1, `references/srd_gear.csv`, see D5 (superseded D2).
 5. Demand and prosperity: a slow prosperity variable is proposed (food, variety, ceiling); its exact form is not chosen.
-6. Units of goods: pieces, weight units or abstract "batches".
+6. Units of goods: pieces, weight units or abstract "batches". Shop items: value-equivalent units of a driver good, see `DECISIONS.md` D8.
 7. ~~Project name and licence.~~ Decided: Dungeonomics, MIT, see `DECISIONS.md` D4.
 8. Stabilisation parameters: price elasticity of supply (β), spoilage rate, size of the prosperity ceiling, list of sinks.
 9. Background event generator: on by default or not.

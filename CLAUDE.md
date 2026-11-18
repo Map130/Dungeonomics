@@ -69,6 +69,7 @@ Rust and web:
   `tests/` check golden parity with `golden/*.json`.
 - `crates/ddeco-wasm` — the `Sim` facade (wasm-bindgen) returning plain JSON DTOs; `smoke/smoke.cjs` checks their shape.
 - `web/` — Svelte 5 PWA; `src/store.svelte.ts` wraps `Sim`, `src/i18n/` holds the EN/RU catalogs.
+- `web/src/shop/` — the settlement shop: SRD catalogue, item → driver good roles, value-equivalent units (D8).
 - `references/srd_gear.csv` — base price list P0_g (SRD 5.1, CC-BY-4.0; attribution in README).
 
 ## What this is

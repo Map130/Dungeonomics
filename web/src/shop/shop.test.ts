@@ -38,8 +38,18 @@ describe("roleOf", () => {
     ["rations-1-day", "food"],
     ["wine-common-pitcher", "wine"],
     ["horse-riding", null],
+    ["signet-ring", "luxury"],
+    ["ball-bearings-bag-of-1000", "tools"],
   ])("%s -> %s", (id, role) => {
     expect(roleOf(byId(id))).toBe(role);
+  });
+});
+
+describe("roleOf coverage", () => {
+  it("every non-mount/ship item has a role", () => {
+    const skip = new Set(["Mounts and Other Animals", "Waterborne Vehicles"]);
+    const missing = CATALOG.filter((i) => !skip.has(i.subcategory ?? "") && roleOf(i) === null).map((i) => i.id);
+    expect(missing).toEqual([]);
   });
 });
 
