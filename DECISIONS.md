@@ -38,3 +38,9 @@ The base price list moves from the dm-stuff.ru catalog to the SRD 5.1 equipment 
 superseding D2. Commits and PRs carry no Claude attribution.
 Why: an English-speaking audience on GitHub, a clean licence for the data, RU users keep their UI.
 Affects: REQUIREMENTS §5.8 (reasons log), §10.4; MODEL §2 (P0_g), §5.12. Plan `m4-open-source.md`.
+
+## D6 · 2026-11-18 · Event presets instead of production chains in M5
+Production chains stay in v1.1 (D3). One-click event presets in the UI (craftsman killed, blight,
+army billeted, epidemic, bandits, bridge collapsed) cover the table use case and expand into
+ordinary effects. Road effects now reach trade and caravans (spec §2/§5.6 compliance, R15).
+Affects: REQUIREMENTS §5.8; MODEL §5.6. Plan `m5-event-presets.md`.

@@ -4,6 +4,7 @@
   import PriceTable from "./components/PriceTable.svelte";
   import ReasonsPanel from "./components/ReasonsPanel.svelte";
   import EffectsPanel from "./components/EffectsPanel.svelte";
+  import PresetsPanel from "./components/PresetsPanel.svelte";
   import FlowsPanel from "./components/FlowsPanel.svelte";
   import GmPanel from "./components/GmPanel.svelte";
   import { i18n, LANGS, t, type Lang } from "./i18n/index.svelte";
@@ -89,6 +90,7 @@
   <div style="display:grid; gap:1rem;">
     <ReasonsPanel />
     <GmPanel />
+    <PresetsPanel />
     <EffectsPanel />
   </div>
 </main>

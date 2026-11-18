@@ -85,7 +85,7 @@ The idea is borrowed from the economy of Mount & Blade: Bannerlord, where villag
 - Flows along roads, shortages and surpluses.
 - A feed of events and auto-generated caravans.
 - **Reasons log:** "the price of bread in X went up because road Y→X is ×2.5 and the stock fell to 40%". The core returns causes in structured form; the UI builds the text in the user's language (D5, MODEL §5.12).
-- Quick addition of an effect from the interface.
+- Quick addition of an effect from the interface, including one-click event presets (craftsman killed, blight, army billeted, epidemic, bandits, bridge collapsed).
 - Direct stock edits (a player bought out a good, the GM enters it by hand).
 
 ### 5.9 Data

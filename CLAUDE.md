@@ -12,9 +12,12 @@ Milestones closed (plans in `docs/plans/`):
 - **M4** `m4-open-source.md` — open-source readiness, R10–R14: SRD 5.1 price list, structured
   reasons log, EN/RU UI i18n, code and docs in English.
 
-Production chains (§5.13) are deferred to v1.1. **Current milestone: M5** `m5-event-presets.md` —
-one-click event presets in the UI + road effects reaching trade (R15–R18), not started. Decisions go to `DECISIONS.md`
-(D1 TOML, D2 price list, D3 chains → v1.1, D4 name Dungeonomics + MIT, D5 English + i18n + SRD).
+- **M5** `m5-event-presets.md` — event presets + road effects in trade, R15–R18.
+
+Production chains (§5.13) are deferred to v1.1. The next milestone is not planned yet — a new plan
+goes to `docs/plans/m6-<name>.md`, stages continue from R19. Decisions go to `DECISIONS.md`
+(D1 TOML, D2 price list, D3 chains → v1.1, D4 name Dungeonomics + MIT, D5 English + i18n + SRD,
+D6 event presets instead of chains in M5).
 Specs remain the source of truth:
 
 - `REQUIREMENTS.md` — product requirements v1 (goal, scope, functional/non-functional reqs, risks, open questions).
@@ -135,6 +138,6 @@ determinism (two runs with one seed match; rollback-and-replay reproduces).
 ## Open decisions not yet made
 
 Before implementing areas they touch, check these are still open (see `REQUIREMENTS.md` §10 and
-`MODEL.md` §10; already decided: D1–D5 in `DECISIONS.md`): goods units (pieces/weight/"batches"),
+`MODEL.md` §10; already decided: D1–D6 in `DECISIONS.md`): goods units (pieces/weight/"batches"),
 caravan materialization rules, and the stabilization parameters (β, spoilage rate, prosperity
 ceiling, list of sinks).
