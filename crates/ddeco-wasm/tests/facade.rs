@@ -2,7 +2,7 @@
 //! quote) need a JS runtime and are not called here — the wasm32 build and the node smoke
 //! cover them in CI. Here we check state management: tick, run, undo, save.
 
-use ddeco_wasm::Sim;
+use ddeco_wasm::{EffectSpec, Sim};
 
 const WORLD: &str = include_str!("../../../worlds/example_region.toml");
 
@@ -133,4 +133,60 @@ fn save_load_roundtrip() {
     other.load_state(&dump).expect("loading the snapshot");
     assert_eq!(other.day(), 7);
     assert_eq!(other.save(), dump, "the state after loading is identical");
+}
+
+fn spec(target_id: &str, param: &str, value: f64, category: Option<&str>) -> EffectSpec {
+    EffectSpec {
+        target_kind: "node".into(),
+        target_id: target_id.into(),
+        param: param.into(),
+        op: "mult".into(),
+        value,
+        duration: 20.0,
+        decay: "linear".into(),
+        tau: 1.0,
+        good: None,
+        category: category.map(String::from),
+        source: "preset".into(),
+    }
+}
+
+#[test]
+fn add_effect_specs_is_one_undo_step() {
+    let mut sim = Sim::new(WORLD, 0).expect("world");
+    sim.run(10);
+    let before = sim.save();
+    sim.add_effect_specs(vec![
+        spec("redwater", "pcap", 0.05, Some("food")),
+        spec("redwater", "population", 1.3, None),
+    ])
+    .expect("batch applies");
+    sim.run(10);
+    assert!(sim.undo(), "undo run(10)");
+    assert!(sim.undo(), "undo the whole batch");
+    assert_eq!(sim.save(), before, "both effects gone at once");
+    assert!(sim.undo(), "undo the first run(10)");
+    assert!(!sim.undo(), "nothing left");
+}
+
+#[test]
+fn invalid_spec_rejects_whole_batch() {
+    let mut sim = Sim::new(WORLD, 0).expect("world");
+    let before = sim.save();
+    let err = sim
+        .add_effect_specs(vec![
+            spec("redwater", "pcap", 0.05, Some("food")),
+            spec("nowhere", "pcap", 0.5, None),
+        ])
+        .expect_err("invalid target");
+    assert!(err.contains("no node nowhere"), "{err}");
+    assert_eq!(sim.save(), before);
+    assert!(!sim.undo());
+}
+
+#[test]
+fn empty_batch_is_rejected() {
+    let mut sim = Sim::new(WORLD, 0).expect("world");
+    assert_eq!(sim.add_effect_specs(vec![]), Err("no effects".to_string()));
+    assert!(!sim.undo());
 }

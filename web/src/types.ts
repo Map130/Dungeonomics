@@ -84,6 +84,21 @@ export interface TradeResult {
   new_multiplier: number;
 }
 
+/** One effect to add (input to `Sim.add_effects`, e.g. from an event preset). */
+export interface EffectSpec {
+  target_kind: "node" | "edge";
+  target_id: string;
+  param: string;
+  op: "mult" | "add";
+  value: number;
+  duration: number;
+  decay: "step" | "linear" | "exp";
+  tau?: number;
+  good?: string | null;
+  category?: string | null;
+  source: string;
+}
+
 export interface EffectView {
   index: number;
   target_kind: string;

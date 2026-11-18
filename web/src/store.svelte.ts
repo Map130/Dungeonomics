@@ -7,6 +7,7 @@
 import initWasm, { Sim } from "./pkg/ddeco_wasm.js";
 import type {
   CaravanView,
+  EffectSpec,
   EffectView,
   FlowView,
   PriceReport,
@@ -128,6 +129,11 @@ class AppStore {
     this.guard((s) =>
       s.add_effect(targetKind, targetId, param, op, value, duration, decay, tau, good, category, source),
     );
+    this.refresh();
+  }
+  /** Apply a batch of effects atomically (one undo step). */
+  addEffects(specs: EffectSpec[]): void {
+    this.guard((s) => s.add_effects(specs));
     this.refresh();
   }
   removeEffect(index: number): void {

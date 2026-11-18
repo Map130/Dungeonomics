@@ -17,7 +17,7 @@ use ddeco_core::state::SimState;
 use ddeco_core::world::{NodeKind, World};
 use ddeco_core::{events, reasons, tick};
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 /// Depth of the snapshot stack for `undo`. An evening of play is thousands of ticks, but
@@ -258,40 +258,33 @@ impl Sim {
         category: Option<String>,
         source: &str,
     ) -> Result<(), JsValue> {
-        let target_kind = parse_target_kind(target_kind)?;
-        let op = parse_op(op)?;
-        let decay = parse_decay(decay)?;
-        // The target must exist, otherwise the effect silently has no effect.
-        match target_kind {
-            TargetKind::Node if !self.world.nodes.contains_key(target_id) => {
-                return Err(JsValue::from_str(&format!("no node {target_id}")));
-            }
-            TargetKind::Edge if !self.world.edges.contains_key(target_id) => {
-                return Err(JsValue::from_str(&format!("no arc {target_id}")));
-            }
-            _ => {}
-        }
-        if let Some(g) = &good {
-            if !self.world.catalog.goods.contains_key(g) {
-                return Err(JsValue::from_str(&format!("no good {g}")));
-            }
-        }
-        self.record();
-        self.state.effects.push(Effect {
-            param: param.to_string(),
-            target_kind,
+        let spec = EffectSpec {
+            target_kind: target_kind.to_string(),
             target_id: target_id.to_string(),
-            op,
+            param: param.to_string(),
+            op: op.to_string(),
             value,
-            start_day: self.state.day,
             duration,
-            decay,
+            decay: decay.to_string(),
             tau,
             good,
             category,
             source: source.to_string(),
-        });
+        };
+        let effect = self
+            .build_effect(&spec)
+            .map_err(|e| JsValue::from_str(&e))?;
+        self.record();
+        self.state.effects.push(effect);
         Ok(())
+    }
+
+    /// Add a batch of effects atomically (a preset): all specs are validated first, then one
+    /// undo snapshot is taken. `specs` — an array of objects shaped like [`EffectSpec`].
+    pub fn add_effects(&mut self, specs: JsValue) -> Result<(), JsValue> {
+        let specs: Vec<EffectSpec> = serde_wasm_bindgen::from_value(specs).map_err(err)?;
+        self.add_effect_specs(specs)
+            .map_err(|e| JsValue::from_str(&e))
     }
 
     /// Feed of active effects (non-zero weight on the current day) with source, current
@@ -476,6 +469,83 @@ impl Sim {
     }
 }
 
+impl Sim {
+    /// Validate a spec against the world and turn it into a core effect (starts today).
+    fn build_effect(&self, spec: &EffectSpec) -> Result<Effect, String> {
+        let target_kind = parse_target_kind(&spec.target_kind)?;
+        let op = parse_op(&spec.op)?;
+        let decay = parse_decay(&spec.decay)?;
+        // The target must exist, otherwise the effect silently has no effect.
+        match target_kind {
+            TargetKind::Node if !self.world.nodes.contains_key(&spec.target_id) => {
+                return Err(format!("no node {}", spec.target_id));
+            }
+            TargetKind::Edge if !self.world.edges.contains_key(&spec.target_id) => {
+                return Err(format!("no arc {}", spec.target_id));
+            }
+            _ => {}
+        }
+        if let Some(g) = &spec.good {
+            if !self.world.catalog.goods.contains_key(g) {
+                return Err(format!("no good {g}"));
+            }
+        }
+        Ok(Effect {
+            param: spec.param.clone(),
+            target_kind,
+            target_id: spec.target_id.clone(),
+            op,
+            value: spec.value,
+            start_day: self.state.day,
+            duration: spec.duration,
+            decay,
+            tau: spec.tau,
+            good: spec.good.clone(),
+            category: spec.category.clone(),
+            source: spec.source.clone(),
+        })
+    }
+
+    /// All-or-nothing batch: every spec is validated before anything changes, then a single
+    /// undo snapshot covers the whole batch. Host-callable (returns `String` errors).
+    pub fn add_effect_specs(&mut self, specs: Vec<EffectSpec>) -> Result<(), String> {
+        if specs.is_empty() {
+            return Err("no effects".to_string());
+        }
+        let effects = specs
+            .iter()
+            .map(|s| self.build_effect(s))
+            .collect::<Result<Vec<_>, _>>()?;
+        self.record();
+        self.state.effects.extend(effects);
+        Ok(())
+    }
+}
+
+/// One effect to add, as a plain JSON object (see `add_effect` for the field meanings).
+#[derive(Deserialize, Clone)]
+pub struct EffectSpec {
+    pub target_kind: String,
+    pub target_id: String,
+    pub param: String,
+    pub op: String,
+    pub value: f64,
+    pub duration: f64,
+    pub decay: String,
+    #[serde(default = "one")]
+    pub tau: f64,
+    #[serde(default)]
+    pub good: Option<String>,
+    #[serde(default)]
+    pub category: Option<String>,
+    #[serde(default)]
+    pub source: String,
+}
+
+fn one() -> f64 {
+    1.0
+}
+
 // --- DTOs for JS (plain JSON, decoupled from the core's internal types) --------
 
 #[derive(Serialize)]
@@ -641,28 +711,28 @@ fn kind_tag(k: TargetKind) -> &'static str {
     }
 }
 
-fn parse_target_kind(s: &str) -> Result<TargetKind, JsValue> {
+fn parse_target_kind(s: &str) -> Result<TargetKind, String> {
     match s {
         "node" => Ok(TargetKind::Node),
         "edge" => Ok(TargetKind::Edge),
-        other => Err(JsValue::from_str(&format!("unknown target_kind: {other}"))),
+        other => Err(format!("unknown target_kind: {other}")),
     }
 }
 
-fn parse_op(s: &str) -> Result<Op, JsValue> {
+fn parse_op(s: &str) -> Result<Op, String> {
     match s {
         "mult" => Ok(Op::Mult),
         "add" => Ok(Op::Add),
-        other => Err(JsValue::from_str(&format!("unknown op: {other}"))),
+        other => Err(format!("unknown op: {other}")),
     }
 }
 
-fn parse_decay(s: &str) -> Result<Decay, JsValue> {
+fn parse_decay(s: &str) -> Result<Decay, String> {
     match s {
         "step" => Ok(Decay::Step),
         "linear" => Ok(Decay::Linear),
         "exp" => Ok(Decay::Exp),
-        other => Err(JsValue::from_str(&format!("unknown decay: {other}"))),
+        other => Err(format!("unknown decay: {other}")),
     }
 }
 

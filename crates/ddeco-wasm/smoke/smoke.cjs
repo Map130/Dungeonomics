@@ -69,6 +69,17 @@ assert.ok(Array.isArray(effects) && effects.length >= 1, "effects() contains the
 has(effects[0], ["index", "target_kind", "target_id", "param", "op", "factor", "days_left"], "EffectView");
 assert.ok(typeof effects[0].factor === "string", "factor is a string");
 
+// --- add_effects (atomic batch, one undo step) --------------------------------
+const nBefore = sim.effects().length;
+sim.add_effects([
+  { target_kind: "node", target_id: node, param: "pcap", op: "mult", value: 0.5, duration: 10, decay: "linear", good: null, category: "food", source: "batch" },
+  { target_kind: "node", target_id: node, param: "population", op: "mult", value: 1.2, duration: 10, decay: "step", source: "batch" },
+]);
+assert.strictEqual(sim.effects().length, nBefore + 2, "add_effects adds both effects");
+assert.throws(() => sim.add_effects([]), /no effects/, "empty batch rejected");
+sim.undo();
+assert.strictEqual(sim.effects().length, nBefore, "one undo reverts the whole batch");
+
 // --- flows() / caravans() -----------------------------------------------------
 const flows = sim.flows();
 assert.ok(Array.isArray(flows) && flows.length > 0, "flows() is non-empty");
