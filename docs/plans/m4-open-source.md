@@ -1,4 +1,4 @@
-> **Status:** in progress — R10–R13 done; next R14. Decision: `DECISIONS.md` D5.
+> **Status:** closed — stages R10–R14. Decision: `DECISIONS.md` D5.
 
 # Plan: Dungeonomics goes English (open-source readiness)
 
@@ -7,7 +7,7 @@
 The project is public on GitHub as **Dungeonomics** (D4, MIT). Everything so far is in Russian:
 specs, docs, code comments, commit messages, UI labels, and the reasons log, whose text is
 hard-coded in the core (`ddeco/reasons.py`, `crates/ddeco-core/src/reasons.rs`, e.g.
-`"дорога A→B"`, `"дефицит"`) and baked into golden fixtures (`golden/shocks_run.json`).
+Russian strings such as "road A→B" and "shortage") and baked into golden fixtures (`golden/shocks_run.json`).
 The base price list (`references/gear.csv`, D2) comes from a Russian fan catalog with an unclear
 licence.
 
@@ -49,7 +49,7 @@ are green on the new world; README credits the SRD.
 > and the WASM `explain`. The caravan's text `source` field was dropped; the facade's
 > `caravans()` returns `src`/`dst` instead. The UI renders causes with a temporary RU renderer
 > (`ReasonsPanel.svelte`) until R12. The reasons log was never part of the golden fixtures, so
-> they are unchanged. Test-only effect sources (e.g. `"неурожай"`) are translated in R13.
+> they are unchanged. Test-only effect sources (Russian words) are translated in R13.
 
 - Replace text in `ReasonReport` / `Cause` with a key + params form in **both** cores, e.g.
   `{"key": "cause.edge", "src": "A", "dst": "B", "factor": 0.8, "source": "..."}`, verdict as an
@@ -67,7 +67,7 @@ are green on the new world; README credits the SRD.
 > structured-cause renderer `causeText()`, and detection localStorage → `navigator.language`
 > → EN. Language switch in the header; `<html lang>` and the tab title follow it. The PWA
 > manifest and `index.html` are English (a manifest cannot be localised at runtime). Web
-> comments are translated too. Only `ru.ts` and the language's own name «Русский» in the
+> comments are translated too. Only `ru.ts` and the language's own name (in Russian) in the
 > switch contain Cyrillic. Also fixed an R9 bug: the header stuck on "loading core…" because
 > `app.sim` was not reactive. Checked in the browser: EN and RU, reasons for a road effect,
 > persistence across reload.
@@ -85,9 +85,8 @@ are green on the new world; README credits the SRD.
 > Done: ~870 lines across Python (`ddeco/`, `tests/`, `scripts/`), Rust (core, facade, tests,
 > benches), the node smoke, manifests, CI, `.gitignore` and the calibration notebook
 > (re-executed so the plots carry English labels). Error messages are English. Test-only effect
-> sources were renamed `неурожай → blight`, `бандиты → bandits`, `монстр на дороге → monster on
-> the road`; `golden/shocks_run.json` changed only in those 16 strings. Outside `*.md`, Cyrillic
-> remains only in `web/src/i18n/ru.ts` and the language's own name «Русский» in the switch.
+> sources were renamed from Russian to `blight`, `bandits` and `monster on the road`; `golden/shocks_run.json` changed only in those 16 strings. Outside `*.md`, Cyrillic
+> remains only in `web/src/i18n/ru.ts` and the language's own name in the switch.
 
 - Python (`ddeco/`, `tests/`, `scripts/`), Rust (`crates/`), Svelte/TS, the smoke script,
   `pyproject`/`Cargo`/`package.json` descriptions. WASM facade error messages in English.
@@ -95,11 +94,18 @@ are green on the new world; README credits the SRD.
 **Done when:** `git grep -P '[\x{0400}-\x{04FF}]'` hits only `web/src/i18n/ru.ts`
 and docs not yet translated; all test suites, clippy and fmt green.
 
-## R14 — Specs and docs in English
+## R14 — Specs and docs in English ✅
+
+> Done: `README.md`, `web/README.md`, `CLAUDE.md`, `REQUIREMENTS.md`, `MODEL.md`, `DECISIONS.md`
+> and the M1–M3 plans are in English; `§` numbering is unchanged (headings verified against the
+> Russian originals). Spec statements that decisions had overtaken were updated with references
+> (REQUIREMENTS §5.2, §5.9, §6 → D3, D1, D4; MODEL §5.13 and the verification note at the top).
+> Added `CONTRIBUTING.md`. Cyrillic remains only in `web/src/i18n/ru.ts` and the language's own
+> name in the switch.
 
 - `README.md` (plus a short "Status" and SRD credit), `web/README.md`, `CLAUDE.md`,
   `REQUIREMENTS.md`, `MODEL.md`, `DECISIONS.md`, `docs/plans/m1–m3`. Keep `§` numbers, the
-  *(proposed)* marker replaces *(предложено)* — update the CLAUDE.md wording accordingly.
+  *(proposed)* marker replaces the Russian one — update the CLAUDE.md wording accordingly.
 - Add `CONTRIBUTING.md`: conventional commits in English, `(Rn)` stage suffix, spec references.
 
 **Done when:** the Cyrillic grep hits only `ru.ts`; CLAUDE.md status marks M4 closed.

@@ -1,181 +1,181 @@
-# Живая экономика для настольных RPG: требования v1
+# A living economy for tabletop RPGs: requirements v1
 
-Статус: черновик. Математическая модель описывается отдельным документом.
-Пункты с пометкой «(предложено)» добавлены из разбора экономики Bannerlord и обсуждения устойчивости. Автор их пока не подтверждал.
+Status: draft. The mathematical model is described in a separate document (`MODEL.md`).
+Items marked "(proposed)" come from an analysis of the Bannerlord economy and a discussion of stability. The author has not confirmed them yet.
 
-## 1. Цель
+## 1. Goal
 
-Open-source инструмент для мастера настольных RPG (в первую очередь D&D). Мастер один раз описывает регион (узлы, дороги, товары), а дальше действия игроков и события в мире сами меняют цены, наличие товаров и потоки торговли. Ручная бухгалтерия не нужна.
+An open-source tool for tabletop RPG game masters (primarily D&D). The GM describes a region once (nodes, roads, goods), and from then on player actions and world events change prices, availability and trade flows on their own. No manual bookkeeping is needed.
 
-Идея заимствована из экономики Mount & Blade: Bannerlord, где деревни, города, мастерские и караваны образуют связную систему, а игрок на неё влияет напрямую. Для D&D такого инструмента пока нет.
+The idea is borrowed from the economy of Mount & Blade: Bannerlord, where villages, towns, workshops and caravans form a connected system that the player influences directly. No such tool exists for D&D yet.
 
-## 2. Пользователь и сценарий использования
+## 2. User and use case
 
-- **Пользователь:** мастер, не программист. Ему нужны быстрая настройка и понятные объяснения «почему так».
-- **Сценарий:** ваншот или короткая кампания. В игре участвует регион из 3-4 городов, остальной мир не моделируется.
-- **Типичный вечер:** игроки совершают 3-5 заметных действий (убили ремесленника, ограбили караван, скупили запас, перекрыли дорогу). Каждое должно дать видимый и объяснимый эффект в течение 1-3 игровых дней.
+- **User:** a GM, not a programmer. They need quick setup and clear explanations of "why is it like this".
+- **Scenario:** a one-shot or a short campaign. The game involves a region of 3-4 cities; the rest of the world is not modelled.
+- **Typical evening:** the players take 3-5 notable actions (kill a craftsman, rob a caravan, buy out a stock, block a road). Each should produce a visible and explainable effect within 1-3 in-game days.
 
-## 3. Принципы дизайна
+## 3. Design principles
 
-1. **Играбельность важнее реализма.** Экономика калибруется под доходы игроков. Честный расчёт, при котором хлеб стоит 50 золотых, считается ошибкой.
-2. **Параметры отдельно от состояния.** События меняют только параметры (производство, потребление, сложность пути, ёмкость). Состояние (запасы, цены, товары в пути) эволюционирует само.
-3. **Объяснимость.** Для каждого изменения цены или наличия система может назвать причину. Это важнее математической точности.
-4. **Система-агностичность.** Цены задаются в абстрактных единицах относительно базового прайс-листа (PHB или хоумбрю мастера). Инструмент не привязан к конкретной системе.
-5. **Гибрид «невидимой руки» и агентов.** Фоновая торговля идёт потоком без агентов. Именные караваны появляются только там, где они нужны для сюжета.
-6. **Детерминированность.** При одном seed и одних входных данных результат воспроизводим.
-7. **Устойчивость без внешних воздействий (предложено).** Мир без событий не «разгоняется»: цены не уходят к границам коридора, запасы не растут бесконечно (см. 5.10).
-8. **Доход игроков ограничен ёмкостью рынка (предложено).** Собственное производство или торговля игроков упираются в спрос рынка, а не в безлимит.
+1. **Playability over realism.** The economy is calibrated to player income. An "honest" calculation in which bread costs 50 gold is considered a bug.
+2. **Parameters separate from state.** Events change only parameters (production, consumption, travel difficulty, capacity). The state (stocks, prices, goods in transit) evolves on its own.
+3. **Explainability.** For every change in price or availability the system can name the cause. This matters more than mathematical precision.
+4. **System-agnostic.** Prices are set in abstract units relative to a base price list (the SRD or the GM's homebrew). The tool is not tied to a specific system.
+5. **A hybrid of the "invisible hand" and agents.** Background trade runs as a flow without agents. Named caravans appear only where the story needs them.
+6. **Determinism.** With one seed and the same inputs the result is reproducible.
+7. **Stability without external input (proposed).** A world without events does not "run away": prices do not drift to the corridor edges, stocks do not grow without bound (see 5.10).
+8. **Player income is bounded by market capacity (proposed).** The players' own production or trade runs into market demand, not into infinity.
 
-## 4. Область v1
+## 4. Scope of v1
 
-- Регион: 3-4 города, около 10-20 узлов (деревни, города, лагеря).
-- Одна симуляция, один мастер, локальная работа.
-- Расширение до континента возможно позже и не должно требовать смены архитектуры.
+- Region: 3-4 cities, about 10-20 nodes (villages, cities, camps).
+- One simulation, one GM, local use.
+- Expansion to a continent is possible later and must not require a change of architecture.
 
-## 5. Функциональные требования
+## 5. Functional requirements
 
-### 5.1 Мир
-- Узлы: деревня, город, лагерь и т. п. Деревни привязываются к ближайшему городу (иерархия поверх графа, как в Bannerlord).
-- Рёбра (дороги): базовая сложность, пропускная способность, длина или время в пути.
-- Граф поставок: производители, потребители, пути.
+### 5.1 World
+- Nodes: village, city, camp, etc. Villages are bound to the nearest city (a hierarchy on top of the graph, as in Bannerlord).
+- Edges (roads): base difficulty, throughput, length or travel time.
+- Supply graph: producers, consumers, routes.
 
-### 5.2 Товары
-- Справочник товаров: базовая цена, категория, эластичность спроса, порча или стоимость хранения.
-- Категории товаров (еда, ткани, оружие и т. д.) для расчёта спроса, чтобы мастеру не нужно было описывать каждый предмет отдельно.
-- Производственные цепочки (зерно → мука → хлеб): желательно в v1, в крайнем случае v1.1. **Решение пока не принято.**
+### 5.2 Goods
+- Goods catalogue: base price, category, demand elasticity, spoilage or storage cost.
+- Goods categories (food, cloth, weapons, etc.) for demand calculation, so the GM does not have to describe every item separately.
+- Production chains (grain → flour → bread): desirable in v1, v1.1 at the latest. **Decided: v1.1 (`DECISIONS.md` D3).**
 
-### 5.3 Узлы
-- По каждому товару: производство в день, потребление в день, запас, целевой запас.
-- Ремесленники и мастерские как производители с «мощностью». Убийство ремесленника обнуляет или снижает мощность.
-- Потребление зависит от населения и процветания узла.
-- **Процветание узла (предложено):** медленная переменная. Растёт от запаса еды и разнообразия товаров на рынке, упирается в мягкий потолок (аналог «стоимости жилья» в Bannerlord), падает при дефиците и грабежах. От него зависят потребление и налоги. Формулы и числа определяются в математической модели.
+### 5.3 Nodes
+- Per good: production per day, consumption per day, stock, target stock.
+- Craftsmen and workshops as producers with a "capacity". Killing a craftsman zeroes or reduces the capacity.
+- Consumption depends on the node's population and prosperity.
+- **Node prosperity (proposed):** a slow variable. It grows with the food stock and the variety of goods on the market, hits a soft ceiling (an analogue of Bannerlord's "housing cost"), and falls with shortages and raids. Consumption and taxes depend on it. Formulas and numbers are defined in the mathematical model.
 
-### 5.4 Эффекты (события)
-- Эффект это модификатор параметра: множитель или добавка.
-- Атрибуты: цель (узел, ребро, товар или категория), тип, величина, длительность, затухание (мгновенное, линейное, экспоненциальное), источник (текст для лога).
-- Итоговое значение параметра: `base × Π(множители) + Σ(добавки)`. Эффекты складываются корректно, снятие одного не ломает остальные.
-- Один эффект может задеть разные товары по-разному (война режет оружие и еду с разной силой).
-- Примеры: монстр на дороге (×2.5 сложность, 10 дней, линейное затухание), убитый ремесленник, эпидемия, война, налёт на деревню.
+### 5.4 Effects (events)
+- An effect is a parameter modifier: a multiplier or an addend.
+- Attributes: target (node, edge, good or category), type, magnitude, duration, decay (instant, linear, exponential), source (text for the log).
+- The resulting parameter value: `base × Π(multipliers) + Σ(addends)`. Effects combine correctly; removing one does not break the others.
+- One effect can hit different goods differently (war cuts weapons and food with different strength).
+- Examples: a monster on the road (×2.5 difficulty, 10 days, linear decay), a murdered craftsman, an epidemic, a war, a raid on a village.
 
-### 5.5 Цены
-- Цена = базовая цена × множитель. Симуляция двигает только множитель.
-- Множитель считается от `r = запас / целевой_запас` и зажат в коридоре. Ориентир: обычные товары ×0.5…×3, предметы первой необходимости ×0.7…×1.8. Значения настраиваются.
-- Сглаживание: множитель плывёт к целевому значению, а не прыгает.
-- Спред покупки и продажи (порядка ±10-15%), настраиваемый на узел или гильдию.
-- Дефицит выражается как в цене, так и в наличии товара. Цена ограничена коридором.
-- **Еда как «корзина» (предложено):** вклад в запас и процветание учитывает разнообразие, а не только суммарный объём.
-- **Роскошь (предложено):** потребляется узлами с высоким процветанием, в бедных узлах спрос на неё падает.
-- **Связь цен деревни и города (предложено):** деревня-производитель привязана к рынку своего города, приход и покупка товара двигают цену в обоих местах.
-- **Влияние покупки на цену (предложено):** крупная покупка или продажа сдвигает цену на каждой единице, игрок платит среднюю по кривой, а не цену с ценника. Это защита от скупки.
+### 5.5 Prices
+- Price = base price × multiplier. The simulation moves only the multiplier.
+- The multiplier is derived from `r = stock / target_stock` and clamped to a corridor. Guideline: ordinary goods ×0.5…×3, necessities ×0.7…×1.8. The values are configurable.
+- Smoothing: the multiplier drifts towards its target rather than jumping.
+- A buy/sell spread (around ±10-15%), configurable per node or guild.
+- A shortage shows both in price and in availability. The price is bounded by the corridor.
+- **Food as a "basket" (proposed):** the contribution to stock and prosperity accounts for variety, not only total volume.
+- **Luxury (proposed):** consumed by high-prosperity nodes; demand for it falls in poor nodes.
+- **Village and city prices are linked (proposed):** a producing village is tied to its city's market; arrivals and purchases move the price in both places.
+- **Purchases move the price (proposed):** a large purchase or sale moves the price on every unit; the player pays the average along the curve, not the price tag. This protects against buying out the market.
 
-### 5.6 Торговля и поток
-- Фоновая торговля: если разница цен между узлами превышает стоимость пути, часть запаса переезжает, объём ограничен ёмкостью ребра.
-- Транспортная задержка: товар в пути существует как буфер на ребре.
-- Именные караваны как автогенерируемые события: система периодически «материализует» крупный поток («через 3 дня из А в Б выйдет караван с зерном на 40 монет, охрана слабая»). Мастер решает, давать ли игрокам возможность вмешаться.
-- Игровое действие над караваном (ограбление) убирает часть товара из транзита, дальше всё считается как обычно.
+### 5.6 Trade and flow
+- Background trade: if the price difference between nodes exceeds the travel cost, part of the stock moves; the volume is limited by the edge capacity.
+- Transport delay: goods in transit exist as a buffer on the edge.
+- Named caravans as auto-generated events: the system periodically "materialises" a large flow ("in 3 days a caravan with 40 coins' worth of grain leaves A for B, weakly guarded"). The GM decides whether to let the players intervene.
+- A game action on a caravan (robbery) removes part of the goods from transit; everything else is computed as usual.
 
-### 5.7 Симуляция
-- Шаг времени: 1 день.
-- Кнопка «прокрутить N дней».
-- Кнопка «прогреть мир»: симуляция без событий до установления цен, чтобы мир стартовал в равновесии.
-- Сохранение снимков состояния и откат.
+### 5.7 Simulation
+- Time step: 1 day.
+- A "run N days" button.
+- A "warm up the world" button: a simulation without events until prices settle, so the world starts in equilibrium.
+- State snapshots and undo.
 
-### 5.8 Вывод и интерфейс
-- Таблица цен по узлам (покупка и продажа) для быстрого использования за столом.
-- Потоки по дорогам, дефициты и избытки.
-- Лента событий и автогенерируемых караванов.
-- **Лог причин:** «цена хлеба в X выросла, потому что дорога Y→X ×2.5 и запас упал до 40%». Ядро отдаёт причины структурно, текст на языке пользователя строит UI (D5, MODEL §5.12).
-- Быстрое добавление эффекта из интерфейса.
-- Прямая правка запасов (игрок скупил товар, мастер вносит это вручную).
+### 5.8 Output and interface
+- A table of prices by node (buy and sell) for quick use at the table.
+- Flows along roads, shortages and surpluses.
+- A feed of events and auto-generated caravans.
+- **Reasons log:** "the price of bread in X went up because road Y→X is ×2.5 and the stock fell to 40%". The core returns causes in structured form; the UI builds the text in the user's language (D5, MODEL §5.12).
+- Quick addition of an effect from the interface.
+- Direct stock edits (a player bought out a good, the GM enters it by hand).
 
-### 5.9 Данные
-- Мир хранится в одном текстовом файле (YAML, JSON или TOML, **формат не выбран**), удобном для версионирования и обмена шаблонами.
-- Состояние симуляции сохраняется отдельно от описания мира.
+### 5.9 Data
+- The world is stored in a single text file, convenient for versioning and sharing templates. **Decided: TOML (`DECISIONS.md` D1).**
+- The simulation state is saved separately from the world description.
 
-### 5.10 Устойчивость и стоки (предложено)
-Причина: в Bannerlord без крупных войн центральные города разгоняются, процветание растёт, цены падают, экономика ломается (положительная обратная связь без стоков). Модель должна иметь замыкающие контуры.
-- **Предложение реагирует на цену:** при долгом падении цены мощность производства снижается (например `p = p₀·(P/P₀)^β` с зажимом).
-- **Потребление растёт с богатством** не медленнее производства.
-- **Порча и стоимость хранения:** запас теряет часть ежедневно, бесконечный рост запасов невозможен.
-- **Потолок процветания:** мягкий, но достаточно жёсткий, чтобы остановить разгон.
-- **Стоки:** налоги, содержание гарнизонов и армий, пошлины постоянно выводят часть товаров и денег из системы.
-- **Фоновые события:** генератор случайных шоков (неурожай, эпидемия, налёт) с seed. Мастер может его отключить.
-- **Армия на постое** выедает рынок узла: стандартный шок потребления.
-- **Ручной подвоз товара** игроками продлевает рост узла, но после прекращения возможен более глубокий провал. Модель не должна сглаживать этот эффект (наблюдение из Bannerlord).
+### 5.10 Stability and sinks (proposed)
+Reason: in Bannerlord, without major wars central cities run away — prosperity grows, prices fall, the economy breaks (positive feedback without sinks). The model must have closing loops.
+- **Supply responds to price:** with a long price decline production capacity falls (e.g. `p = p₀·(P/P₀)^β` with a clamp).
+- **Consumption grows with wealth** no slower than production.
+- **Spoilage and storage cost:** the stock loses a share daily; unbounded stock growth is impossible.
+- **Prosperity ceiling:** soft, but firm enough to stop runaway growth.
+- **Sinks:** taxes, upkeep of garrisons and armies, and tolls constantly remove part of the goods and money from the system.
+- **Background events:** a seeded generator of random shocks (blight, epidemic, raid). The GM can turn it off.
+- **A billeted army** eats up a node's market: a standard consumption shock.
+- **Players hauling in goods by hand** prolong a node's growth, but once it stops a deeper slump is possible. The model must not smooth this effect away (an observation from Bannerlord).
 
-## 6. Нефункциональные требования
+## 6. Non-functional requirements
 
-- **Локальность:** работа без аккаунтов, серверов и интернета (после загрузки).
-- **Порог входа:** мастер открывает страницу или запускает один файл, ничего не устанавливая.
-- **Производительность:** пересчёт дня на 10-20 узлах мгновенный. Оптимизация не приоритет, но архитектура не должна мешать росту до сотен узлов.
-- **Воспроизводимость:** seed для случайных событий.
-- **Устойчивость, критерий приёмки (предложено):** автотест. Прогон на 1000+ дней без событий сходится к стационарной точке, цены не прилипают к границам коридора, запасы не растут бесконечно.
-- **Лицензия:** open-source (конкретная лицензия не выбрана).
+- **Local:** works without accounts, servers or internet (after loading).
+- **Low barrier to entry:** the GM opens a page or runs one file, installing nothing.
+- **Performance:** recomputing a day on 10-20 nodes is instant. Optimisation is not a priority, but the architecture must not prevent growth to hundreds of nodes.
+- **Reproducibility:** a seed for random events.
+- **Stability, acceptance criterion (proposed):** an autotest. A 1000+ day run without events converges to a steady state, prices do not stick to the corridor edges, stocks do not grow without bound.
+- **Licence:** open source. **Decided: MIT (`DECISIONS.md` D4).**
 
-## 7. Архитектура (высокий уровень)
+## 7. Architecture (high level)
 
-- **Ядро:** библиотека на Rust (симуляция, эффекты, лог причин). Не зависит от UI.
-- **Веб-интерфейс:** ядро компилируется в WASM, статический сайт, работает офлайн (PWA), мир сохраняется и загружается файлом.
-- **Десктоп:** упаковка того же интерфейса в .exe (например Tauri) на этапе релиза.
-- **Прототип математики:** при необходимости на Python до переноса в Rust.
+- **Core:** a Rust library (simulation, effects, reasons log). Independent of the UI.
+- **Web interface:** the core compiles to WASM, a static site that works offline (PWA); the world is saved and loaded as a file.
+- **Desktop:** the same interface packaged as an .exe (e.g. Tauri) at release time.
+- **Maths prototype:** in Python if needed, before porting to Rust.
 
-## 8. Не цели v1
+## 8. Non-goals of v1
 
-- Реалтайм и мультиплеер.
-- Торговцы как полноценные агенты с собственной логикой и кошельками.
-- Учёт индивидуальных финансов игроков.
-- Моделирование континента и длинных кампаний (годы игрового времени).
-- Строгое глобальное равновесие (двойственные переменные min-cost flow). Выбрана локальная цена плюс арбитраж.
+- Real time and multiplayer.
+- Traders as full agents with their own logic and wallets.
+- Tracking individual player finances.
+- Modelling a continent and long campaigns (years of in-game time).
+- Strict global equilibrium (dual variables of min-cost flow). A local price plus arbitrage was chosen instead.
 
-## 9. Риски
+## 9. Risks
 
-| Риск | Смягчение |
+| Risk | Mitigation |
 |---|---|
-| Экономика разгоняется или колеблется (паутинная модель) | Сглаживание цен, коридор множителя, малый шаг |
-| Цены не соответствуют доходам игроков | База из прайс-листа системы, коридор, спред |
-| Мастер не понимает, что происходит | Лог причин, лента событий |
-| Слишком много настройки на старте | Шаблоны миров, категории вместо отдельных товаров, прогрев мира |
-| Рост сложности модели | Чёткое разделение параметров и состояния, модель описана отдельно |
-| Разгон без внешних шоков (положительная обратная связь, как в центральных городах Bannerlord) | Реакция предложения на цену, порча, стоки, потолок процветания, автотест на 1000+ дней |
-| Игроки ломают экономику собственным производством | Ёмкость рынка, влияние покупки на цену, спред |
+| The economy runs away or oscillates (cobweb model) | Price smoothing, multiplier corridor, small step |
+| Prices do not match player income | Base from the system's price list, corridor, spread |
+| The GM does not understand what is going on | Reasons log, event feed |
+| Too much setup up front | World templates, categories instead of individual goods, world warm-up |
+| Growing model complexity | Clear separation of parameters and state, the model is described separately |
+| Runaway growth without external shocks (positive feedback, as in Bannerlord's central cities) | Supply response to price, spoilage, sinks, prosperity ceiling, a 1000+ day autotest |
+| Players break the economy with their own production | Market capacity, purchases moving the price, spread |
 
-## 10. Открытые вопросы
+## 10. Open questions
 
-1. ~~Формат файла мира (YAML, JSON или TOML).~~ Решено: TOML, см. `DECISIONS.md` D1.
-2. ~~Производственные цепочки: в v1 или позже.~~ Решено: v1.1, см. D3.
-3. Правила материализации караванов: порог потока, частота, как задавать силу охраны.
-4. ~~Откуда берётся базовый прайс-лист: встроенный шаблон PHB, импорт или ручной ввод.~~ Решено: SRD 5.1, `references/srd_gear.csv`, см. D5 (заменило D2).
-5. Спрос и процветание: предложена медленная переменная процветания (еда, разнообразие, потолок), конкретная форма не выбрана.
-6. Единицы товаров: штуки, весовые единицы или абстрактные «партии».
-7. ~~Название проекта и лицензия.~~ Решено: Dungeonomics, MIT, см. `DECISIONS.md` D4.
-8. Параметры стабилизации: эластичность предложения по цене (β), скорость порчи, величина потолка процветания, перечень стоков.
-9. Генератор фоновых событий: включён ли по умолчанию.
+1. ~~World file format (YAML, JSON or TOML).~~ Decided: TOML, see `DECISIONS.md` D1.
+2. ~~Production chains: in v1 or later.~~ Decided: v1.1, see D3.
+3. Caravan materialisation rules: flow threshold, frequency, how guard strength is set.
+4. ~~Where the base price list comes from: a built-in PHB template, import or manual entry.~~ Decided: SRD 5.1, `references/srd_gear.csv`, see D5 (superseded D2).
+5. Demand and prosperity: a slow prosperity variable is proposed (food, variety, ceiling); its exact form is not chosen.
+6. Units of goods: pieces, weight units or abstract "batches".
+7. ~~Project name and licence.~~ Decided: Dungeonomics, MIT, see `DECISIONS.md` D4.
+8. Stabilisation parameters: price elasticity of supply (β), spoilage rate, size of the prosperity ceiling, list of sinks.
+9. Background event generator: on by default or not.
 
-## 11. Следующие шаги
+## 11. Next steps
 
-1. Описать математическую модель: переменные, формулы, порядок обновления за тик, форма эффектов, контуры устойчивости (5.10).
-2. Набросать пример мира на 3 города с цифрами и проверить, что цены «ощущаются» нормально.
-3. Выбрать формат файла мира и зафиксировать схему.
-4. Прототип ядра (Python или сразу Rust), затем WASM и UI. Автотест устойчивости пишется вместе с первым прототипом.
+1. Describe the mathematical model: variables, formulas, per-tick update order, the form of effects, stability loops (5.10).
+2. Sketch an example world of 3 cities with numbers and check that the prices "feel" right.
+3. Choose the world file format and pin down the schema.
+4. A core prototype (Python or straight to Rust), then WASM and UI. The stability autotest is written together with the first prototype.
 
-## 12. Приложение: наблюдения из экономики Bannerlord
+## 12. Appendix: observations from the Bannerlord economy
 
-Источник: ветка форума «Экономическая модель: город, деревня, мастерская, караваны, крестьяне» (rusmnb.ru, topic 23729), 2021 год, версии 1.5-1.7 beta. Это наблюдения игроков, а не формулы из кода. Игра с тех пор менялась, а часть наблюдений противоречит друг другу (например, о связи богатства деревни и объёма поставок). Реальные формулы лежат в коде игры, их ещё предстоит найти.
+Source: the forum thread "Economic model: town, village, workshop, caravans, peasants" (rusmnb.ru, topic 23729), 2021, versions 1.5-1.7 beta. These are players' observations, not formulas from the code. The game has changed since, and some observations contradict each other (e.g. about the link between village wealth and supply volume). The real formulas are in the game code and have yet to be found.
 
-**Подтверждает нашу схему**
-- Недоступность пути ведёт к дефициту и росту цены, самые дешёвые товары лежат там, куда проще довезти.
-- Деревни привязаны к городу и дают стабильный базовый поток, сверх которого ходят отряды крестьян.
-- Набег снижает процветание деревни, и падают и поток, и налоги: событие меняет параметр, остальное считается само.
-- Скриптовое «выравнивание» вывозит излишки богатых городов, богатый город в нищей стране не построить.
+**Supports our design**
+- An unreachable route leads to shortage and rising prices; the cheapest goods are where it is easiest to deliver.
+- Villages are bound to a town and give a steady base flow, on top of which peasant parties travel.
+- A raid lowers a village's prosperity, and both the flow and the taxes fall: the event changes a parameter, the rest is computed on its own.
+- A scripted "levelling" ships out the surplus of rich towns; you cannot build a rich town in a poor country.
 
-**Идеи, вошедшие в требования (предложено)**
-- Процветание как медленная переменная: растёт от запаса еды (до +3 в день) и товаров на рынке (около +2), потолок через «стоимость жилья» (выше 6К штраф −1, выше 9К штраф −2, у бедных городов бонус).
-- Разнообразие еды важнее объёма (1000 зерна меньше, чем по 500 рыбы и винограда).
-- Роскошь (ювелирка, бархат) потребляется богатыми городами и убыточна в нищих.
-- Цены деревни и города двигаются вместе, покупка партией сдвигает цену на каждой единице.
-- Прибыль караванов шумная: от убытка до 1000+ в день при среднем около 250.
-- Армия на постое выедает рынок, ручной подвоз еды продлевает рост, но потом провал глубже.
+**Ideas that went into the requirements (proposed)**
+- Prosperity as a slow variable: it grows from the food stock (up to +3 per day) and goods on the market (about +2), with a ceiling via "housing cost" (above 6K a −1 penalty, above 9K −2, a bonus for poor towns).
+- Food variety matters more than volume (1000 grain is worth less than 500 each of fish and grapes).
+- Luxury (jewellery, velvet) is consumed by rich towns and loses money in poor ones.
+- Village and town prices move together; buying in bulk moves the price on every unit.
+- Caravan profit is noisy: from a loss to 1000+ per day, with an average around 250.
+- A billeted army eats up the market; hauling in food by hand prolongs growth, but the slump afterwards is deeper.
 
-**Предупреждения из ветки**
-- Собственное производство игрока (кузница) ломает экономику: доход игроков должен упираться в ёмкость рынка.
-- Без крупных войн центральные города разгоняются, цены падают, система ломается (наблюдение автора проекта). Отсюда раздел 5.10.
+**Warnings from the thread**
+- The player's own production (a smithy) breaks the economy: player income must run into market capacity.
+- Without major wars central cities run away, prices fall, the system breaks (the project author's observation). Hence section 5.10.

@@ -9,34 +9,45 @@ Milestones closed (plans in `docs/plans/`):
   §4–5.12, stability autotests §8.1–8.4. Stays the reference oracle (golden fixtures).
 - **M2** `m2-rust-port.md` — Rust port of the core, R0–R6.
 - **M3** `m3-wasm-web-ui.md` — WASM facade, wasm-pack packaging, offline PWA web UI, R7–R9.
+- **M4** `m4-open-source.md` — open-source readiness, R10–R14: SRD 5.1 price list, structured
+  reasons log, EN/RU UI i18n, code and docs in English.
 
-Production chains (§5.13) are deferred to v1.1. **Current milestone: M4** `m4-open-source.md` —
-English + i18n + SRD price list, stages R10–R14; R10 (SRD price list), R11 (structured reasons log), R12 (UI i18n EN/RU) and R13 (code in English)
-done, next R14 (specs and docs in English). Commits from now on are in
-English and carry no Claude attribution (D5). Decisions go to
-`DECISIONS.md` (D1 TOML, D2 price list, D3 chains → v1.1, D4 name Dungeonomics + MIT, D5 English + i18n + SRD). Specs remain the source of truth:
+Production chains (§5.13) are deferred to v1.1. The next milestone is not planned yet — a new
+plan goes to `docs/plans/m5-<name>.md`, stages continue from R15. Decisions go to `DECISIONS.md`
+(D1 TOML, D2 price list, D3 chains → v1.1, D4 name Dungeonomics + MIT, D5 English + i18n + SRD).
+Specs remain the source of truth:
 
 - `REQUIREMENTS.md` — product requirements v1 (goal, scope, functional/non-functional reqs, risks, open questions).
 - `MODEL.md` — the mathematical model v1 (variables, per-tick update order, formulas, stability analysis, default parameters, acceptance tests). Complements `REQUIREMENTS.md`.
 
-Both are marked *черновик* (draft). Items tagged *(предложено)* are proposals the author has
-not yet confirmed — do not treat them as decided. Code references spec sections as `§5.6` etc.
-The specs are Russian; so are code comments and commit discussion. When specs disagree with code,
-the specs win unless a decision has been recorded.
+Both are marked *draft*. Items tagged *(proposed)* are proposals the author has not yet
+confirmed — do not treat them as decided. Code references spec sections as `§5.6` etc.
+Everything is in English (D5): specs, docs, code comments, commit messages; the only Russian
+text is the RU UI catalog `web/src/i18n/ru.ts`. Commits and PRs carry no Claude attribution.
+When specs disagree with code, the specs win unless a decision has been recorded.
 
 ## Commands
 
 ```bash
 python3 -m venv .venv && .venv/bin/python -m pip install -e ".[dev]"   # setup
-.venv/bin/python -m pytest -q                       # all tests (stability suite §8 lives here)
+.venv/bin/python -m pytest -q                       # all Python tests (stability suite §8 lives here)
 .venv/bin/python -m pytest tests/test_single_node.py -q   # one test file
 .venv/bin/python -m pytest -q -k runaway             # tests matching a name
+.venv/bin/python scripts/dump_golden.py              # regenerate golden/*.json from the Python oracle
 .venv/bin/python -m jupyter nbconvert --to notebook --execute notebooks/calibration.ipynb  # run notebook
 python3 -I scripts/build_srd_gear.py                 # regenerate references/srd_gear.csv (needs references/srd/*.json, see script)
+
+cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace
+wasm-pack build crates/ddeco-wasm --target nodejs --out-dir pkg-node && node crates/ddeco-wasm/smoke/smoke.cjs
+wasm-pack build crates/ddeco-wasm --target web --out-dir ../../web/src/pkg && npm --prefix web run build
 ```
 
-## Code map (`ddeco/`, stdlib-only core)
+CI (`.github/workflows/ci.yml`) runs all of the above on stable Rust; clippy there may be newer
+than locally.
 
+## Code map
+
+Python oracle (`ddeco/`, stdlib-only):
 - `goods.py` / `world.py` — data model: good params (§7 price-class defaults), graph of nodes/edges, `GlobalParams`.
 - `state.py` — `SimState` (stocks, multipliers, prosperity, transit pipelines, effects, caravans) with `clone()` for rollback.
 - `effects.py` — parametric effects: decay weights and the `clamp(base·Π+Σ)` composition (§3); `effective()` resolves a parameter.
@@ -44,10 +55,17 @@ python3 -I scripts/build_srd_gear.py                 # regenerate references/srd
 - `tick.py` — `step_day` orchestrates the fixed §4 order; `run()` loops; also the effective-parameter helpers.
 - `trade.py` — arbitrage with in-transit damping + hub delivery (§5.6); conveyor insertion.
 - `calibration.py` — equilibrium seed + `warmup()` (§5.14). `rng.py` — counter-based RNG (§5.11). `shocks.py` — background shocks.
-- `purchase.py` (§5.7), `caravans.py` (§5.10), `reasons.py` (§5.12), `events.py` (one-shot events), `loader.py`/`persistence.py` (TOML I/O + autosave).
+- `purchase.py` (§5.7), `caravans.py` (§5.10), `reasons.py` (§5.12, structured causes), `events.py` (one-shot events), `loader.py`/`persistence.py` (TOML I/O + autosave).
 
 Tests mirror the spec: `tests/test_single_node.py` (§8.1), `test_multi_node.py` (§8.2),
 `test_runaway.py` (§8.3), `test_determinism.py` (§8.4). `tests/single_node.py` is a shared helper, not a test.
+
+Rust and web:
+- `crates/ddeco-core` — module-for-module port of `ddeco/` (`mathf.rs` wraps `libm` for §9);
+  `tests/` check golden parity with `golden/*.json`.
+- `crates/ddeco-wasm` — the `Sim` facade (wasm-bindgen) returning plain JSON DTOs; `smoke/smoke.cjs` checks their shape.
+- `web/` — Svelte 5 PWA; `src/store.svelte.ts` wraps `Sim`, `src/i18n/` holds the EN/RU catalogs.
+- `references/srd_gear.csv` — base price list P0_g (SRD 5.1, CC-BY-4.0; attribution in README).
 
 ## What this is
 
@@ -59,12 +77,12 @@ local single-user operation.
 
 ## Architecture
 
-- **Core:** currently the Python prototype in `ddeco/` (stdlib-only, UI-independent). It is the
-  reference implementation; its "golden runs" will verify the planned Rust port.
-- **Rust core (next):** same logic ported to Rust for WASM. Pure Python with explicit, sorted
-  iteration was chosen precisely so the port is mechanical and determinism (§9) is preserved.
-- **Web UI (later):** Rust core compiled to WASM, static offline PWA; world saved/loaded as a file.
-- **Desktop (later):** same UI packaged as an executable (e.g. Tauri) at release time.
+- **Python oracle:** `ddeco/` (stdlib-only, UI-independent). The reference implementation; its
+  golden runs verify the Rust port. Pure Python with explicit, sorted iteration keeps the port
+  mechanical and determinism (§9) intact.
+- **Rust core:** `crates/ddeco-core`, the same logic, compiled to WASM.
+- **Web UI:** the WASM facade + a static offline PWA; the world is saved/loaded as a file.
+- **Desktop (later):** the same UI packaged as an executable (e.g. Tauri) at release time.
 
 ## Core model concepts (read before touching simulation logic)
 
@@ -86,6 +104,7 @@ These invariants are the heart of the design. Violating them breaks the whole ap
   interpolates its multiplier back to 1 so expiry causes no jump.
 - **Explainability (reasons log) is a first-class feature**, prioritized over numeric precision.
   Every price/availability change must be traceable to a cause chain back to active effects.
+  The core emits structured causes only; text and translation belong to the UI (§5.12, D5).
 - **Determinism is required.** Same seed + same inputs ⇒ reproducible, including rollback/replay
   of a day. The RNG must be **counter-based** — values derived from `(seed, day, target_id,
   template_id)`, not from a call sequence (see `MODEL.md` §5.11).
@@ -93,6 +112,8 @@ These invariants are the heart of the design. Violating them breaks the whole ap
   no events must converge to a steady state (prices not pinned to corridor edges, stocks not
   growing unboundedly). The main closing loop is supply reacting to price (`MODEL.md` §5.2),
   plus spoilage, sinks, and a prosperity ceiling. See the stability analysis in `MODEL.md` §6.
+- **Python and Rust stay in lockstep.** A change to model logic goes into both cores and is
+  checked by regenerating `golden/` from Python and running the Rust tests.
 
 ## Reproducibility constraints for any implementation
 
@@ -100,11 +121,11 @@ From `MODEL.md` §9 — these shape how the Rust/WASM code must be written:
 
 - Fixed node/edge traversal order (sort by id); floating-point reductions only with a fixed
   summation order.
-- `pow`/`exp`/`ln` differ in last bits across platforms and WASM. For cross-build reproducibility
-  either use a single shared math implementation (e.g. `libm`) or record golden runs "with
-  tolerance" instead of requiring bit-exact matches.
+- `pow`/`exp`/`ln` differ in last bits across platforms and WASM. The Rust core uses a single
+  shared math implementation (`libm` via `mathf.rs`); Python↔Rust golden runs are compared with a
+  tolerance.
 
-## Acceptance tests to implement alongside the first prototype
+## Acceptance tests
 
 `MODEL.md` §8 defines the stability test suite that doubles as the correctness bar: single-node
 convergence per good category, multi-node (3–4 cities, ~15 nodes) convergence with no events,
@@ -114,5 +135,6 @@ determinism (two runs with one seed match; rollback-and-replay reproduces).
 ## Open decisions not yet made
 
 Before implementing areas they touch, check these are still open (see `REQUIREMENTS.md` §10 and
-`MODEL.md` §10; already decided: D1–D5 in `DECISIONS.md`): goods units (pieces/weight/"batches"), caravan materialization rules, and
-the stabilization parameters (β, spoilage rate, prosperity ceiling, list of sinks).
+`MODEL.md` §10; already decided: D1–D5 in `DECISIONS.md`): goods units (pieces/weight/"batches"),
+caravan materialization rules, and the stabilization parameters (β, spoilage rate, prosperity
+ceiling, list of sinks).

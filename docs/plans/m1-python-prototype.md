@@ -1,131 +1,131 @@
-> **Статус:** закрыт — Python-прототип ядра (Milestone 1).
+> **Status:** closed — Python prototype of the core (Milestone 1).
 
-# План: Milestone 1 — Python-прототип ядра «живой экономики» для настольных RPG
+# Plan: Milestone 1 — Python prototype of the "living economy" core for tabletop RPGs
 
 ## Context
 
-Проект на стадии дизайна: в репозитории только два черновых спека на русском —
-`REQUIREMENTS.md` (продуктовые требования v1) и `MODEL.md` (математическая модель v1).
-Кода, сборки и тестов нет. Нужно начать реализацию.
+The project is at the design stage: the repository holds only two draft specs in Russian —
+`REQUIREMENTS.md` (product requirements v1) and `MODEL.md` (mathematical model v1).
+There is no code, build or tests. Implementation needs to start.
 
-Цель инструмента: мастер D&D один раз описывает регион (узлы, дороги, товары), а дальше
-действия игроков и события сами двигают цены, наличие и торговые потоки — без ручной
-бухгалтерии. Вдохновлено экономикой Bannerlord.
+The tool's goal: a D&D GM describes a region once (nodes, roads, goods), and from then on player
+actions and events move prices, availability and trade flows on their own — no manual
+bookkeeping. Inspired by the Bannerlord economy.
 
-**Решения, принятые для этого плана (от пользователя):**
-- **Язык первого шага — Python-прототип.** Сначала проверяем математику и контуры устойчивости
-  на Python, затем (отдельная будущая веха) порт в Rust → WASM → веб-UI. Python-прототип остаётся
-  эталоном для golden-run сверки Rust-реализации (`MODEL.md` §9).
-- **Объём Milestone 1 — полный одно-региональный мир** (3–4 города, ~15 узлов): торговые потоки,
-  процветание, караваны, лог причин — всё из `MODEL.md` §4–5.12. **Без UI** (UI — отдельная веха).
-- **Формат хранения — TOML с периодическим автосохранением** (условно раз в минуту wall-clock,
-  **не на каждый тик**). Источник истины — внутренняя модель; мастер правит мир через формы UI
-  (в будущей вехе). TOML читаем → годится и для референсных миров сообщества, и как save-формат.
-  Описание мира и состояние хранятся раздельно (§5.9): `world.toml` (описание, редактируемо и
-  шарится) + автосохраняемый `state.toml` (снимок состояния сессии).
-- **Откат/повтор (§7, §8.4) — на in-memory снимках состояния** (`state.clone()`) внутри сессии;
-  файл в этот путь не вовлечён. Поэтому бит-точность float требуется только в памяти — потеря
-  нескольких бит при сериализации в TOML при автосейве допустима и тест детерминизма не ломает.
-- **Производственные цепочки (§5.13) — отложены до v1.1.** В M1 товары независимы; в коде
-  заложить точку расширения, но не реализовывать.
+**Decisions made for this plan (by the user):**
+- **First step language — a Python prototype.** First we verify the maths and the stability loops
+  in Python, then (a separate future milestone) port to Rust → WASM → web UI. The Python prototype
+  stays the reference for golden-run checks of the Rust implementation (`MODEL.md` §9).
+- **Milestone 1 scope — a full single-region world** (3–4 cities, ~15 nodes): trade flows,
+  prosperity, caravans, the reasons log — everything from `MODEL.md` §4–5.12. **No UI** (the UI is a separate milestone).
+- **Storage format — TOML with periodic autosave** (roughly once a minute of wall-clock time,
+  **not on every tick**). The source of truth is the in-memory model; the GM edits the world through
+  UI forms (in a future milestone). TOML is readable → fits both community reference worlds and a
+  save format. The world description and the state are stored separately (§5.9): `world.toml`
+  (description, editable and shareable) + an autosaved `state.toml` (session state snapshot).
+- **Undo/replay (§7, §8.4) — on in-memory state snapshots** (`state.clone()`) within a session;
+  the file is not involved in that path. So float bit-exactness is needed only in memory — losing a
+  few bits when serialising to TOML on autosave is acceptable and does not break the determinism test.
+- **Production chains (§5.13) — deferred to v1.1.** In M1 goods are independent; the code should
+  leave an extension point, but not implement them.
 
-Итог M1: Python-пакет, симулирующий регион по модели, проходящий автотесты устойчивости
-`MODEL.md` §8.1–8.4, с примером мира на 3 города и прогревом до равновесия.
+M1 outcome: a Python package that simulates a region per the model, passes the stability autotests
+`MODEL.md` §8.1–8.4, with an example world of 3 cities and a warm-up to equilibrium.
 
-## Архитектурные инварианты (не нарушать — это суть дизайна)
+## Architectural invariants (do not break — they are the essence of the design)
 
-Берутся из `MODEL.md`; любая реализация обязана их держать:
+Taken from `MODEL.md`; any implementation must keep them:
 
-1. **Параметры vs состояние строго раздельны.** Параметры (Pcap, N, k_e, cap_e) меняют только
-   эффекты; состояние (s, m, q, π) эволюционирует само. Прямое изменение состояния — только
-   разовыми событиями (грабёж каравана, правка запасов мастером, удар по π).
-2. **Синхронный тик** из снимка на начало дня → порядок обхода узлов/дуг не влияет на результат.
-   Порядок шагов за день фиксирован (`MODEL.md` §4), менять нельзя.
-3. **Детерминизм.** Один seed + входы ⇒ воспроизводимо, включая откат/повтор дня. RNG —
-   **счётчиковый**: значение из `(seed, day, target_id, template_id)`, не из последовательности
-   вызовов (§5.11). Фиксированный порядок суммирования float (сортировка по id, §9).
-4. **Цены — множители к базовому прайс-листу**, зажаты в коридор. Цена узла зависит только от его
-   состояния; узлы связаны только через торговые потоки (арбитраж), не через общее равновесие.
-5. **Объяснимость (лог причин) — first-class.** Каждое изменение цены/наличия трассируется к
-   причинам (§5.12).
-6. **Устойчивость без событий** — критерий приёмки (§8): мир сходится к стационару, цены не
-   прилипают к границам коридора, запасы не растут бесконечно. Главный замыкающий контур —
-   реакция предложения на цену (§5.2).
+1. **Parameters vs state are strictly separate.** Parameters (Pcap, N, k_e, cap_e) are changed only
+   by effects; the state (s, m, q, π) evolves on its own. The state is changed directly only by
+   one-shot events (caravan robbery, GM stock edits, a hit on π).
+2. **Synchronous tick** from the start-of-day snapshot → the node/arc traversal order does not affect
+   the result. The order of steps within a day is fixed (`MODEL.md` §4) and must not change.
+3. **Determinism.** One seed + inputs ⇒ reproducible, including undo/replay of a day. The RNG is
+   **counter-based**: a value from `(seed, day, target_id, template_id)`, not from a call sequence
+   (§5.11). A fixed float summation order (sorted by id, §9).
+4. **Prices are multipliers on a base price list**, clamped to a corridor. A node's price depends
+   only on its state; nodes are coupled only through trade flows (arbitrage), not a general equilibrium.
+5. **Explainability (the reasons log) is first-class.** Every price/availability change is traced to
+   its causes (§5.12).
+6. **Stability without events** is an acceptance criterion (§8): the world converges to a steady
+   state, prices do not stick to the corridor edges, stocks do not grow without bound. The main
+   closing loop is the supply response to price (§5.2).
 
-## Структура пакета
+## Package structure
 
-**Гибрид с notebook:** ядро и тесты живут в импортируемом пакете `ddeco/` (это уходит в порт на
-Rust и в CI). Jupyter notebook — отдельный слой поверх: импортирует `ddeco`, отвечает за графики,
-калибровку и параметрические прогоны. В notebook НЕ живёт логика симуляции.
+**A hybrid with a notebook:** the core and tests live in an importable package `ddeco/` (this goes
+into the Rust port and CI). A Jupyter notebook is a separate layer on top: it imports `ddeco` and
+handles plots, calibration and parametric runs. No simulation logic lives in the notebook.
 
 ```
-pyproject.toml                # пакет ddeco, deps: numpy; dev: pytest, matplotlib, jupyter; tomllib (stdlib 3.11+)
+pyproject.toml                # package ddeco, deps: numpy; dev: pytest, matplotlib, jupyter; tomllib (stdlib 3.11+)
 ddeco/
-  goods.py        # Good, Category; параметры товара: α, ε, β, [m_min,m_max], δ, T, c0, κ, vol, ω (§7)
-  world.py        # Node, Edge(направленная дуга), World-граф; привязка деревня→город (hub)
-  state.py        # SimState: s_ig, m_ig, конвейеры q[e,g,d], π_i; clone()/snapshot для отката
-  effects.py      # Effect(target, kind, mult|add, duration, decay); вес w_k(t) §3;
-                  #   композиция clamp(base·Π(1+(mult-1)·w)+Σ add·w, min, max); истечение эффектов
-  rng.py          # счётчиковый RNG: детерминированный хеш (seed, day, target_id, template_id)
-  formulas.py     # чистые функции §5.1–5.8: s*, производство, спрос/потребление, порча,
-                  #   множитель цены+сглаживание, процветание
-  trade.py        # §5.6 арбитраж: m̂ с учётом товара в пути, γ_e, Δ_eg, A/u/ψ/φ/f, запись в конвейер;
-                  #   обязательная поставка в хаб η_v
-  purchase.py     # §5.7 влияние покупки/продажи игрока на цену (численное суммирование по единицам)
-  caravans.py     # §5.10 материализация именных караванов по накопленной стоимости V_e ≥ θ_car
-  shocks.py       # §5.11 фоновые шоки из шаблонов через счётчиковый RNG (отключаемо)
-  reasons.py      # §5.12 лог причин: эффективные параметры, потоки, активные эффекты; топ-3 вклада
-  tick.py         # оркестрация §4: 10 шагов за день в фиксированном порядке
-  calibration.py  # §5.14 начальное состояние (авто-калибровка m при Pcap≠D) и прогрев мира
-  loader.py       # world.toml → World (импорт/редактирование/шаринг);
-                  #   state.toml ↔ SimState с периодическим автосохранением (не на каждый тик)
-  persistence.py  # таймер автосейва (~1 мин wall-clock), атомарная запись (tmp+rename)
+  goods.py        # Good, Category; good parameters: α, ε, β, [m_min,m_max], δ, T, c0, κ, vol, ω (§7)
+  world.py        # Node, Edge (directed arc), the World graph; village→city binding (hub)
+  state.py        # SimState: s_ig, m_ig, pipelines q[e,g,d], π_i; clone()/snapshot for undo
+  effects.py      # Effect(target, kind, mult|add, duration, decay); weight w_k(t) §3;
+                  #   composition clamp(base·Π(1+(mult-1)·w)+Σ add·w, min, max); effect expiry
+  rng.py          # counter-based RNG: a deterministic hash of (seed, day, target_id, template_id)
+  formulas.py     # pure functions §5.1–5.8: s*, production, demand/consumption, spoilage,
+                  #   price multiplier + smoothing, prosperity
+  trade.py        # §5.6 arbitrage: m̂ with goods in transit, γ_e, Δ_eg, A/u/ψ/φ/f, pipeline insertion;
+                  #   mandatory hub delivery η_v
+  purchase.py     # §5.7 price impact of a player's purchase/sale (numerical summation over units)
+  caravans.py     # §5.10 materialisation of named caravans by accumulated value V_e ≥ θ_car
+  shocks.py       # §5.11 background shocks from templates via the counter-based RNG (can be turned off)
+  reasons.py      # §5.12 reasons log: effective parameters, flows, active effects; top-3 contributions
+  tick.py         # §4 orchestration: 10 steps per day in a fixed order
+  calibration.py  # §5.14 initial state (auto-calibration of m when Pcap≠D) and world warm-up
+  loader.py       # world.toml → World (import/edit/share);
+                  #   state.toml ↔ SimState with periodic autosave (not on every tick)
+  persistence.py  # autosave timer (~1 min wall-clock), atomic write (tmp+rename)
 tests/
-  test_single_node.py   # §8.1 одноузловой: 1000 дней, ±20% возмущение, |s/s*-1|<0.01 к дню 300
-  test_multi_node.py    # §8.2 3–4 города/~15 узлов, |m-1|<0.05, потоки без колебаний
-  test_runaway.py       # §8.3 разгон: Pcap=1.5·D в центре, выход на потолок, не бесконечный рост
-  test_determinism.py   # §8.4 два прогона с одним seed совпадают; откат N дней и повтор идентичны
+  test_single_node.py   # §8.1 single node: 1000 days, ±20% perturbation, |s/s*-1|<0.01 by day 300
+  test_multi_node.py    # §8.2 3–4 cities/~15 nodes, |m-1|<0.05, flows without oscillation
+  test_runaway.py       # §8.3 runaway: Pcap=1.5·D in the centre, reaches a ceiling, no unbounded growth
+  test_determinism.py   # §8.4 two runs with one seed match; undoing N days and replaying are identical
 worlds/
-  example_region.toml   # пример мира на 3 города с цифрами (REQUIREMENTS §11, шаг 2)
+  example_region.toml   # an example world of 3 cities with numbers (REQUIREMENTS §11, step 2)
 notebooks/
-  calibration.ipynb     # импортирует ddeco; графики сходимости (1000 дней), подбор α/β/ε/T/λ,
-                        #   сверка затухающих колебаний с аналитикой §6.3, проверка «цены ощущаются»
+  calibration.ipynb     # imports ddeco; convergence plots (1000 days), fitting α/β/ε/T/λ,
+                        #   comparing damped oscillations with the §6.3 analysis, checking that "prices feel right"
 ```
 
-## Порядок реализации
+## Implementation order
 
-1. **Каркас:** `pyproject.toml` (пакет `ddeco`, numpy, pytest), скелет модулей. Зафиксировать
-   TOML-схемы `world.toml` (описание) и `state.toml` (состояние) в `loader.py`, записать
-   `worlds/example_region.toml`. Автосейв (`persistence.py`) можно отложить до конца этапа.
-2. **Одноузловое ядро (цена-запас-производство):** `goods.py`, `state.py`, `formulas.py`
-   (§5.1–5.5), `effects.py` (§3), минимальный `tick.py` без торговли. Сразу `test_single_node.py`
-   (§8.1) — проверяет контур §6 численно (эталон спектральных радиусов уже посчитан в §6.3).
-   Завести `notebooks/calibration.ipynb`: графики сходимости и сверка с аналитикой §6.3.
-3. **Спрос/процветание/порча:** дополнить `formulas.py` (§5.3, §5.4, §5.8), завести π в state.
-4. **Многоузловой + торговля:** `world.py` (граф, хабы), `trade.py` (§5.6, конвейеры, поставка в
-   хаб), шаги прибытия/отправки в `tick.py`. `test_multi_node.py` (§8.2).
-5. **Детерминизм и устойчивость:** `rng.py` (счётчиковый), `shocks.py` (§5.11), `calibration.py`
-   (§5.14, прогрев). `test_determinism.py` (§8.4, включая откат/повтор) и `test_runaway.py` (§8.3).
-6. **Караваны, покупки игрока, лог причин:** `caravans.py` (§5.10), `purchase.py` (§5.7),
-   `reasons.py` (§5.12). Интеграция в `tick.py` (шаги 9–10).
-7. **Обновить `CLAUDE.md`:** добавить команды Python (pytest, запуск прогона), отметить, что
-   началась реализация ядра на Python.
+1. **Scaffold:** `pyproject.toml` (package `ddeco`, numpy, pytest), module skeletons. Pin down the
+   TOML schemas of `world.toml` (description) and `state.toml` (state) in `loader.py`, write
+   `worlds/example_region.toml`. Autosave (`persistence.py`) can wait until the end of the stage.
+2. **Single-node core (price–stock–production):** `goods.py`, `state.py`, `formulas.py`
+   (§5.1–5.5), `effects.py` (§3), a minimal `tick.py` without trade. Immediately `test_single_node.py`
+   (§8.1) — it checks the §6 loop numerically (the reference spectral radii are already computed in §6.3).
+   Create `notebooks/calibration.ipynb`: convergence plots and comparison with the §6.3 analysis.
+3. **Demand/prosperity/spoilage:** extend `formulas.py` (§5.3, §5.4, §5.8), add π to the state.
+4. **Multi-node + trade:** `world.py` (graph, hubs), `trade.py` (§5.6, pipelines, hub
+   delivery), the arrival/dispatch steps in `tick.py`. `test_multi_node.py` (§8.2).
+5. **Determinism and stability:** `rng.py` (counter-based), `shocks.py` (§5.11), `calibration.py`
+   (§5.14, warm-up). `test_determinism.py` (§8.4, including undo/replay) and `test_runaway.py` (§8.3).
+6. **Caravans, player purchases, reasons log:** `caravans.py` (§5.10), `purchase.py` (§5.7),
+   `reasons.py` (§5.12). Integration into `tick.py` (steps 9–10).
+7. **Update `CLAUDE.md`:** add the Python commands (pytest, running a simulation), note that
+   implementation of the core in Python has started.
 
-## Точки расширения (заложить, не реализовывать)
+## Extension points (lay down, do not implement)
 
-- **Производственные цепочки (§5.13):** `formulas.py`/спрос спроектировать так, чтобы спрос на
-  входы добавлялся к D_ig без переделки тика (v1.1).
-- **Деньги/налоги:** в v1 только товары; налоги — как доля производства или спрос гарнизона (§10).
-- **WASM-воспроизводимость:** pow/exp/ln дают разные биты на платформах (§9) — в Python-эталоне
-  фиксируем golden-прогоны «с допуском», чтобы позже сверять Rust.
+- **Production chains (§5.13):** design `formulas.py`/demand so that demand for inputs
+  is added to D_ig without reworking the tick (v1.1).
+- **Money/taxes:** goods only in v1; taxes as a share of production or garrison demand (§10).
+- **WASM reproducibility:** pow/exp/ln give different bits across platforms (§9) — in the Python
+  reference we record golden runs "with tolerance" so we can check Rust later.
 
 ## Verification
 
-- `pytest tests/` — все четыре теста устойчивости (§8.1–8.4) зелёные. Это и есть критерий приёмки
-  модели.
-- Прогон примера: загрузить `worlds/example_region.toml`, выполнить «прогрев мира» до сходимости,
-  затем вручную проверить, что цены «ощущаются» нормально (REQUIREMENTS §11, шаг 2); применить
-  тестовый эффект (монстр на дороге ×2.5 сложности на 10 дней) и убедиться, что лог причин
-  называет верную причину роста цены в затронутом узле.
-- Детерминизм: один и тот же seed даёт идентичный прогон; откат на N дней и повтор — тот же
-  результат (ручная проверка поверх `test_determinism.py`).
+- `pytest tests/` — all four stability tests (§8.1–8.4) are green. This is the model's acceptance
+  criterion.
+- Example run: load `worlds/example_region.toml`, "warm up the world" until convergence,
+  then check by hand that the prices "feel" right (REQUIREMENTS §11, step 2); apply a
+  test effect (a monster on the road, ×2.5 difficulty for 10 days) and make sure the reasons log
+  names the right cause of the price rise at the affected node.
+- Determinism: the same seed gives an identical run; undoing N days and replaying gives the same
+  result (a manual check on top of `test_determinism.py`).

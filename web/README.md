@@ -1,30 +1,36 @@
-# Dungeonomics — веб-UI
+# Dungeonomics — web UI
 
-Статический офлайн-PWA поверх WASM-ядра (`crates/ddeco-wasm`). Vite + TypeScript +
-Svelte 5. Всё считается в браузере; мир и состояние — файлы TOML.
+A static offline PWA over the WASM core (`crates/ddeco-wasm`). Vite + TypeScript +
+Svelte 5. Everything runs in the browser; the world and the state are TOML files.
 
-## Запуск
+## Running
 
 ```bash
-# 1) собрать WASM-пакет (нужен wasm-pack: `cargo install wasm-pack`):
-npm run wasm        # → web/src/pkg (генерируется, не версионируется)
+# 1) build the WASM package (needs wasm-pack: `cargo install wasm-pack`):
+npm run wasm        # → web/src/pkg (generated, not versioned)
 
-# 2) зависимости и dev-сервер:
+# 2) dependencies and the dev server:
 npm install
 npm run dev         # http://localhost:5173
 
-# прод-сборка (type-check + vite build → web/dist):
+# production build (type-check + vite build → web/dist):
 npm run build
 npm run preview
 ```
 
-При старте загружается пример региона (`worlds/example_region.toml`). Свой мир/состояние
-загружаются файлом в шапке; кнопка «сохранить» выгружает текущее состояние в `state.toml`.
+The example region (`worlds/example_region.toml`) loads on startup. Your own world/state
+is loaded as a file from the header; the "save" button downloads the current state as `state.toml`.
 
-## Устройство
+## Structure
 
-- `src/store.svelte.ts` — реактивная обёртка над фасадом `Sim` (Svelte 5 runes): держит
-  экземпляр и перечитывает снимки после каждого действия.
-- `src/types.ts` — TS-зеркало DTO фасада (методы возвращают `any` от serde-wasm-bindgen).
-- `src/components/*` — панели §5.8: таблица цен (клик → лог причин), потоки/караваны,
-  эффекты (+форма добавления), действия мастера (запас, процветание, сделки).
+- `src/store.svelte.ts` — a reactive wrapper over the `Sim` facade (Svelte 5 runes): holds
+  the instance and re-reads the snapshots after each action.
+- `src/types.ts` — a TS mirror of the facade DTOs (methods return `any` from serde-wasm-bindgen).
+- `src/i18n/` — UI catalogs: `en.ts` holds the reference keys, `ru.ts` must have the same
+  ones (checked by `svelte-check`); `index.svelte.ts` provides `t()`, the language switch
+  (localStorage → browser language → EN) and the renderer for structured causes (§5.12).
+- `src/components/*` — the §5.8 panels: price table (click → reasons log), flows/caravans,
+  effects (+ add form), GM actions (stock, prosperity, deals).
+
+To add a language: create `src/i18n/<lang>.ts` typed as `Messages`, then register it in
+`CATALOGS` and `LANGS` in `index.svelte.ts`.

@@ -1,115 +1,115 @@
-> **Статус:** закрыт — Milestone A/B/C = R7–R9 (коммиты `112801b`…`1dbcc37`).
+> **Status:** closed — Milestone A/B/C = R7–R9 (commits `112801b`…`1dbcc37`).
 
-# План: от WASM-биндингов к рабочему веб-UI
+# Plan: from WASM bindings to a working web UI
 
-## Контекст
+## Context
 
-Ядро симуляции портировано в Rust (`crates/ddeco-core`, тесты зелёные, golden-паритет с
-Python). В этой сессии добавлен крейт `crates/ddeco-wasm` — фасад `Sim` над ядром
-(`wasm-bindgen` + `serde-wasm-bindgen`): конструктор из TOML, `step/run/undo`, `snapshot`,
-`world_info`, `explain`, `quote/trade`, разовые события, `save/load_state`. Собирается под
-`wasm32`, 5 smoke-тестов проходят.
+The simulation core is ported to Rust (`crates/ddeco-core`, tests green, golden parity with
+Python). This session added the `crates/ddeco-wasm` crate — the `Sim` facade over the core
+(`wasm-bindgen` + `serde-wasm-bindgen`): a constructor from TOML, `step/run/undo`, `snapshot`,
+`world_info`, `explain`, `quote/trade`, one-shot events, `save/load_state`. It builds for
+`wasm32`, 5 smoke tests pass.
 
-Цель этого этапа — довести биндинги до UI-готовности и поднять минимальный, но настоящий
-веб-UI (статический офлайн-PWA, §7 / REQUIREMENTS §5.8), чтобы мастер за столом видел цены,
-потоки, ленту событий и лог причин, мог вручную вмешиваться и сохранять мир файлом.
+The goal of this stage is to make the bindings UI-ready and stand up a minimal but real web UI
+(a static offline PWA, §7 / REQUIREMENTS §5.8), so the GM at the table sees prices, flows, the
+event feed and the reasons log, can intervene by hand and save the world as a file.
 
-Решения пользователя: порядок **фасад → упаковка → UI**; стек UI **Vite + TypeScript +
-Svelte**; фоновые шоки — **выключаемый тумблер** (по умолчанию off).
+User decisions: the order is **facade → packaging → UI**; the UI stack is **Vite + TypeScript +
+Svelte**; background shocks are **a toggle** (off by default).
 
-Пробел, выявленный при сверке с REQUIREMENTS §5.8: UI требует «быстрое добавление эффекта из
-интерфейса» и ленту активных эффектов/караванов/потоков — сейчас фасад этого не умеет.
+A gap found when checking against REQUIREMENTS §5.8: the UI needs "quick addition of an effect from
+the interface" and a feed of active effects/caravans/flows — the facade cannot do that yet.
 
 ---
 
-## Milestone A — доведение фасада (`ddeco-wasm` + 1 аддитивная правка ядра)
+## Milestone A — finishing the facade (`ddeco-wasm` + 1 additive core change)
 
-Почти всё в `crates/ddeco-wasm/src/lib.rs`; типы ядра (`effects::Effect`, `state.effects`,
-`state.caravans`, `caravans::Caravan`) уже публичны с публичными полями — новых структур в
-ядре не требуется.
+Almost everything is in `crates/ddeco-wasm/src/lib.rs`; the core types (`effects::Effect`, `state.effects`,
+`state.caravans`, `caravans::Caravan`) are already public with public fields — no new structures in
+the core are needed.
 
-1. **`add_effect(...)`** — параметрический эффект из UI (§5.8: неурожай на `pcap`, дорога
-   ×2.5). Фасад строит `effects::Effect` напрямую, принимая строки для `op` (`mult`/`add`),
+1. **`add_effect(...)`** — a parametric effect from the UI (§5.8: blight on `pcap`, a road
+   ×2.5). The facade builds `effects::Effect` directly, taking strings for `op` (`mult`/`add`),
    `decay` (`step`/`linear`/`exp`), `target_kind` (`node`/`edge`); `start_day = self.state.day`.
-   Валидировать существование `target_id` (узел/дуга) и товара/категории → `Err(JsValue)`.
-   Пишет снимок (`record()`), поддерживает `undo`.
-2. **`effects()`** — лента активных эффектов: для каждого с ненулевым весом на текущий день
-   отдать `{target_kind, target_id, param, op, value, source, weight, factor, days_left}`
-   (фактор — как в `reasons::effect_factor`, переиспользовать логику/формат текста).
-   Опционально `remove_effect(index)` для снятия вручную.
-3. **`caravans()` и `flows()`** — для «потоки по дорогам / лента караванов» (§5.8):
-   `caravans()` отдаёт `state.caravans` (edge, departed/arrival, value, guard, cargo, source);
-   `flows()` — по каждой дуге суммарный груз в пути (использовать `SimState::in_transit_to`
-   или прямой проход по `pipeline`) + накопитель `caravan_accum` против порога θ_car.
-4. **Цены покупки/продажи в снапшоте** — добавить `spread` узла в `world_info` и в `GoodView`
-   поля `buy_price = base·m·(1+spread)`, `sell_price = base·m·(1−spread)` (§5.8 «покупка и
-   продажа»). Точную цену крупной сделки по-прежнему даёт `quote`.
-5. **Тумблер шоков** — аддитивная функция `loader::shocks_from_toml(text) -> Vec<ShockTemplate>`
-   в `crates/ddeco-core/src/loader.rs`, парсящая секцию `[[shocks]]` (поля из
-   `shocks::ShockTemplate`). **Структуру `World` не трогаем** (иначе каскад правок struct-литералов
-   в тестах ядра и риск golden) — шаблоны живут отдельно в фасаде: `Sim` хранит
-   `shocks: Vec<ShockTemplate>` + `shocks_enabled: bool` (default false), конструктор парсит их
-   из того же world-TOML, `step/run` передают `if enabled { &self.shocks } else { &[] }`.
-   Метод `set_shocks_enabled(bool)`. Golden не затрагивается: пример мира шоков не содержит,
-   генератор по умолчанию выключен.
+   Validate that `target_id` (node/arc) and the good/category exist → `Err(JsValue)`.
+   Records a snapshot (`record()`), supports `undo`.
+2. **`effects()`** — the feed of active effects: for each with a non-zero weight on the current day
+   return `{target_kind, target_id, param, op, value, source, weight, factor, days_left}`
+   (the factor as in `reasons::effect_factor`, reuse the logic/text format).
+   Optionally `remove_effect(index)` for manual removal.
+3. **`caravans()` and `flows()`** — for "flows along roads / caravan feed" (§5.8):
+   `caravans()` returns `state.caravans` (edge, departed/arrival, value, guard, cargo, source);
+   `flows()` — per arc, the total cargo in transit (use `SimState::in_transit_to`
+   or walk `pipeline` directly) + the `caravan_accum` accumulator against the θ_car threshold.
+4. **Buy/sell prices in the snapshot** — add the node `spread` to `world_info` and to `GoodView`
+   the fields `buy_price = base·m·(1+spread)`, `sell_price = base·m·(1−spread)` (§5.8 "buy and
+   sell"). The exact price of a large deal still comes from `quote`.
+5. **Shock toggle** — an additive function `loader::shocks_from_toml(text) -> Vec<ShockTemplate>`
+   in `crates/ddeco-core/src/loader.rs` that parses the `[[shocks]]` section (fields from
+   `shocks::ShockTemplate`). **The `World` struct is not touched** (otherwise a cascade of struct-literal
+   edits in the core tests and a golden risk) — the templates live separately in the facade: `Sim` keeps
+   `shocks: Vec<ShockTemplate>` + `shocks_enabled: bool` (default false), the constructor parses them
+   from the same world TOML, `step/run` pass `if enabled { &self.shocks } else { &[] }`.
+   A `set_shocks_enabled(bool)` method. Golden is not affected: the example world has no shocks and
+   the generator is off by default.
 
-Тесты: расширить `crates/ddeco-wasm/tests/facade.rs` (host, без JS): `add_effect`/`undo`
-меняют и откатывают состояние; `shocks_from_toml` парсит образец; тумблер влияет на прогон.
-Юнит-тест парсинга `[[shocks]]` рядом с загрузчиком в `ddeco-core`.
+Tests: extend `crates/ddeco-wasm/tests/facade.rs` (host, no JS): `add_effect`/`undo`
+change and revert the state; `shocks_from_toml` parses a sample; the toggle affects the run.
+A unit test for `[[shocks]]` parsing next to the loader in `ddeco-core`.
 
-Опционально: добавить в `worlds/example_region.toml` закомментированный пример `[[shocks]]`.
+Optional: add a commented-out `[[shocks]]` example to `worlds/example_region.toml`.
 
-## Milestone B — упаковка в JS-пакет
+## Milestone B — packaging as a JS package
 
-1. `wasm-pack build crates/ddeco-wasm --target web --out-dir <web>/src/pkg` — генерит
-   `.wasm` + JS-glue + `.d.ts`. Зафиксировать команду в README и npm-скрипте UI.
-2. **Node smoke-тест**: отдельная сборка `--target nodejs` + крошечный скрипт
-   (`new Sim(world, 0)`, `step()`, `snapshot()`, `explain()`), проверяющий, что JSON от
-   `serde-wasm-bindgen` имеет ожидаемую форму (именно этот слой нельзя проверить host-тестами).
-3. **CI** (`.github/workflows/ci.yml`): новая джоба — установка `wasm-pack`
-   (`jetli/wasm-pack-action`), `wasm-pack build` + node-smoke. Существующая wasm-джоба
-   (cargo build под `wasm32`) остаётся как быстрый барьер компиляции.
+1. `wasm-pack build crates/ddeco-wasm --target web --out-dir <web>/src/pkg` — generates
+   `.wasm` + JS glue + `.d.ts`. Record the command in the README and the UI npm script.
+2. **Node smoke test**: a separate `--target nodejs` build + a tiny script
+   (`new Sim(world, 0)`, `step()`, `snapshot()`, `explain()`) that checks that the JSON from
+   `serde-wasm-bindgen` has the expected shape (exactly the layer host tests cannot check).
+3. **CI** (`.github/workflows/ci.yml`): a new job — install `wasm-pack`
+   (`jetli/wasm-pack-action`), `wasm-pack build` + the node smoke. The existing wasm job
+   (cargo build for `wasm32`) stays as a quick compilation gate.
 
-## Milestone C — веб-UI (Svelte PWA)
+## Milestone C — web UI (Svelte PWA)
 
-Новый каталог `web/` (Vite + TS + Svelte, `vite-plugin-pwa` для офлайна/манифеста/SW).
-Загружает пакет из `web/src/pkg`. Хранит состояние только в памяти + файловое save/load.
+A new `web/` directory (Vite + TS + Svelte, `vite-plugin-pwa` for offline/manifest/SW).
+It loads the package from `web/src/pkg`. It keeps the state only in memory + file save/load.
 
-Экраны/панели под REQUIREMENTS §5.8:
-- **Таблица цен** по узлам × товарам: buy/sell, запас, множитель, индикатор дефицит/избыток.
-- **Потоки и караваны**: по дугам — груз в пути, прогресс к θ_car; лента `caravans()`.
-- **Лента эффектов/событий**: `effects()` с источником и временем жизни; снятие эффекта.
-- **Лог причин**: клик по ячейке цены → `explain(node, good)` (цепочка §5.12).
-- **Действия мастера**: форма `add_effect`; правка запаса (`set_stock/add_stock`);
-  `prosperity_hit`; предпросмотр сделки (`quote`) и проведение (`trade`); `loot_caravan`.
-- **Управление временем**: шаг дня / прогон N дней / `undo`; тумблер фоновых шоков.
-- **Мир/состояние**: загрузка world-TOML и state-TOML файлом, `save()` на скачивание.
+Screens/panels for REQUIREMENTS §5.8:
+- **Price table** by nodes × goods: buy/sell, stock, multiplier, shortage/surplus indicator.
+- **Flows and caravans**: per arc — cargo in transit, progress to θ_car; the `caravans()` feed.
+- **Effects/events feed**: `effects()` with source and lifetime; removing an effect.
+- **Reasons log**: click on a price cell → `explain(node, good)` (the §5.12 chain).
+- **GM actions**: the `add_effect` form; stock edits (`set_stock/add_stock`);
+  `prosperity_hit`; deal preview (`quote`) and execution (`trade`); `loot_caravan`.
+- **Time control**: step a day / run N days / `undo`; the background shock toggle.
+- **World/state**: load world TOML and state TOML from a file, `save()` as a download.
 
-Каркас сознательно минимальный (таблицы + панели, без тяжёлого дизайна) — проверяем сквозной
-путь ядро→wasm→UI. Tauri-обёртка остаётся на этап релиза (спеки §7), сейчас не трогаем.
+The scaffold is deliberately minimal (tables + panels, no heavy design) — we check the end-to-end
+path core→wasm→UI. The Tauri wrapper stays for the release stage (specs §7), not touched now.
 
 ---
 
-## Проверка
+## Verification
 
 - `cargo fmt --all --check`, `cargo clippy --workspace --all-targets -- -D warnings`,
-  `cargo test --workspace` — зелёные (включая новые тесты фасада и парсинга шоков).
-- `cargo build -p ddeco-wasm --target wasm32-unknown-unknown` — компиляция под WASM.
-- `wasm-pack build crates/ddeco-wasm --target web` — успешная генерация пакета; node-smoke
-  проходит (форма JSON снапшота/отчёта корректна).
-- `npm run build` в `web/` — PWA собирается; `npm run dev` — ручная проверка в браузере
-  (через skill `/run`): загрузить `worlds/example_region.toml`, прокрутить дни, увидеть
-  изменение цен, открыть лог причин, добавить эффект и откатить, сохранить/загрузить файл.
-- Детерминизм сохранён: `undo` + повтор дня дают тот же `save()` (уже покрыто host-тестом,
-  добавить аналог для шоков-on).
+  `cargo test --workspace` — green (including the new facade and shock-parsing tests).
+- `cargo build -p ddeco-wasm --target wasm32-unknown-unknown` — compiles for WASM.
+- `wasm-pack build crates/ddeco-wasm --target web` — the package is generated; the node smoke
+  passes (the JSON shape of the snapshot/report is correct).
+- `npm run build` in `web/` — the PWA builds; `npm run dev` — a manual check in the browser
+  (via the `/run` skill): load `worlds/example_region.toml`, run some days, see
+  prices change, open the reasons log, add an effect and undo it, save/load a file.
+- Determinism is preserved: `undo` + replaying a day give the same `save()` (already covered by a host test;
+  add an analogue with shocks on).
 
-## Затронутые файлы
+## Files touched
 
-- `crates/ddeco-wasm/src/lib.rs` — методы `add_effect`, `effects`, `caravans`, `flows`,
-  `set_shocks_enabled`; поля цен/спреда в DTO; хранение шаблонов шоков.
-- `crates/ddeco-core/src/loader.rs` — аддитивная `shocks_from_toml` (+ юнит-тест).
-- `crates/ddeco-wasm/tests/facade.rs` — новые host-тесты.
-- `.github/workflows/ci.yml` — джоба wasm-pack + node-smoke.
-- `worlds/example_region.toml` — опциональный пример `[[shocks]]`.
-- `web/**` — новый UI-каркас (Vite+TS+Svelte, PWA), `web/src/pkg` — генерируемый пакет.
-- `README.md` — команды сборки wasm-pack и запуска UI.
+- `crates/ddeco-wasm/src/lib.rs` — the `add_effect`, `effects`, `caravans`, `flows`,
+  `set_shocks_enabled` methods; price/spread fields in the DTOs; storing shock templates.
+- `crates/ddeco-core/src/loader.rs` — the additive `shocks_from_toml` (+ a unit test).
+- `crates/ddeco-wasm/tests/facade.rs` — new host tests.
+- `.github/workflows/ci.yml` — the wasm-pack + node smoke job.
+- `worlds/example_region.toml` — an optional `[[shocks]]` example.
+- `web/**` — the new UI scaffold (Vite+TS+Svelte, PWA), `web/src/pkg` — the generated package.
+- `README.md` — wasm-pack build and UI run commands.
