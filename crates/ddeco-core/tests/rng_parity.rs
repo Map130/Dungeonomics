@@ -1,6 +1,6 @@
-//! R4: счётчиковый RNG совпадает с Python бит-в-бит (golden/rng.json).
+//! R4: the counter-based RNG matches Python bit for bit (golden/rng.json).
 //!
-//! Хеш целочисленный, поэтому здесь требуется ТОЧНОЕ равенство, а не допуск.
+//! The hash is integer-based, so EXACT equality is required here, not a tolerance.
 
 use ddeco_core::rng::{chance, uniform};
 use serde::Deserialize;

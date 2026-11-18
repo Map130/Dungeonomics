@@ -1,13 +1,13 @@
-"""Начальное состояние и прогрев мира (MODEL.md §5.14).
+"""Initial state and world warm-up (MODEL.md §5.14).
 
-Прогрев («warm start») — прогон без событий до сходимости, чтобы мир стартовал в
-равновесии, а не дёргался первые недели.
+Warm-up ("warm start") is a run without events until convergence, so the world starts in
+equilibrium instead of twitching for the first weeks.
 
-Авто-калибровка стартового множителя: без торговли равновесие одного узла решает
+Auto-calibration of the starting multiplier: without trade, a single node's equilibrium solves
     m^(β+ε) = D / Pcap
-(производство = потребление). Берём это m и соответствующий запас s = s*·m^(1/α)
-как стартовую точку — она близка к многоузловому равновесию, так что прогрев
-короткий. Торговля и процветание дальше доводят до стационара.
+(production = consumption). We take this m and the matching stock s = s*·m^(1/α)
+as the starting point — it is close to the multi-node equilibrium, so the warm-up
+is short. Trade and prosperity then bring it to the steady state.
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from .world import World
 
 
 def equilibrium_multiplier(beta: float, eps: float, demand: float, pcap: float) -> float:
-    """Решение m^(β+ε) = D/Pcap. Если Pcap = 0, цена уходит вверх (нет производства)."""
+    """Solve m^(β+ε) = D/Pcap. If Pcap = 0 the price goes up (no production)."""
     if pcap <= 0.0:
         return float("inf")
     ratio = demand / pcap
@@ -27,7 +27,7 @@ def equilibrium_multiplier(beta: float, eps: float, demand: float, pcap: float) 
 
 
 def seed_state(world: World) -> SimState:
-    """Стартовое состояние из авто-калибровки равновесия без торговли (§5.14)."""
+    """Starting state from the no-trade equilibrium auto-calibration (§5.14)."""
     st = blank_state(world)
     pi_ref = world.params.pi_ref
     for n in world.node_ids():
@@ -39,7 +39,7 @@ def seed_state(world: World) -> SimState:
             star = F.target_stock(good, demand)
             m_eq = equilibrium_multiplier(good.beta, good.epsilon, demand, node.pcap(g))
             m_eq = F.clamp(m_eq, good.m_min, good.m_max)
-            # r из m*: m = r^(-α) ⇒ r = m^(-1/α); s = r·s*
+            # r from m*: m = r^(-α) ⇒ r = m^(-1/α); s = r·s*
             r = m_eq ** (-1.0 / good.alpha) if good.alpha > 0.0 else 1.0
             st.multiplier[(n, g)] = m_eq
             st.stock[(n, g)] = r * star
@@ -47,10 +47,10 @@ def seed_state(world: World) -> SimState:
 
 
 def warmup(world: World, max_days: int = 2000, tol: float = 1e-4) -> SimState:
-    """Прогреть мир: прогон без событий до сходимости множителей.
+    """Warm the world up: run without events until the multipliers converge.
 
-    Возвращает установившееся состояние. Сходимость — когда максимальное за день
-    изменение множителя падает ниже tol."""
+    Returns the settled state. Converged when the largest daily multiplier
+    change drops below tol."""
     st = seed_state(world)
     for _ in range(max_days):
         prev = dict(st.multiplier)

@@ -1,5 +1,5 @@
-//! Бенчи симуляции (criterion). В R0 — заглушка над mathf, чтобы `cargo build
-//! --benches` компилировался; в R6 заменяется на step_day/прогрев примера мира.
+//! Simulation benches (criterion). In R0 a stub over mathf so that `cargo build
+//! --benches` compiles; replaced with step_day / example-world warm-up in R6.
 
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use ddeco_core::mathf;

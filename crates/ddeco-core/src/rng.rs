@@ -1,12 +1,12 @@
-//! Счётчиковый RNG (MODEL.md §5.11, §9). Порт `ddeco/rng.py`.
+//! Counter-based RNG (MODEL.md §5.11, §9). Port of `ddeco/rng.py`.
 //!
-//! Значение выводится из координат (seed, день, id цели, id шаблона), а не из
-//! последовательности вызовов — откат и повтор дня дают тот же результат.
+//! A value is derived from coordinates (seed, day, target id, template id), not from
+//! a call sequence — undoing and replaying a day gives the same result.
 //!
-//! Кодировка входа повторяет Python бит-в-бит, чтобы последовательности шоков и
-//! охраны караванов совпадали между языками: `blake2b` (digest 16 байт), поля как
-//! десятичные ASCII-строки через разделитель 0x1f; u64 из первых 8 байт
-//! little-endian, делённый на 2^64.
+//! The input encoding mirrors Python bit for bit, so the sequences of shocks and
+//! caravan guards match across languages: `blake2b` (16-byte digest), fields as
+//! decimal ASCII strings joined by 0x1f; a u64 from the first 8 bytes
+//! little-endian, divided by 2^64.
 
 use blake2::digest::{Update, VariableOutput};
 use blake2::Blake2bVar;
@@ -23,18 +23,18 @@ fn digest(seed: u64, day: i64, parts: &[&str]) -> [u8; 16] {
         h.update(p.as_bytes());
     }
     let mut out = [0u8; 16];
-    h.finalize_variable(&mut out).expect("16 байт");
+    h.finalize_variable(&mut out).expect("16 bytes");
     out
 }
 
-/// Равномерное число в [0, 1) для координат (seed, day, parts).
+/// A uniform number in [0, 1) for the coordinates (seed, day, parts).
 pub fn uniform(seed: u64, day: i64, parts: &[&str]) -> f64 {
     let d = digest(seed, day, parts);
     let value = u64::from_le_bytes(d[..8].try_into().unwrap());
     value as f64 / 2.0f64.powi(64)
 }
 
-/// True с вероятностью `probability`, детерминированно по координатам.
+/// True with probability `probability`, deterministically by coordinates.
 pub fn chance(seed: u64, day: i64, probability: f64, parts: &[&str]) -> bool {
     if probability <= 0.0 {
         return false;

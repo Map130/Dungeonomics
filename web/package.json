@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Веб-UI живой экономики для D&D: офлайн-PWA поверх WASM-ядра (ddeco-wasm)",
+  "description": "Web UI of the living economy for tabletop RPGs: an offline PWA over the WASM core (ddeco-wasm)",
   "license": "MIT",
   "scripts": {
     "dev": "vite",

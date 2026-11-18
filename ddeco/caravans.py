@@ -1,10 +1,10 @@
-"""Материализация именных караванов (MODEL.md §5.10).
+"""Materialisation of named caravans (MODEL.md §5.10).
 
-Караван — это лицо уже идущего потока, а не источник новых товаров. Когда
-накопленная стоимость потока по дуге превышает порог θ_car, система «материализует»
-крупный поток в именной караван: груз — партии, лежащие сейчас в конвейере дуги,
-сила охраны случайна и зависит от опасности дороги (k_e). Ограбление применяет §5.9
-к конвейеру этой дуги. В ленту мастеру пишется предупреждение за 1–3 дня до прибытия.
+A caravan is the face of a flow already under way, not a source of new goods. When
+the accumulated value of the flow along an arc exceeds the threshold θ_car, the system
+"materialises" the large flow into a named caravan: the cargo is the batches currently in
+the arc's pipeline, the guard strength is random and depends on road danger (k_e). Looting
+applies §5.9 to that arc's pipeline. The GM feed gets a warning 1–3 days before arrival.
 """
 
 from __future__ import annotations
@@ -21,9 +21,9 @@ class Caravan:
     edge: str
     day_departed: int
     day_arrival: int
-    value: float                       # суммарная стоимость груза
-    guard: float                       # сила охраны (0..~3), выше на опасных дорогах
-    cargo: tuple = field(default=())   # ((good, amount), ...) снимок груза в пути
+    value: float                       # total cargo value
+    guard: float                       # guard strength (0..~3), higher on dangerous roads
+    cargo: tuple = field(default=())   # ((good, amount), ...) snapshot of the cargo in transit
 
 
 def _cargo_snapshot(state: SimState, edge: str) -> tuple:
@@ -35,9 +35,9 @@ def _cargo_snapshot(state: SimState, edge: str) -> tuple:
 
 
 def materialize(world: World, state: SimState) -> list[Caravan]:
-    """Шаг 9: породить караваны по дугам, где накоплен поток ≥ θ_car.
+    """Step 9: spawn caravans on arcs where the accumulated flow is ≥ θ_car.
 
-    Детерминированно: сила охраны берётся из счётчикового RNG (seed, день, дуга)."""
+    Deterministic: the guard strength comes from the counter-based RNG (seed, day, arc)."""
     theta = world.params.caravan_threshold
     made: list[Caravan] = []
     for e in world.edge_ids():
@@ -45,7 +45,7 @@ def materialize(world: World, state: SimState) -> list[Caravan]:
         if accum < theta:
             continue
         edge = world.edges[e]
-        # Опасность дороги k_e масштабирует силу охраны; шум из счётчикового RNG.
+        # Road danger k_e scales the guard strength; noise from the counter-based RNG.
         guard = edge.difficulty * (0.5 + rng.uniform(world.seed, state.day, e, "caravan_guard"))
         tau = edge.delay_days()
         caravan = Caravan(
@@ -58,5 +58,5 @@ def materialize(world: World, state: SimState) -> list[Caravan]:
         )
         made.append(caravan)
         state.caravans.append(caravan)
-        state.caravan_accum[e] = accum - theta   # остаток переносим
+        state.caravan_accum[e] = accum - theta   # carry the remainder over
     return made

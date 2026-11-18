@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""Сгенерировать golden-прогоны из Python-эталона `ddeco` для сверки Rust-порта.
+"""Generate golden runs from the Python reference `ddeco` to check the Rust port.
 
-Пишет golden/*.json. Rust-тесты (crates/ddeco-core/tests/golden.rs) грузят те же
-файлы и сверяют: числа — с относительным допуском (1e-9 на старте), RNG и охрану
-караванов — точно.
+Writes golden/*.json. The Rust tests (crates/ddeco-core/tests/golden.rs) load the same
+files and compare: numbers with a relative tolerance (1e-9 at the start), the RNG and caravan
+guards exactly.
 
-Формат числовой: Python json пишет float через repr (round-trip), serde_json в Rust
-парсит в ближайший f64 — то же самое значение IEEE754. Поэтому расхождения, если
-есть, идут только от разной реализации pow/exp/ln (libm vs CPython), что и ловит
-допуск.
+Number format: Python json writes floats via repr (round-trip), serde_json in Rust
+parses to the nearest f64 — the same IEEE754 value. So differences, if
+any, come only from different pow/exp/ln implementations (libm vs CPython), which the
+tolerance catches.
 
-Запуск:
-    python scripts/dump_golden.py            # пишет в ./golden
+Usage:
+    python scripts/dump_golden.py            # writes to ./golden
 """
 
 from __future__ import annotations
@@ -36,20 +36,20 @@ ROOT = Path(__file__).resolve().parent.parent
 GOLDEN = ROOT / "golden"
 WORLD = ROOT / "worlds" / "example_region.toml"
 
-# Шаблоны шоков — те же, что в tests/test_determinism.py.
+# Shock templates — the same as in tests/test_determinism.py.
 SHOCKS = [
     ShockTemplate(id="blight", target_kind=TargetKind.NODE, param="pcap",
                   op=Op.MULT, value=0.3, duration=15, rate=1 / 20,
-                  category="food", source="неурожай"),
+                  category="food", source="blight"),
     ShockTemplate(id="bandits", target_kind=TargetKind.EDGE, param="difficulty",
-                  op=Op.MULT, value=2.5, duration=10, rate=1 / 15, source="бандиты"),
+                  op=Op.MULT, value=2.5, duration=10, rate=1 / 15, source="bandits"),
 ]
 
 
-# --- Сериализация состояния ----------------------------------------------------
+# --- State serialisation -------------------------------------------------------
 
 def snap(state: SimState) -> dict:
-    """Снимок состояния в JSON-дружелюбном виде. Ключи 'node|good'."""
+    """A JSON-friendly state snapshot. Keys are 'node|good'."""
     return {
         "day": state.day,
         "stock": {f"{n}|{g}": v for (n, g), v in sorted(state.stock.items())},
@@ -63,14 +63,14 @@ def snap(state: SimState) -> dict:
 
 
 def sample_days(total: int) -> list[int]:
-    """Плотно в начале, реже дальше — чтобы ловить и переходный режим, и хвост."""
+    """Dense at the start, sparser later — to catch both the transient and the tail."""
     base = [0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
     days = sorted({d for d in base if d < total} | {total})
     return days
 
 
 def run_sampled(world: World, state: SimState, total: int, shocks=()) -> list[dict]:
-    """Прогнать total дней, сохраняя снимки на отмеченных днях."""
+    """Run total days, saving snapshots on the marked days."""
     want = set(sample_days(total))
     frames = []
     if 0 in want:
@@ -82,7 +82,7 @@ def run_sampled(world: World, state: SimState, total: int, shocks=()) -> list[di
     return frames
 
 
-# --- Миры для одноузловых сценариев (копия логики tests/single_node.py) ---------
+# --- Worlds for single-node scenarios (a copy of tests/single_node.py logic) ----
 
 def single_node_world(alpha, beta, eps, T, demand=100.0, lam=0.3) -> World:
     good = GoodParams(
@@ -105,7 +105,7 @@ def single_node_state(world, ratio=0.8) -> SimState:
     return st
 
 
-# --- Сценарии ------------------------------------------------------------------
+# --- Scenarios -----------------------------------------------------------------
 
 def scenario_single_node() -> list[dict]:
     out = []
@@ -137,7 +137,7 @@ def scenario_shocks() -> dict:
     w = load_world(WORLD)
     st = seed_state(w)
     frames = run_sampled(w, st, 200, shocks=SHOCKS)
-    # Сработавшие эффекты (по источнику/цели/дню старта) — для проверки RNG-логики.
+    # Fired effects (by source/target/start day) — to check the RNG logic.
     fired = sorted(
         {(e.source, e.target_id, e.start_day) for e in st.effects}
     )
@@ -146,7 +146,7 @@ def scenario_shocks() -> dict:
 
 
 def scenario_events() -> dict:
-    """Разовые события: покупка, грабёж, удар по процветанию — состояние после каждого."""
+    """One-shot events: purchase, robbery, prosperity hit — the state after each."""
     w = load_world(WORLD)
     st = seed_state(w)
     for _ in range(20):
@@ -167,13 +167,13 @@ def scenario_events() -> dict:
 
 
 def scenario_state() -> dict:
-    """Round-trip состояния: Python-эмиттер пишет golden/state.toml, а Rust читает его
-    и сверяет с этим снимком (кросс-языковая совместимость формата, R6)."""
+    """State round-trip: the Python emitter writes golden/state.toml and Rust reads it
+    and compares with this snapshot (cross-language format compatibility, R6)."""
     w = load_world(WORLD)
     st = seed_state(w)
     for _ in range(30):
         step_day(w, st)
-    # Имя не "state.toml": так называется автосейв сессии (в .gitignore).
+    # Not named "state.toml": that is the session autosave (in .gitignore).
     (GOLDEN / "state_dump.toml").write_text(state_to_toml(st), encoding="utf-8")
     return {
         "day": st.day,
@@ -189,15 +189,15 @@ def scenario_state() -> dict:
 
 
 def scenario_rng() -> dict:
-    """Чистый RNG: сетка входов → uniform и chance. Проверяется бит-в-бит (R4)."""
+    """Pure RNG: a grid of inputs → uniform and chance. Checked bit for bit (R4)."""
     seed = 42
     samples = []
     for day in (0, 1, 7, 100):
         for target in ("redwater", "millbrook", "redwater__millbrook"):
             for tpl in ("blight", "bandits", "caravan_guard"):
                 u = uniform(seed, day, target, tpl)
-                # uniform_bits — битовая маска double, чтобы сверка RNG не зависела
-                # от округления десятичного литерала при парсинге JSON (нужна точность).
+                # uniform_bits — the double's bit mask, so the RNG check does not depend
+                # on rounding of a decimal literal when parsing JSON (precision matters).
                 bits = struct.unpack("<Q", struct.pack("<d", u))[0]
                 samples.append({"day": day, "target": target, "template": tpl,
                                 "uniform": u, "uniform_bits": bits,

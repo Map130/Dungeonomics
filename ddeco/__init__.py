@@ -1,7 +1,7 @@
-"""ddeco — ядро симуляции «живой экономики» для настольных RPG.
+"""ddeco — the simulation core of a "living economy" for tabletop RPGs.
 
-Пакет без runtime-зависимостей (stdlib only). Детали модели — в MODEL.md,
-требования — в REQUIREMENTS.md. Ссылки вида «§5.6» в коде указывают на разделы
+A package with no runtime dependencies (stdlib only). Model details are in MODEL.md,
+requirements in REQUIREMENTS.md. References like "§5.6" in the code point to sections
 MODEL.md.
 """
 

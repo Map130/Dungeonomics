@@ -1,10 +1,10 @@
-//! Состояние симуляции (MODEL.md §2). Порт `ddeco/state.py`.
+//! Simulation state (MODEL.md §2). Port of `ddeco/state.py`.
 //!
-//! Эволюционирует само; эффекты меняют только параметры мира. Всё, что нужно для
-//! отката/повтора дня (§7, §8.4), лежит здесь — снимок через `Clone`.
+//! It evolves on its own; effects change only the world's parameters. Everything needed to
+//! undo/replay a day (§7, §8.4) lives here — a snapshot via `Clone`.
 //!
-//! Ключи `(node, good)` в `BTreeMap` сортируются лексикографически по кортежу, что
-//! совпадает с `sorted(...)` в Python и фиксирует порядок суммирования (§9).
+//! `(node, good)` keys in a `BTreeMap` sort lexicographically by tuple, which
+//! matches `sorted(...)` in Python and fixes the summation order (§9).
 
 use std::collections::BTreeMap;
 
@@ -27,8 +27,8 @@ pub struct SimState {
 }
 
 impl SimState {
-    /// Q_jg: суммарный товар `good` в пути в узел `node` (§5.6). Фиксированный
-    /// порядок обхода дуг и слотов (§9).
+    /// Q_jg: total `good` in transit to node `node` (§5.6). Fixed
+    /// traversal order of arcs and slots (§9).
     pub fn in_transit_to(&self, world: &World, node: &str, good: &str) -> f64 {
         let mut total = 0.0;
         for e in world.edge_ids() {
@@ -45,7 +45,7 @@ impl SimState {
     }
 }
 
-/// Пустое состояние: нулевые запасы, m = 1, π = π0, пустые конвейеры.
+/// Empty state: zero stocks, m = 1, π = π0, empty pipelines.
 pub fn blank_state(world: &World) -> SimState {
     let mut st = SimState::default();
     for n in world.node_ids() {

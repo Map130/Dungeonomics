@@ -1,12 +1,12 @@
-//! WASM-биндинги ядра «живой экономики» (`ddeco-core`) для веб-UI.
+//! WASM bindings of the living-economy core (`ddeco-core`) for the web UI.
 //!
-//! Тонкий фасад: ядро остаётся UI-независимым эталоном (порт Python-прототипа),
-//! а этот крейт лишь оборачивает его публичный API в [`Sim`] и переводит состояние
-//! в чистый JSON для JS. Вся логика симуляции — в ядре; здесь только склейка.
+//! A thin facade: the core stays the UI-independent reference (a port of the Python prototype),
+//! and this crate only wraps its public API in [`Sim`] and turns the state
+//! into plain JSON for JS. All simulation logic lives in the core; this is only glue.
 //!
-//! Инварианты сохраняются as-is: тик идёт через [`ddeco_core::tick::step_day`],
-//! откат — по in-memory снимкам `SimState` (детерминизм §8.4), I/O (файлы, часы)
-//! остаётся на стороне JS — фасад работает со строками TOML, как и ядро.
+//! Invariants are kept as-is: the tick goes through [`ddeco_core::tick::step_day`],
+//! undo uses in-memory `SimState` snapshots (determinism §8.4), I/O (files, clocks)
+//! stays on the JS side — the facade works with TOML strings, like the core.
 
 use ddeco_core::calibration::{seed_state, warmup};
 use ddeco_core::effects::{Decay, Effect, Op, TargetKind};
@@ -20,11 +20,11 @@ use ddeco_core::{events, reasons, tick};
 use serde::Serialize;
 use wasm_bindgen::prelude::*;
 
-/// Глубина стека снимков для отката (`undo`). Вечер игры — тысячи тиков, но назад
-/// мастеру нужны единицы; ограничиваем память верхним пределом.
+/// Depth of the snapshot stack for `undo`. An evening of play is thousands of ticks, but
+/// the GM needs only a few steps back; memory is capped by an upper limit.
 const HISTORY_CAP: usize = 1024;
 
-/// Фасад симуляции для UI: владеет миром, состоянием и историей снимков.
+/// The simulation facade for the UI: owns the world, the state and the snapshot history.
 #[wasm_bindgen]
 pub struct Sim {
     world: World,
@@ -36,10 +36,10 @@ pub struct Sim {
 
 #[wasm_bindgen]
 impl Sim {
-    /// Создать симуляцию из TOML-описания мира (схема — `worlds/example_region.toml`).
+    /// Create a simulation from a TOML world description (schema — `worlds/example_region.toml`).
     ///
-    /// `warmup_days > 0` — прогреть мир до равновесия без событий (§5.14), иначе взять
-    /// откалиброванный стартовый снимок без прогона.
+    /// `warmup_days > 0` — warm the world up to equilibrium without events (§5.14), otherwise take
+    /// the calibrated starting snapshot without a run.
     #[wasm_bindgen(constructor)]
     pub fn new(world_toml: &str, warmup_days: u32) -> Result<Sim, JsValue> {
         console_error_panic_hook::set_once();
@@ -59,16 +59,16 @@ impl Sim {
         })
     }
 
-    /// Текущий день симуляции.
+    /// The current simulation day.
     #[wasm_bindgen(getter)]
     pub fn day(&self) -> i64 {
         self.state.day
     }
 
-    /// Продвинуть симуляцию на один день (§4). Фоновые шоки — по тумблеру (default off).
+    /// Advance the simulation by one day (§4). Background shocks follow the toggle (default off).
     pub fn step(&mut self) {
         self.record();
-        // Прямое обращение к полям (disjoint borrows): шаблоны и state не пересекаются.
+        // Direct field access (disjoint borrows): templates and state do not overlap.
         let shocks: &[ShockTemplate] = if self.shocks_enabled {
             &self.shocks
         } else {
@@ -77,7 +77,7 @@ impl Sim {
         tick::step_day(&self.world, &mut self.state, shocks);
     }
 
-    /// Прокрутить `days` дней подряд. Для отката сохраняется один снимок на весь прогон.
+    /// Run `days` days in a row. One undo snapshot is kept for the whole run.
     pub fn run(&mut self, days: u32) {
         self.record();
         for _ in 0..days {
@@ -90,20 +90,20 @@ impl Sim {
         }
     }
 
-    /// Включить/выключить генератор фоновых шоков (§5.11). По умолчанию выключен.
-    /// Если в файле мира нет секции `[[shocks]]`, тумблер ни на что не влияет.
+    /// Turn the background shock generator on/off (§5.11). Off by default.
+    /// If the world file has no `[[shocks]]` section, the toggle has no effect.
     pub fn set_shocks_enabled(&mut self, on: bool) {
         self.shocks_enabled = on;
     }
 
-    /// Включён ли генератор фоновых шоков.
+    /// Whether the background shock generator is on.
     #[wasm_bindgen(getter)]
     pub fn shocks_enabled(&self) -> bool {
         self.shocks_enabled
     }
 
-    /// Откатить последнее изменение состояния (тик/прогон/событие). `true` — если было
-    /// что откатывать. Повтор того же дня после отката воспроизводится бит-в-бит (§8.4).
+    /// Undo the last state change (tick/run/event). `true` if there was
+    /// something to undo. Replaying the same day after undo reproduces it bit for bit (§8.4).
     pub fn undo(&mut self) -> bool {
         match self.history.pop() {
             Some(prev) => {
@@ -114,9 +114,9 @@ impl Sim {
         }
     }
 
-    // --- Снимки для UI --------------------------------------------------------
+    // --- Snapshots for the UI ---------------------------------------------------
 
-    /// Статика мира: узлы, товары, дороги (для построения интерфейса). Не меняется.
+    /// World statics: nodes, goods, roads (to build the interface). Does not change.
     pub fn world_info(&self) -> Result<JsValue, JsValue> {
         let info = WorldInfo {
             seed: self.world.seed,
@@ -160,7 +160,7 @@ impl Sim {
         to_js(&info)
     }
 
-    /// Текущее состояние: день, процветание узлов и по каждому товару запас/множитель/цена.
+    /// Current state: the day, node prosperity and, per good, stock/multiplier/price.
     pub fn snapshot(&self) -> Result<JsValue, JsValue> {
         let nodes = self
             .world
@@ -199,7 +199,7 @@ impl Sim {
         })
     }
 
-    /// Объяснить текущую цену товара в узле: обеспеченность, вердикт, цепочка причин (§5.12).
+    /// Explain a good's current price at a node: provisioning, verdict, cause chain (§5.12).
     pub fn explain(&self, node: &str, good: &str) -> Result<JsValue, JsValue> {
         let r = reasons::explain_price(&self.world, &self.state, node, good);
         to_js(&ReportView {
@@ -236,13 +236,13 @@ impl Sim {
         })
     }
 
-    // --- Параметрические эффекты (§3, §5.8) -----------------------------------
+    // --- Parametric effects (§3, §5.8) ------------------------------------------
 
-    /// Добавить параметрический эффект из UI (неурожай на `pcap`, дорога ×2.5 и т.п.).
+    /// Add a parametric effect from the UI (blight on `pcap`, a road ×2.5, etc.).
     ///
     /// `target_kind` — `"node"`/`"edge"`, `op` — `"mult"`/`"add"`, `decay` —
-    /// `"step"`/`"linear"`/`"exp"`. `start_day` берётся текущим. `good`/`category` —
-    /// необязательные фильтры товара. Поддерживает `undo`.
+    /// `"step"`/`"linear"`/`"exp"`. `start_day` is the current day. `good`/`category` are
+    /// optional good filters. Supports `undo`.
     #[allow(clippy::too_many_arguments)]
     pub fn add_effect(
         &mut self,
@@ -261,19 +261,19 @@ impl Sim {
         let target_kind = parse_target_kind(target_kind)?;
         let op = parse_op(op)?;
         let decay = parse_decay(decay)?;
-        // Цель должна существовать, иначе эффект молча ни на что не влияет.
+        // The target must exist, otherwise the effect silently has no effect.
         match target_kind {
             TargetKind::Node if !self.world.nodes.contains_key(target_id) => {
-                return Err(JsValue::from_str(&format!("нет узла {target_id}")));
+                return Err(JsValue::from_str(&format!("no node {target_id}")));
             }
             TargetKind::Edge if !self.world.edges.contains_key(target_id) => {
-                return Err(JsValue::from_str(&format!("нет дуги {target_id}")));
+                return Err(JsValue::from_str(&format!("no arc {target_id}")));
             }
             _ => {}
         }
         if let Some(g) = &good {
             if !self.world.catalog.goods.contains_key(g) {
-                return Err(JsValue::from_str(&format!("нет товара {g}")));
+                return Err(JsValue::from_str(&format!("no good {g}")));
             }
         }
         self.record();
@@ -294,8 +294,8 @@ impl Sim {
         Ok(())
     }
 
-    /// Лента активных эффектов (ненулевой вес на текущий день) с источником, текущим
-    /// фактором и остатком длительности — для панели событий UI (§5.8).
+    /// Feed of active effects (non-zero weight on the current day) with source, current
+    /// factor and remaining duration — for the UI events panel (§5.8).
     pub fn effects(&self) -> Result<JsValue, JsValue> {
         let day = self.state.day;
         let list: Vec<EffectView> = self
@@ -331,8 +331,8 @@ impl Sim {
         to_js(&list)
     }
 
-    /// Снять эффект по индексу из `effects()`. `true` — если индекс существовал.
-    /// Поддерживает `undo`.
+    /// Remove an effect by its index from `effects()`. `true` if the index existed.
+    /// Supports `undo`.
     pub fn remove_effect(&mut self, index: usize) -> bool {
         if index >= self.state.effects.len() {
             return false;
@@ -342,9 +342,9 @@ impl Sim {
         true
     }
 
-    // --- Потоки и караваны (§5.6, §5.10) --------------------------------------
+    // --- Flows and caravans (§5.6, §5.10) ---------------------------------------
 
-    /// Потоки по дугам: груз в пути и прогресс к порогу материализации θ_car (§5.8).
+    /// Flows along arcs: cargo in transit and progress to the materialisation threshold θ_car (§5.8).
     pub fn flows(&self) -> Result<JsValue, JsValue> {
         let theta = self.world.params.caravan_threshold;
         let list: Vec<FlowView> = self
@@ -371,7 +371,7 @@ impl Sim {
         to_js(&list)
     }
 
-    /// Материализованные именные караваны (лента для UI, §5.10).
+    /// Materialised named caravans (the UI feed, §5.10).
     pub fn caravans(&self) -> Result<JsValue, JsValue> {
         let list: Vec<CaravanView> = self
             .state
@@ -398,16 +398,16 @@ impl Sim {
         to_js(&list)
     }
 
-    // --- Сделки игрока (§5.7) -------------------------------------------------
+    // --- Player deals (§5.7) ----------------------------------------------------
 
-    /// Посчитать сделку, НЕ меняя состояние (предпросмотр цены). `sell` — продажа игроком.
+    /// Compute a deal WITHOUT changing the state (price preview). `sell` — a sale by the player.
     pub fn quote(&self, node: &str, good: &str, qty: f64, sell: bool) -> Result<JsValue, JsValue> {
         let t = purchase::quote(&self.world, &self.state, node, good, qty, sell, 256)
             .map_err(trade_err)?;
         to_js(&TradeView::from(t))
     }
 
-    /// Провести сделку: обновить запас и множитель, вернуть её детали. Поддерживает `undo`.
+    /// Execute a deal: update the stock and the multiplier, return its details. Supports `undo`.
     pub fn trade(
         &mut self,
         node: &str,
@@ -415,7 +415,7 @@ impl Sim {
         qty: f64,
         sell: bool,
     ) -> Result<JsValue, JsValue> {
-        // Валидируем до записи снимка, чтобы ошибочная сделка не засоряла историю.
+        // Validate before recording the snapshot so a failed deal does not litter the history.
         purchase::quote(&self.world, &self.state, node, good, qty, sell, 256).map_err(trade_err)?;
         self.record();
         let t = purchase::apply(&self.world, &mut self.state, node, good, qty, sell, 256)
@@ -423,51 +423,51 @@ impl Sim {
         to_js(&TradeView::from(t))
     }
 
-    // --- Разовые события мастера (§5.8–5.9) -----------------------------------
+    // --- GM one-shot events (§5.8–5.9) ------------------------------------------
 
-    /// Мастер задаёт запас товара в узле (скупили/подвезли).
+    /// The GM sets the stock of a good at a node (bought out / brought in).
     pub fn set_stock(&mut self, node: &str, good: &str, amount: f64) {
         self.record();
         events::set_stock(&mut self.state, node, good, amount);
     }
 
-    /// Сдвинуть запас на `delta` (может быть отрицательным), не ниже нуля.
+    /// Shift a stock by `delta` (may be negative), not below zero.
     pub fn add_stock(&mut self, node: &str, good: &str, delta: f64) {
         self.record();
         events::add_stock(&mut self.state, node, good, delta);
     }
 
-    /// Удар по процветанию узла: π ← π·(1 − rho) (набег, §5.8).
+    /// Prosperity hit on a node: π ← π·(1 − rho) (a raid, §5.8).
     pub fn prosperity_hit(&mut self, node: &str, rho: f64) {
         self.record();
         events::prosperity_hit(&mut self.state, node, rho);
     }
 
-    /// Ограбление каравана на дуге: убрать долю `rho` груза. `slot = -1` — весь груз в
-    /// пути, иначе конкретная партия. Возвращает суммарный объём награбленного.
+    /// Rob a caravan on an arc: remove a share `rho` of the cargo. `slot = -1` — all cargo in
+    /// transit, otherwise a specific batch. Returns the total volume looted.
     pub fn loot_caravan(&mut self, edge: &str, rho: f64, slot: i32) -> f64 {
         self.record();
         let idx = if slot < 0 { None } else { Some(slot as usize) };
         events::loot_caravan(&mut self.state, edge, rho, idx)
     }
 
-    // --- Сохранение/загрузка состояния (§5.9) ---------------------------------
+    // --- Saving/loading the state (§5.9) ----------------------------------------
 
-    /// Сериализовать текущее состояние в TOML (мастер сохраняет файлом). Запись — на JS.
+    /// Serialise the current state to TOML (the GM saves it as a file). Writing is up to JS.
     pub fn save(&self) -> String {
         state_to_toml(&self.state)
     }
 
-    /// Загрузить состояние из TOML, заменив текущее. История отката очищается.
+    /// Load the state from TOML, replacing the current one. The undo history is cleared.
     pub fn load_state(&mut self, state_toml: &str) -> Result<(), JsValue> {
         self.state = state_from_toml(state_toml).map_err(err)?;
         self.history.clear();
         Ok(())
     }
 
-    // --- Внутреннее -----------------------------------------------------------
+    // --- Internals --------------------------------------------------------------
 
-    /// Записать снимок перед изменением состояния (для `undo`), соблюдая потолок истории.
+    /// Record a snapshot before changing the state (for `undo`), respecting the history cap.
     fn record(&mut self) {
         if self.history.len() == HISTORY_CAP {
             self.history.remove(0);
@@ -476,7 +476,7 @@ impl Sim {
     }
 }
 
-// --- DTO для JS (чистый JSON, развязан с внутренними типами ядра) -------------
+// --- DTOs for JS (plain JSON, decoupled from the core's internal types) --------
 
 #[derive(Serialize)]
 struct Snapshot {
@@ -498,9 +498,9 @@ struct GoodView {
     good: String,
     stock: f64,
     multiplier: f64,
-    price: f64,      // base·m (справочная цена-ценник)
-    buy_price: f64,  // цена покупки игроком: price·(1+spread)
-    sell_price: f64, // цена продажи игроком: price·(1−spread)
+    price: f64,      // base·m (reference price tag)
+    buy_price: f64,  // price for a player buying: price·(1+spread)
+    sell_price: f64, // price for a player selling: price·(1−spread)
     in_transit: f64,
 }
 
@@ -592,7 +592,7 @@ struct EffectView {
     category: Option<String>,
     source: String,
     weight: f64,
-    factor: String, // текущий вклад, напр. "×0.42" / "+3.0"
+    factor: String, // current contribution, e.g. "×0.42" / "+3.0"
     days_left: f64,
 }
 
@@ -601,8 +601,8 @@ struct FlowView {
     edge: String,
     src: String,
     dst: String,
-    in_transit: f64, // суммарный объём груза в пути по дуге
-    accum: f64,      // накопленная стоимость потока
+    in_transit: f64, // total cargo volume in transit on the arc
+    accum: f64,      // accumulated flow value
     threshold: f64,  // θ_car
 }
 
@@ -624,7 +624,7 @@ struct CargoView {
     amount: f64,
 }
 
-// --- Хелперы ------------------------------------------------------------------
+// --- Helpers -------------------------------------------------------------------
 
 fn kind_str(k: NodeKind) -> &'static str {
     match k {
@@ -645,9 +645,7 @@ fn parse_target_kind(s: &str) -> Result<TargetKind, JsValue> {
     match s {
         "node" => Ok(TargetKind::Node),
         "edge" => Ok(TargetKind::Edge),
-        other => Err(JsValue::from_str(&format!(
-            "неизвестный target_kind: {other}"
-        ))),
+        other => Err(JsValue::from_str(&format!("unknown target_kind: {other}"))),
     }
 }
 
@@ -655,7 +653,7 @@ fn parse_op(s: &str) -> Result<Op, JsValue> {
     match s {
         "mult" => Ok(Op::Mult),
         "add" => Ok(Op::Add),
-        other => Err(JsValue::from_str(&format!("неизвестный op: {other}"))),
+        other => Err(JsValue::from_str(&format!("unknown op: {other}"))),
     }
 }
 
@@ -664,7 +662,7 @@ fn parse_decay(s: &str) -> Result<Decay, JsValue> {
         "step" => Ok(Decay::Step),
         "linear" => Ok(Decay::Linear),
         "exp" => Ok(Decay::Exp),
-        other => Err(JsValue::from_str(&format!("неизвестный decay: {other}"))),
+        other => Err(JsValue::from_str(&format!("unknown decay: {other}"))),
     }
 }
 
@@ -678,7 +676,7 @@ fn err<E: std::fmt::Display>(e: E) -> JsValue {
 
 fn trade_err(e: TradeError) -> JsValue {
     JsValue::from_str(match e {
-        TradeError::NonPositiveQty => "qty должно быть > 0",
-        TradeError::BuyExceedsStock => "нельзя купить весь запас узла",
+        TradeError::NonPositiveQty => "qty must be > 0",
+        TradeError::BuyExceedsStock => "cannot buy the node's whole stock",
     })
 }

@@ -1,8 +1,8 @@
-//! R5: сверка многоузлового слоя (торговля §5.6, караваны §5.10, покупки §5.7,
-//! разовые события §5.9) с golden-прогонами Python-эталона.
+//! R5: checking the multi-node layer (trade §5.6, caravans §5.10, purchases §5.7,
+//! one-shot events §5.9) against golden runs of the Python reference.
 //!
-//! Числа сверяются с относительным допуском 1e-9 (разные libm, §9). Загрузка мира —
-//! тем же TOML-загрузчиком, старт — калибровочным `seed_state`.
+//! Numbers are compared with a relative tolerance of 1e-9 (different libm, §9). The world is
+//! loaded with the same TOML loader, the start comes from the calibrating `seed_state`.
 
 use std::collections::BTreeMap;
 
@@ -74,7 +74,7 @@ fn check_frame(state: &SimState, frame: &Frame, label: &str) {
     }
 }
 
-/// Прогнать `days` дней, сверяя кадры по их полю `day` (как в golden.rs).
+/// Run `days` days, checking frames by their `day` field (as in golden.rs).
 fn run_frames(
     world: &World,
     state: &mut SimState,
@@ -99,10 +99,10 @@ fn run_frames(
             }
         }
     }
-    assert!(next.is_none(), "не все кадры сверены");
+    assert!(next.is_none(), "not all frames were checked");
 }
 
-// --- example_run: пример региона, 400 дней, без шоков -------------------------
+// --- example_run: the example region, 400 days, no shocks ---------------------
 
 #[derive(Deserialize)]
 struct CaravanJson {
@@ -131,32 +131,32 @@ fn example_run() {
     assert_eq!(
         state.caravans.len(),
         sc.caravans.len(),
-        "число караванов: rust={} python={}",
+        "number of caravans: rust={} python={}",
         state.caravans.len(),
         sc.caravans.len()
     );
     for (i, (got, want)) in state.caravans.iter().zip(&sc.caravans).enumerate() {
-        assert_eq!(got.edge, want.edge, "караван {i}: дуга");
+        assert_eq!(got.edge, want.edge, "caravan {i}: arc");
         assert_eq!(
             got.day_departed, want.day_departed,
-            "караван {i}: отправление"
+            "caravan {i}: departure"
         );
-        assert_eq!(got.day_arrival, want.day_arrival, "караван {i}: прибытие");
-        assert_close(&format!("караван {i} value"), got.value, want.value);
-        assert_close(&format!("караван {i} guard"), got.guard, want.guard);
+        assert_eq!(got.day_arrival, want.day_arrival, "caravan {i}: arrival");
+        assert_close(&format!("caravan {i} value"), got.value, want.value);
+        assert_close(&format!("caravan {i} guard"), got.guard, want.guard);
         assert_eq!(
             got.cargo.len(),
             want.cargo.len(),
-            "караван {i}: номенклатура груза"
+            "caravan {i}: cargo goods"
         );
         for (gc, wc) in got.cargo.iter().zip(&want.cargo) {
-            assert_eq!(gc.0, wc.0, "караван {i}: товар");
-            assert_close(&format!("караван {i} cargo {}", gc.0), gc.1, wc.1);
+            assert_eq!(gc.0, wc.0, "caravan {i}: good");
+            assert_close(&format!("caravan {i} cargo {}", gc.0), gc.1, wc.1);
         }
     }
 }
 
-// --- shocks_run: тот же мир с фоновыми шоками, 200 дней -----------------------
+// --- shocks_run: the same world with background shocks, 200 days -------------
 
 #[derive(Deserialize)]
 struct Fired {
@@ -186,7 +186,7 @@ fn test_shocks() -> Vec<ShockTemplate> {
             tau: 1.0,
             good: None,
             category: Some("food".into()),
-            source: "неурожай".into(),
+            source: "blight".into(),
         },
         ShockTemplate {
             id: "bandits".into(),
@@ -200,7 +200,7 @@ fn test_shocks() -> Vec<ShockTemplate> {
             tau: 1.0,
             good: None,
             category: None,
-            source: "бандиты".into(),
+            source: "bandits".into(),
         },
     ]
 }
@@ -212,7 +212,7 @@ fn shocks_run() {
     let mut state = seed_state(&world);
     run_frames(&world, &mut state, sc.days, &sc.frames, &test_shocks());
 
-    // Сработавшие эффекты по (источник, цель, день старта) — проверка RNG-логики.
+    // Fired effects by (source, target, start day) — checks the RNG logic.
     let mut fired: Vec<(String, String, i64)> = state
         .effects
         .iter()
@@ -220,17 +220,17 @@ fn shocks_run() {
         .collect();
     fired.sort();
     fired.dedup();
-    assert_eq!(fired.len(), sc.fired.len(), "число сработавших эффектов");
+    assert_eq!(fired.len(), sc.fired.len(), "number of fired effects");
     for (got, want) in fired.iter().zip(&sc.fired) {
         assert_eq!(
             (got.0.as_str(), got.1.as_str(), got.2),
             (want.source.as_str(), want.target.as_str(), want.start_day),
-            "сработавший эффект"
+            "fired effect"
         );
     }
 }
 
-// --- events: покупка, грабёж, удар по процветанию ------------------------------
+// --- events: purchase, robbery, prosperity hit ---------------------------------
 
 #[derive(Deserialize)]
 struct TradeJson {
@@ -262,7 +262,7 @@ fn events() {
     let world = example_world();
     let mut state = seed_state(&world);
 
-    // Шаг 1: 20 дней торговли без шоков.
+    // Step 1: 20 days of trade without shocks.
     let run20 = &sc.steps[0];
     assert_eq!(run20.action, "run20");
     for _ in 0..20 {
@@ -270,18 +270,18 @@ fn events() {
     }
     check_frame(&state, &run20.state, "run20");
 
-    // Шаг 2: крупная покупка зерна в redwater.
+    // Step 2: a large grain purchase in redwater.
     let buy = &sc.steps[1];
     assert_eq!(buy.action, "buy");
     let t = purchase::apply(&world, &mut state, "redwater", "grain", 500.0, false, 256)
-        .expect("покупка проходит");
+        .expect("the purchase goes through");
     let tj = buy.trade.as_ref().unwrap();
     assert_close("buy total", t.total, tj.total);
     assert_close("buy avg_price", t.avg_price, tj.avg_price);
     assert_close("buy new_multiplier", t.new_multiplier, tj.new_multiplier);
     check_frame(&state, &buy.state, "buy");
 
-    // Шаг 3: грабёж первого каравана в пути (первая дуга с непустым грузом).
+    // Step 3: rob the first caravan in transit (the first arc with non-empty cargo).
     let loot = &sc.steps[2];
     assert_eq!(loot.action, "loot");
     let edge = world
@@ -293,13 +293,13 @@ fn events() {
                 .is_some_and(|slots| slots.iter().any(|s| !s.is_empty()))
         })
         .cloned()
-        .expect("есть дуга с грузом в пути");
-    assert_eq!(&edge, loot.edge.as_ref().unwrap(), "дуга грабежа");
+        .expect("there is an arc with cargo in transit");
+    assert_eq!(&edge, loot.edge.as_ref().unwrap(), "robbery arc");
     let looted = events::loot_caravan(&mut state, &edge, 0.5, None);
     assert_close("looted", looted, loot.looted.unwrap());
     check_frame(&state, &loot.state, "loot");
 
-    // Шаг 4: удар по процветанию redwater.
+    // Step 4: a prosperity hit on redwater.
     let hit = &sc.steps[3];
     assert_eq!(hit.action, "prosperity_hit");
     events::prosperity_hit(&mut state, "redwater", 0.25);

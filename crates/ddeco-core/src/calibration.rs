@@ -1,4 +1,4 @@
-//! Начальное состояние и прогрев мира (MODEL.md §5.14). Порт `ddeco/calibration.py`.
+//! Initial state and world warm-up (MODEL.md §5.14). Port of `ddeco/calibration.py`.
 
 use crate::formulas as f;
 use crate::mathf::{self, clamp};
@@ -6,7 +6,7 @@ use crate::state::{blank_state, SimState};
 use crate::tick::step_day;
 use crate::world::World;
 
-/// Решение m^(β+ε) = D/Pcap. При Pcap = 0 цена уходит вверх (нет производства).
+/// Solve m^(β+ε) = D/Pcap. With Pcap = 0 the price goes up (no production).
 pub fn equilibrium_multiplier(beta: f64, eps: f64, demand: f64, pcap: f64) -> f64 {
     if pcap <= 0.0 {
         return f64::INFINITY;
@@ -14,7 +14,7 @@ pub fn equilibrium_multiplier(beta: f64, eps: f64, demand: f64, pcap: f64) -> f6
     mathf::powf(demand / pcap, 1.0 / (beta + eps))
 }
 
-/// Стартовое состояние из авто-калибровки равновесия без торговли (§5.14).
+/// Starting state from the no-trade equilibrium auto-calibration (§5.14).
 pub fn seed_state(world: &World) -> SimState {
     let mut st = blank_state(world);
     let pi_ref = world.params.pi_ref;
@@ -30,7 +30,7 @@ pub fn seed_state(world: &World) -> SimState {
                 good.m_min,
                 good.m_max,
             );
-            // r из m*: m = r^(-α) ⇒ r = m^(-1/α); s = r·s*
+            // r from m*: m = r^(-α) ⇒ r = m^(-1/α); s = r·s*
             let r = if good.alpha > 0.0 {
                 mathf::powf(m_eq, -1.0 / good.alpha)
             } else {
@@ -44,7 +44,7 @@ pub fn seed_state(world: &World) -> SimState {
     st
 }
 
-/// Прогреть мир: прогон без событий до сходимости множителей (§5.14).
+/// Warm the world up: run without events until the multipliers converge (§5.14).
 pub fn warmup(world: &World, max_days: u32, tol: f64) -> SimState {
     let mut st = seed_state(world);
     for _ in 0..max_days {

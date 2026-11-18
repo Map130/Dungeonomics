@@ -1,4 +1,4 @@
-//! Параметрические эффекты и их композиция (MODEL.md §3). Порт `ddeco/effects.py`.
+//! Parametric effects and their composition (MODEL.md §3). Port of `ddeco/effects.py`.
 //!
 //! x_eff = clamp( x_base · Π_k (1 + (mult_k − 1)·w_k) + Σ_k add_k·w_k , lo, hi ).
 
@@ -18,12 +18,12 @@ pub enum Op {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Decay {
-    Step,   // 1 до конца длительности, затем 0
+    Step,   // 1 until the end of the duration, then 0
     Linear, // max(0, 1 − age/duration)
     Exp,    // exp(−age/τ)
 }
 
-/// Один параметрический эффект (§3). `duration` — f64, чтобы допускать бесконечность.
+/// A single parametric effect (§3). `duration` is f64 to allow infinity.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Effect {
     pub param: String,
@@ -41,7 +41,7 @@ pub struct Effect {
 }
 
 impl Effect {
-    /// Вес затухания w_k(t) на заданный день (§3).
+    /// Decay weight w_k(t) on the given day (§3).
     pub fn weight(&self, day: i64) -> f64 {
         let age = (day - self.start_day) as f64;
         if age < 0.0 || age >= self.duration {
@@ -54,12 +54,12 @@ impl Effect {
         }
     }
 
-    /// Эффект можно удалить: его вес уже всегда 0 на этот день и далее (§4, шаг 1).
+    /// The effect can be removed: its weight is 0 from this day on (§4, step 1).
     pub fn expired(&self, day: i64) -> bool {
         (day - self.start_day) as f64 >= self.duration
     }
 
-    /// Применим ли эффект к данному товару (фильтры good/category).
+    /// Whether the effect applies to this good (good/category filters).
     pub fn matches_good(&self, good_id: Option<&str>, category: Option<&str>) -> bool {
         if let Some(g) = &self.good {
             return Some(g.as_str()) == good_id;
@@ -71,10 +71,10 @@ impl Effect {
     }
 }
 
-/// Эффективное значение параметра после всех применимых эффектов (§3).
+/// Effective parameter value after all applicable effects (§3).
 ///
-/// Порядок обхода не влияет на итог: множители перемножаются, добавки суммируются
-/// в порядке списка `effects` (его детерминированность обеспечивает вызывающий).
+/// The order does not affect the result: multipliers multiply, addends are summed
+/// in the order of the `effects` list (the caller keeps it deterministic).
 #[allow(clippy::too_many_arguments)]
 pub fn effective(
     base: f64,

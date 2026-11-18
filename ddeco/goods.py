@@ -1,9 +1,9 @@
-"""Справочник товаров и их параметры (MODEL.md §2, §7).
+"""Goods catalogue and their parameters (MODEL.md §2, §7).
 
-Товар принадлежит категории (еда, ткани, оружие, роскошь...). Категория нужна
-для адресации эффектов («война режет оружие и еду по-разному») и для корзины
-процветания (§5.8). Числовые параметры берутся из прайс-класса (стартовые догадки
-§7), но каждый товар может их переопределить.
+A good belongs to a category (food, cloth, weapons, luxury...). The category is used
+to address effects ("war hits weapons and food differently") and for the prosperity
+basket (§5.8). Numeric parameters come from the price class (starting guesses
+§7), but each good may override them.
 """
 
 from __future__ import annotations
@@ -13,48 +13,48 @@ from enum import Enum
 
 
 class PriceClass(str, Enum):
-    """Класс товара для стартовых параметров §7."""
+    """Good class for the §7 starting parameters."""
 
-    NECESSITY = "necessity"  # первая необходимость (еда и т.п.)
-    COMMON = "common"        # обычные товары
-    LUXURY = "luxury"        # роскошь
+    NECESSITY = "necessity"  # necessities (food etc.)
+    COMMON = "common"        # ordinary goods
+    LUXURY = "luxury"        # luxury
 
 
 @dataclass(frozen=True, slots=True)
 class GoodParams:
-    """Параметры одного товара (обозначения — MODEL.md §2).
+    """Parameters of one good (notation — MODEL.md §2).
 
-    Все значения по умолчанию — стартовые догадки §7 для калибровки, не решения.
+    All defaults are §7 starting guesses for calibration, not decisions.
     """
 
     id: str
-    category: str                 # произвольная метка для адресации эффектов
-    base_price: float             # P0_g, базовая цена из прайс-листа системы
+    category: str                 # free-form label for addressing effects
+    base_price: float             # P0_g, base price from the system's price list
 
-    alpha: float                  # α: обеспеченность r → множитель цены
-    epsilon: float                # ε: эластичность спроса по цене
-    beta: float                   # β: эластичность предложения по цене
-    m_min: float                  # нижняя граница коридора множителя
-    m_max: float                  # верхняя граница коридора множителя
-    spoilage: float               # δ: порча в день (доля)
-    coverage_days: float          # T: целевой запас = T · спрос
-    c0: float                     # доля спроса, не зависящая от богатства
-    kappa: float                  # κ: рост душевого спроса с процветанием
-    per_capita: float             # δc_g: душевое потребление при π = π_ref
-    volume: float = 1.0           # vol_g: объём единицы (для ёмкости дорог)
-    weight: float = 1.0           # ω_g: транспортная «тяжесть» (стоимость пути)
+    alpha: float                  # α: provisioning r → price multiplier
+    epsilon: float                # ε: price elasticity of demand
+    beta: float                   # β: price elasticity of supply
+    m_min: float                  # lower bound of the multiplier corridor
+    m_max: float                  # upper bound of the multiplier corridor
+    spoilage: float               # δ: spoilage per day (share)
+    coverage_days: float          # T: target stock = T · demand
+    c0: float                     # share of demand independent of wealth
+    kappa: float                  # κ: growth of per-capita demand with prosperity
+    per_capita: float             # δc_g: per-capita consumption at π = π_ref
+    volume: float = 1.0           # vol_g: volume of a unit (for road capacity)
+    weight: float = 1.0           # ω_g: transport "heaviness" (travel cost)
 
-    # Роль в корзине процветания (§5.8). in_food_basket → вклад в F_i, иначе в M_i.
+    # Role in the prosperity basket (§5.8). in_food_basket → counts towards F_i, else M_i.
     in_food_basket: bool = False
-    basket_weight: float = 0.0    # w_g (еда) или v_g (рынок); нормируется по узлу
+    basket_weight: float = 0.0    # w_g (food) or v_g (market); normalised per node
 
     def with_overrides(self, **changes: float | str | bool) -> "GoodParams":
-        """Копия с переопределёнными полями (для загрузки из TOML)."""
+        """A copy with overridden fields (for loading from TOML)."""
         return replace(self, **changes)
 
 
-# Стартовые догадки §7 по прайс-классам. Корзинные веса и per_capita здесь не
-# задаются (зависят от конкретного мира) — берутся из описания мира.
+# §7 starting guesses per price class. Basket weights and per_capita are not set
+# here (they depend on the specific world) — they come from the world description.
 _CLASS_DEFAULTS: dict[PriceClass, dict[str, float]] = {
     PriceClass.NECESSITY: dict(
         alpha=0.5, epsilon=0.2, beta=0.3, m_min=0.7, m_max=1.8,
@@ -72,7 +72,7 @@ _CLASS_DEFAULTS: dict[PriceClass, dict[str, float]] = {
 
 
 def defaults_for(price_class: PriceClass) -> dict[str, float]:
-    """Стартовые параметры §7 для прайс-класса (копия, можно мутировать)."""
+    """§7 starting parameters for a price class (a copy, may be mutated)."""
     return dict(_CLASS_DEFAULTS[price_class])
 
 
@@ -89,7 +89,7 @@ def make_good(
     weight: float = 1.0,
     **overrides: float,
 ) -> GoodParams:
-    """Собрать товар из стартовых параметров прайс-класса с переопределениями."""
+    """Build a good from the price-class starting parameters with overrides."""
     params = defaults_for(price_class)
     params.update(overrides)
     return GoodParams(
@@ -107,12 +107,12 @@ def make_good(
 
 @dataclass(frozen=True, slots=True)
 class Catalog:
-    """Справочник товаров мира. Порядок обхода — по отсортированным id (§9)."""
+    """The world's goods catalogue. Iteration order — by sorted id (§9)."""
 
     goods: dict[str, GoodParams] = field(default_factory=dict)
 
     def ids(self) -> list[str]:
-        """Детерминированный порядок товаров (§9: фиксированная сортировка)."""
+        """Deterministic order of goods (§9: fixed sorting)."""
         return sorted(self.goods)
 
     def __getitem__(self, good_id: str) -> GoodParams:

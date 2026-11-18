@@ -1,13 +1,13 @@
-//! `ddeco-core` — ядро симуляции «живой экономики» для настольных RPG.
+//! `ddeco-core` — the simulation core of a "living economy" for tabletop RPGs.
 //!
-//! Порт Python-прототипа (`ddeco/` в корне репозитория), который остаётся эталоном:
-//! golden-прогоны из Python проверяют это ядро (см. `tests/golden.rs`). Ссылки вида
-//! «§5.6» указывают на разделы `MODEL.md`.
+//! A port of the Python prototype (`ddeco/` at the repository root), which stays the reference:
+//! golden runs from Python verify this core (see `tests/golden.rs`). References like
+//! "§5.6" point to sections of `MODEL.md`.
 //!
-//! Инварианты (см. CLAUDE.md): параметры меняются только эффектами, состояние
-//! эволюционирует само; синхронный тик из снимка начала дня; фиксированный порядок
-//! обхода (индексы вместо хеш-мап, §9); цены — множители к базовому прайс-листу;
-//! детерминизм через [`mathf`] и счётчиковый RNG.
+//! Invariants (see CLAUDE.md): parameters change only through effects, the state
+//! evolves on its own; a synchronous tick from the start-of-day snapshot; a fixed traversal
+//! order (ordered maps instead of hash maps, §9); prices are multipliers on a base price list;
+//! determinism through [`mathf`] and a counter-based RNG.
 
 pub mod calibration;
 pub mod caravans;

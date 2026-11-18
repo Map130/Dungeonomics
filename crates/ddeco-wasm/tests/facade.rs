@@ -1,13 +1,13 @@
-//! Smoke-тесты фасада на хосте (rlib). Методы, отдающие `JsValue` (snapshot/explain/
-//! quote), требуют JS-рантайма и здесь не вызываются — их покрывает сборка под wasm32
-//! в CI. Проверяем управление состоянием: тик, прогон, откат, сохранение.
+//! Host smoke tests of the facade (rlib). Methods returning `JsValue` (snapshot/explain/
+//! quote) need a JS runtime and are not called here — the wasm32 build and the node smoke
+//! cover them in CI. Here we check state management: tick, run, undo, save.
 
 use ddeco_wasm::Sim;
 
 const WORLD: &str = include_str!("../../../worlds/example_region.toml");
 
-/// Шаблон фонового шока: сильный неурожай с высокой интенсивностью, чтобы эффект
-/// гарантированно срабатывал в тесте.
+/// A background shock template: a strong blight with a high rate, so that the effect
+/// is guaranteed to fire in the test.
 const SHOCK: &str = r#"
 [[shocks]]
 id = "blight"
@@ -18,12 +18,12 @@ value = 0.1
 duration = 40.0
 rate = 5.0
 category = "food"
-source = "неурожай"
+source = "blight"
 "#;
 
 #[test]
 fn constructs_and_ticks() {
-    let mut sim = Sim::new(WORLD, 0).expect("мир из example_region.toml");
+    let mut sim = Sim::new(WORLD, 0).expect("world from example_region.toml");
     assert_eq!(sim.day(), 0);
     sim.step();
     assert_eq!(sim.day(), 1);
@@ -33,48 +33,52 @@ fn constructs_and_ticks() {
 
 #[test]
 fn undo_restores_previous_state() {
-    let mut sim = Sim::new(WORLD, 0).expect("мир");
+    let mut sim = Sim::new(WORLD, 0).expect("world");
     sim.run(5);
     let saved = sim.save();
     sim.step();
     assert_eq!(sim.day(), 6);
 
-    assert!(sim.undo(), "откат последнего шага");
+    assert!(sim.undo(), "undo the last step");
     assert_eq!(sim.day(), 5);
-    assert_eq!(sim.save(), saved, "состояние совпадает со снимком до шага");
+    assert_eq!(
+        sim.save(),
+        saved,
+        "the state matches the snapshot before the step"
+    );
 
-    assert!(sim.undo(), "откат прогона run(5)");
+    assert!(sim.undo(), "undo run(5)");
     assert_eq!(sim.day(), 0);
-    assert!(!sim.undo(), "история исчерпана");
+    assert!(!sim.undo(), "history exhausted");
 }
 
 #[test]
 fn undo_replays_deterministically() {
-    // Откат и повтор того же дня дают бит-в-бит то же состояние (§8.4).
-    let mut sim = Sim::new(WORLD, 0).expect("мир");
+    // Undoing and replaying the same day gives the same state bit for bit (§8.4).
+    let mut sim = Sim::new(WORLD, 0).expect("world");
     sim.run(5);
     sim.step();
     let after_first = sim.save();
     assert!(sim.undo());
     sim.step();
-    assert_eq!(sim.save(), after_first, "повтор дня воспроизводим");
+    assert_eq!(sim.save(), after_first, "replaying the day is reproducible");
 }
 
 #[test]
 fn warmup_advances_day() {
-    let sim = Sim::new(WORLD, 50).expect("прогретый мир");
-    assert!(sim.day() > 0, "warmup прокручивает дни до сходимости");
+    let sim = Sim::new(WORLD, 50).expect("warmed-up world");
+    assert!(sim.day() > 0, "warmup runs days until convergence");
 }
 
 #[test]
 fn add_effect_changes_trajectory_and_undoes() {
-    // База без эффектов.
-    let mut base = Sim::new(WORLD, 0).expect("мир");
+    // Baseline without effects.
+    let mut base = Sim::new(WORLD, 0).expect("world");
     base.run(20);
     let base_dump = base.save();
 
-    // Сильный неурожай на производство еды в городе меняет траекторию.
-    let mut sim = Sim::new(WORLD, 0).expect("мир");
+    // A strong blight on food production in a city changes the trajectory.
+    let mut sim = Sim::new(WORLD, 0).expect("world");
     sim.add_effect(
         "node",
         "redwater",
@@ -86,15 +90,15 @@ fn add_effect_changes_trajectory_and_undoes() {
         1.0,
         None,
         Some("food".into()),
-        "неурожай",
+        "blight",
     )
-    .expect("эффект принят");
+    .expect("effect accepted");
     sim.run(20);
-    assert_ne!(sim.save(), base_dump, "эффект сдвинул экономику");
+    assert_ne!(sim.save(), base_dump, "the effect shifted the economy");
 
-    // Откат снимает и эффект, и прогон → возвращаемся к состоянию до add_effect.
-    assert!(sim.undo(), "откат прогона");
-    assert!(sim.undo(), "откат add_effect");
+    // Undo removes both the effect and the run → back to the state before add_effect.
+    assert!(sim.undo(), "undo the run");
+    assert!(sim.undo(), "undo add_effect");
     assert_eq!(sim.day(), 0);
 }
 
@@ -102,31 +106,31 @@ fn add_effect_changes_trajectory_and_undoes() {
 fn shocks_toggle_affects_run_and_is_deterministic() {
     let world = format!("{WORLD}{SHOCK}");
 
-    // Выключено (default) — как будто шоков нет.
-    let mut off = Sim::new(&world, 0).expect("мир");
+    // Off (default) — as if there were no shocks.
+    let mut off = Sim::new(&world, 0).expect("world");
     assert!(!off.shocks_enabled());
     off.run(20);
 
-    // Включено — неурожай срабатывает, траектория иная.
-    let mut on = Sim::new(&world, 0).expect("мир");
+    // On — the blight fires, the trajectory differs.
+    let mut on = Sim::new(&world, 0).expect("world");
     on.set_shocks_enabled(true);
     on.run(20);
-    assert_ne!(on.save(), off.save(), "включённые шоки меняют прогон");
+    assert_ne!(on.save(), off.save(), "enabled shocks change the run");
 
-    // Детерминизм: второй включённый прогон совпадает бит-в-бит (§8.4, §5.11).
-    let mut on2 = Sim::new(&world, 0).expect("мир");
+    // Determinism: a second enabled run matches bit for bit (§8.4, §5.11).
+    let mut on2 = Sim::new(&world, 0).expect("world");
     on2.set_shocks_enabled(true);
     on2.run(20);
-    assert_eq!(on.save(), on2.save(), "шоки воспроизводимы по seed");
+    assert_eq!(on.save(), on2.save(), "shocks are reproducible by seed");
 }
 
 #[test]
 fn save_load_roundtrip() {
-    let mut sim = Sim::new(WORLD, 0).expect("мир");
+    let mut sim = Sim::new(WORLD, 0).expect("world");
     sim.run(7);
     let dump = sim.save();
-    let mut other = Sim::new(WORLD, 0).expect("мир");
-    other.load_state(&dump).expect("загрузка снимка");
+    let mut other = Sim::new(WORLD, 0).expect("world");
+    other.load_state(&dump).expect("loading the snapshot");
     assert_eq!(other.day(), 7);
-    assert_eq!(other.save(), dump, "состояние после загрузки идентично");
+    assert_eq!(other.save(), dump, "the state after loading is identical");
 }

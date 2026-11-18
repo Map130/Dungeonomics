@@ -1,13 +1,13 @@
-"""Торговые потоки: арбитраж и поставка в хаб (MODEL.md §5.6).
+"""Trade flows: arbitrage and hub delivery (MODEL.md §5.6).
 
-Фоновая торговля без агентов: если ожидаемая разница цен между узлами превышает
-стоимость пути, часть запаса уходит в конвейер дуги с задержкой. Решение о
-перевозке принимается по *ожидаемому* множителю с учётом уже едущего товара Q
-(иначе торговцы слали бы груз каждый день, пока едет первая партия → перелив).
+Background trade without agents: if the expected price difference between nodes exceeds
+the travel cost, part of the stock goes into the arc's pipeline with a delay. The decision to
+ship is taken on the *expected* multiplier, accounting for goods already in transit Q
+(otherwise traders would ship every day while the first batch is on the road → overflow).
 
-Всё считается по синхронному снимку запасов на начало шага 6: сначала обязательные
-поставки деревень в хаб, затем арбитраж по остатку. Порядок обхода дуг/товаров
-фиксирован (§9), поэтому результат воспроизводим.
+Everything is computed from a synchronous snapshot of stocks at the start of step 6: first the
+mandatory village deliveries to the hub, then arbitrage on the remainder. The order of arcs/goods
+is fixed (§9), so the result is reproducible.
 """
 
 from __future__ import annotations
@@ -18,10 +18,10 @@ from .world import World
 
 
 def add_to_pipeline(state: SimState, edge_id: str, tau: int, good: str, amount: float) -> None:
-    """Положить груз в конвейер дуги с задержкой τ (прибудет через τ дней).
+    """Put cargo into the arc's pipeline with delay τ (arrives in τ days).
 
-    Индекс τ−1: шаг прибытия (§4.2) снимает индекс 0 в начале каждого дня, поэтому
-    груз на индексе τ−1 будет снят ровно через τ дней."""
+    Index τ−1: the arrival step (§4.2) takes index 0 at the start of each day, so
+    cargo at index τ−1 is taken exactly τ days later."""
     slots = state.pipeline.setdefault(edge_id, [])
     idx = tau - 1
     while len(slots) <= idx:
@@ -30,8 +30,8 @@ def add_to_pipeline(state: SimState, edge_id: str, tau: int, good: str, amount: 
 
 
 def hub_deliveries(world: World, state: SimState, produced: dict) -> None:
-    """Обязательная поставка деревни в город-хаб: доля η_v производства независимо
-    от разницы цен (§5.6). Арбитраж дальше работает с остатком."""
+    """Mandatory delivery from a village to its hub city: a share η_v of production regardless
+    of the price difference (§5.6). Arbitrage then works on the remainder."""
     for n in world.node_ids():
         node = world.nodes[n]
         if node.hub is None:
@@ -39,7 +39,7 @@ def hub_deliveries(world: World, state: SimState, produced: dict) -> None:
         edge_id = f"{n}__{node.hub}"
         edge = world.edges.get(edge_id)
         if edge is None:
-            continue  # нет дороги деревня→хаб — поставку пропускаем
+            continue  # no village→hub road — skip the delivery
         tau = edge.delay_days()
         for g in world.catalog.ids():
             p = produced.get((n, g), 0.0)
@@ -54,7 +54,7 @@ def hub_deliveries(world: World, state: SimState, produced: dict) -> None:
 
 
 def _expected_multiplier(world: World, state: SimState, node: str, good: str, star: float) -> float:
-    """m̂ = clamp(((s + Q)/s*)^(−α), m_min, m_max) — с учётом товара в пути в узел."""
+    """m̂ = clamp(((s + Q)/s*)^(−α), m_min, m_max) — accounting for goods in transit to the node."""
     good_p = world.catalog[good]
     if star <= 0.0:
         return good_p.m_min
@@ -66,24 +66,24 @@ def _expected_multiplier(world: World, state: SimState, node: str, good: str, st
 
 
 def arbitrage(world: World, state: SimState, star: dict) -> None:
-    """Перелив запасов по дугам, где выгода превышает стоимость пути (§5.6)."""
+    """Move stock along arcs where the gain exceeds the travel cost (§5.6)."""
     p = world.params
     nodes = world.node_ids()
     goods = world.catalog.ids()
 
-    # Ожидаемые множители по снимку начала шага.
+    # Expected multipliers from the start-of-step snapshot.
     mhat = {
         (n, g): _expected_multiplier(world, state, n, g, star[(n, g)])
         for n in nodes for g in goods
     }
 
-    # Доступно к вывозу (неснижаемый резерв ρ_res·s*).
+    # Available for export (the untouchable reserve ρ_res·s*).
     avail = {
         (n, g): max(0.0, state.stock[(n, g)] - p.rho_reserve * star[(n, g)])
         for n in nodes for g in goods
     }
 
-    # Желаемый поток по каждой дуге и товару (u_eg).
+    # Desired flow along each arc and good (u_eg).
     u: dict[tuple[str, str], float] = {}
     for e in world.edge_ids():
         edge = world.edges[e]
@@ -97,7 +97,7 @@ def arbitrage(world: World, state: SimState, star: dict) -> None:
             if flow > 0.0:
                 u[(e, g)] = flow
 
-    # ψ_ig: не вывезти больше, чем доступно, суммируя по исходящим дугам (на товар).
+    # ψ_ig: do not ship out more than is available, summing over outgoing arcs (per good).
     psi: dict[tuple[str, str], float] = {}
     for n in nodes:
         out_edges = world.outgoing(n)
@@ -106,7 +106,7 @@ def arbitrage(world: World, state: SimState, star: dict) -> None:
             a = avail[(n, g)]
             psi[(n, g)] = min(1.0, a / demand_sum) if demand_sum > 0.0 else 1.0
 
-    # φ_e: ограничение по ёмкости дороги (суммируя объём по товарам).
+    # φ_e: road capacity limit (summing volume over goods).
     for e in world.edge_ids():
         edge = world.edges[e]
         vol_sum = sum(
@@ -128,6 +128,6 @@ def arbitrage(world: World, state: SimState, star: dict) -> None:
 
 
 def dispatch(world: World, state: SimState, star: dict, produced: dict) -> None:
-    """Шаг 6 целиком: сначала обязательные поставки в хаб, затем арбитраж."""
+    """The whole step 6: mandatory hub deliveries first, then arbitrage."""
     hub_deliveries(world, state, produced)
     arbitrage(world, state, star)

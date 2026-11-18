@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
-description = "Живая экономика для настольных RPG: ядро симуляции (порт Python-прототипа)"
+description = "A living economy for tabletop RPGs: the simulation core (port of the Python prototype)"
 
 [dependencies]
 serde = { workspace = true }

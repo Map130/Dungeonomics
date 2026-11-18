@@ -1,17 +1,17 @@
-"""Загрузка и сохранение мира/состояния в TOML (REQUIREMENTS §5.9).
+"""Loading and saving the world/state as TOML (REQUIREMENTS §5.9).
 
-Два раздельных файла:
-- world.toml  — описание мира (редактируется мастером/сообществом, версионируется).
-- state.toml  — снимок состояния сессии (автосохранение, не на каждый тик).
+Two separate files:
+- world.toml  — the world description (edited by the GM / community, versioned).
+- state.toml  — a snapshot of the session state (autosaved, not on every tick).
 
-tomllib (stdlib) умеет только читать, поэтому для записи state.toml есть компактный
-эмиттер под нашу схему. Описание мира программа не перезаписывает, только читает.
+tomllib (stdlib) can only read, so writing state.toml uses a compact
+emitter for our schema. The program never rewrites the world description, it only reads it.
 
-Схема world.toml:
+world.toml schema:
 
     seed = 42
 
-    [params]              # необязательно; переопределяет GlobalParams
+    [params]              # optional; overrides GlobalParams
     lam = 0.3
 
     [goods.grain]
@@ -21,21 +21,21 @@ tomllib (stdlib) умеет только читать, поэтому для з�
     per_capita = 1.0
     in_food_basket = true
     basket_weight = 0.5
-    # любое поле GoodParams можно переопределить: alpha = 0.6, coverage_days = 12, ...
+    # any GoodParams field can be overridden: alpha = 0.6, coverage_days = 12, ...
 
     [nodes.redwater]
     kind = "city"               # city | village | camp
     population = 1000
     prosperity0 = 0.5
     capacity = { grain = 800.0, cloth = 120.0 }
-    garrison = { grain = 50.0 }     # необязательно
+    garrison = { grain = 50.0 }     # optional
 
     [nodes.millbrook]
     kind = "village"
     hub = "redwater"
     hub_share = 0.6
 
-    [[roads]]                   # неориентированная дорога → две дуги
+    [[roads]]                   # undirected road → two arcs
     a = "redwater"
     b = "millbrook"
     travel_time = 2
@@ -54,7 +54,7 @@ from .state import SimState
 from .world import Edge, GlobalParams, Node, NodeKind, World
 
 
-# --- Загрузка мира -------------------------------------------------------------
+# --- Loading the world ---------------------------------------------------------
 
 def load_world(path: str | Path) -> World:
     data = tomllib.loads(Path(path).read_text(encoding="utf-8"))
@@ -89,7 +89,7 @@ def _parse_catalog(raw: dict) -> Catalog:
             basket_weight=float(g.pop("basket_weight", 0.0)),
             volume=float(g.pop("volume", 1.0)),
             weight=float(g.pop("weight", 1.0)),
-            **{k: float(v) for k, v in g.items()},  # остальное — переопределения §7
+            **{k: float(v) for k, v in g.items()},  # the rest are §7 overrides
         )
     return Catalog(goods=goods)
 
@@ -109,7 +109,7 @@ def _parse_node(nid: str, raw: dict) -> Node:
 
 
 def _parse_roads(raw: list) -> dict[str, Edge]:
-    """Каждая неориентированная дорога → две направленные дуги a→b и b→a."""
+    """Each undirected road → two directed arcs a→b and b→a."""
     edges: dict[str, Edge] = {}
     for road in raw:
         a, b = road["a"], road["b"]
@@ -129,7 +129,7 @@ def _parse_params(raw: dict) -> GlobalParams:
     return GlobalParams(**{k: float(v) for k, v in raw.items() if k in fields})
 
 
-# --- Сохранение/загрузка состояния --------------------------------------------
+# --- Saving/loading the state --------------------------------------------------
 
 def load_state(path: str | Path) -> SimState:
     data = tomllib.loads(Path(path).read_text(encoding="utf-8"))
@@ -148,7 +148,7 @@ def load_state(path: str | Path) -> SimState:
 
 
 def dump_state(st: SimState, path: str | Path) -> None:
-    """Записать state.toml атомарно (tmp + rename)."""
+    """Write state.toml atomically (tmp + rename)."""
     text = state_to_toml(st)
     p = Path(path)
     tmp = p.with_suffix(p.suffix + ".tmp")
@@ -157,9 +157,9 @@ def dump_state(st: SimState, path: str | Path) -> None:
 
 
 def state_to_toml(st: SimState) -> str:
-    """Компактный TOML-эмиттер под схему SimState. Эффекты не сериализуются:
-    их восстанавливает мастер/лог сценария (v1). Ключи сортируются для
-    стабильных диффов."""
+    """A compact TOML emitter for the SimState schema. Effects are not serialised:
+    the GM / the scenario log restores them (v1). Keys are sorted for
+    stable diffs."""
     lines = [f"day = {st.day}", ""]
 
     lines.append("[prosperity]")
@@ -197,7 +197,7 @@ def state_to_toml(st: SimState) -> str:
 
 
 def _num(x: float) -> str:
-    """Float с полной точностью (repr) для максимально точного round-trip."""
+    """A float with full precision (repr) for the most accurate round-trip."""
     if x == math.inf:
         return "inf"
     return repr(float(x))

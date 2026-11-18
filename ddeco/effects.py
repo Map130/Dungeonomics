@@ -1,16 +1,16 @@
-"""Параметрические эффекты и их композиция (MODEL.md §3).
+"""Parametric effects and their composition (MODEL.md §3).
 
-Эффект — это модификатор *параметра* (производство узла, сложность дороги k_e,
-население N_i, ёмкость cap_e, спред σ). Итоговое значение параметра:
+An effect modifies a *parameter* (node production, road difficulty k_e,
+population N_i, capacity cap_e, spread σ). The resulting parameter value:
 
     x_eff = clamp( x_base · Π_k (1 + (mult_k − 1)·w_k) + Σ_k add_k·w_k , lo, hi )
 
-где w_k(t) ∈ [0,1] — вес затухания. Множитель интерполируется к 1 по мере
-затухания, поэтому конец эффекта не даёт скачка, а два эффекта на одном параметре
-складываются независимо. Снятие одного эффекта не ломает остальные.
+where w_k(t) ∈ [0,1] is the decay weight. The multiplier is interpolated towards 1 as it
+decays, so the end of an effect causes no jump, and two effects on one parameter
+combine independently. Removing one effect does not break the others.
 
-Разовые события (грабёж каравана, правка запасов, удар по процветанию) меняют
-*состояние* один раз и эффектами не являются — см. events.py.
+One-shot events (caravan robbery, stock edits, prosperity hits) change the
+*state* once and are not effects — see events.py.
 """
 
 from __future__ import annotations
@@ -26,40 +26,40 @@ class TargetKind(str, Enum):
 
 
 class Op(str, Enum):
-    MULT = "mult"   # множитель
-    ADD = "add"     # добавка
+    MULT = "mult"   # multiplier
+    ADD = "add"     # addend
 
 
 class Decay(str, Enum):
-    STEP = "step"          # 1 до конца длительности, затем 0
+    STEP = "step"          # 1 until the end of the duration, then 0
     LINEAR = "linear"      # max(0, 1 − age/duration)
     EXP = "exp"            # exp(−age/τ)
 
 
 @dataclass(frozen=True, slots=True)
 class Effect:
-    """Один параметрический эффект (§3, §5.4 атрибуты).
+    """A single parametric effect (§3, §5.4 attributes).
 
-    good / category фильтруют, на какие товары действует эффект на узле (для
-    параметров pcap/garrison). None в обоих полях — товаро-независимый параметр
+    good / category filter which goods a node effect applies to (for the
+    pcap/garrison parameters). None in both fields means a good-independent parameter
     (population, difficulty, capacity, spread).
     """
 
     param: str                 # "pcap" | "population" | "spread" | "difficulty" | "capacity" | "garrison"
     target_kind: TargetKind
-    target_id: str             # id узла или дуги
+    target_id: str             # node or arc id
     op: Op
     value: float
     start_day: int
-    duration: int              # жёсткий конец эффекта (дней); math.inf допустимо
+    duration: int              # hard end of the effect (days); math.inf is allowed
     decay: Decay = Decay.STEP
-    tau: float = 1.0           # постоянная для экспоненциального затухания
-    good: str | None = None    # фильтр по конкретному товару
-    category: str | None = None  # фильтр по категории товара
-    source: str = ""           # человекочитаемая причина для лога (§5.12)
+    tau: float = 1.0           # time constant for exponential decay
+    good: str | None = None    # filter by a specific good
+    category: str | None = None  # filter by good category
+    source: str = ""           # free-text cause for the log (§5.12)
 
     def weight(self, day: int) -> float:
-        """Вес затухания w_k(t) на заданный день (§3)."""
+        """Decay weight w_k(t) on the given day (§3)."""
         age = day - self.start_day
         if age < 0 or age >= self.duration:
             return 0.0
@@ -71,11 +71,11 @@ class Effect:
         return math.exp(-age / self.tau)
 
     def expired(self, day: int) -> bool:
-        """Эффект можно удалить: вес уже всегда 0 на этот день и далее (§4, шаг 1)."""
+        """The effect can be removed: its weight is 0 from this day on (§4, step 1)."""
         return day - self.start_day >= self.duration
 
     def matches_good(self, good_id: str | None, category: str | None) -> bool:
-        """Применим ли эффект к данному товару (по фильтрам good/category)."""
+        """Whether the effect applies to this good (by the good/category filters)."""
         if self.good is not None:
             return self.good == good_id
         if self.category is not None:
@@ -96,11 +96,11 @@ def effective(
     lo: float = 0.0,
     hi: float = math.inf,
 ) -> float:
-    """Эффективное значение параметра после всех применимых эффектов (§3).
+    """Effective parameter value after all applicable effects (§3).
 
-    Порядок обхода эффектов не влияет на результат: множители перемножаются,
-    добавки суммируются. Для детерминизма складываем добавки в фиксированном
-    порядке (как лежат в списке — он управляется вызывающим кодом).
+    The order of effects does not affect the result: multipliers multiply,
+    addends add up. For determinism the addends are summed in a fixed
+    order (the list order — controlled by the caller).
     """
     mult = 1.0
     add = 0.0

@@ -1,7 +1,7 @@
-//! Оркестрация одного дня (MODEL.md §4). Порт `ddeco/tick.py`.
+//! Orchestration of one day (MODEL.md §4). Port of `ddeco/tick.py`.
 //!
-//! Порядок шагов фиксирован. Торговля (6) и материализация караванов (9) — полные
-//! (§5.6, §5.10). Параметры дуги и спред берутся базовыми, как в Python-эталоне.
+//! The order of steps is fixed. Trade (6) and caravan materialisation (9) are complete
+//! (§5.6, §5.10). Arc parameters and the spread are taken at base values, as in the Python reference.
 
 use std::collections::BTreeMap;
 
@@ -11,7 +11,7 @@ use crate::state::{Key, SimState};
 use crate::world::World;
 use crate::{caravans, formulas as f, trade};
 
-// --- Эффективные параметры (база из мира + активные эффекты, §3) --------------
+// --- Effective parameters (base from the world + active effects, §3) ----------
 
 fn eff_pcap(world: &World, effects: &[Effect], day: i64, node: &str, good: &str) -> f64 {
     let base = world.nodes[node].pcap(good);
@@ -63,7 +63,7 @@ fn eff_garrison(world: &World, effects: &[Effect], day: i64, node: &str, good: &
     )
 }
 
-// --- Шаги дня -----------------------------------------------------------------
+// --- Steps of the day ---------------------------------------------------------
 
 fn drop_expired(state: &mut SimState) {
     let day = state.day;
@@ -84,7 +84,7 @@ fn arrivals(world: &World, state: &mut SimState) {
     }
 }
 
-/// Шаги 3–5: производство, потребление, порча по снимку начала дня (m0).
+/// Steps 3–5: production, consumption, spoilage from the start-of-day snapshot (m0).
 fn production_consumption_spoilage(
     world: &World,
     state: &mut SimState,
@@ -178,8 +178,8 @@ fn prices(world: &World, state: &mut SimState, star: &BTreeMap<Key, f64>) {
     }
 }
 
-/// Продвинуть состояние на один день. `shocks` — шаблоны фоновых шоков (§5.11);
-/// пустой срез = генератор выключен. Снимок для отката делает вызывающий код.
+/// Advance the state by one day. `shocks` — background shock templates (§5.11);
+/// an empty slice = generator off. The caller takes the undo snapshot.
 pub fn step_day(world: &World, state: &mut SimState, shocks: &[ShockTemplate]) {
     if !shocks.is_empty() {
         let new = shocks::generate(world, state, shocks); // 0
@@ -187,7 +187,7 @@ pub fn step_day(world: &World, state: &mut SimState, shocks: &[ShockTemplate]) {
     }
     drop_expired(state); // 1
     arrivals(world, state); // 2
-    let m0 = state.multiplier.clone(); // снимок цен на начало дня
+    let m0 = state.multiplier.clone(); // price snapshot at the start of the day
     let mut demand = BTreeMap::new();
     let mut star = BTreeMap::new();
     let mut produced = BTreeMap::new();
@@ -199,7 +199,7 @@ pub fn step_day(world: &World, state: &mut SimState, shocks: &[ShockTemplate]) {
     state.day += 1;
 }
 
-/// Прокрутить N дней (REQUIREMENTS §5.7).
+/// Run N days (REQUIREMENTS §5.7).
 pub fn run(world: &World, state: &mut SimState, days: u32, shocks: &[ShockTemplate]) {
     for _ in 0..days {
         step_day(world, state, shocks);

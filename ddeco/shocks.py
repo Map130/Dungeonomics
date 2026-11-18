@@ -1,10 +1,10 @@
-"""Фоновые шоки (MODEL.md §5.11).
+"""Background shocks (MODEL.md §5.11).
 
-Генератор случайных шоков (неурожай, эпидемия, налёт, бандиты на дороге). Для
-каждого шаблона и каждой подходящей цели в день с вероятностью 1 − exp(−rate)
-создаётся эффект из шаблона. RNG счётчиковый (rng.py), поэтому откат и повтор дня
-дают те же шоки. Генератор отключается мастером (не передавать шаблоны или пустой
-список).
+A generator of random shocks (blight, epidemic, raid, bandits on the road). For
+each template and each matching target, an effect is created from the template on a day
+with probability 1 − exp(−rate). The RNG is counter-based (rng.py), so undoing and replaying
+a day gives the same shocks. The GM turns the generator off (pass no templates or an empty
+list).
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from .world import World
 
 @dataclass(frozen=True, slots=True)
 class ShockTemplate:
-    """Шаблон шока: какой эффект, на какие цели, с какой интенсивностью."""
+    """Shock template: which effect, on which targets, at what rate."""
 
     id: str
     target_kind: TargetKind
@@ -28,24 +28,24 @@ class ShockTemplate:
     op: Op
     value: float
     duration: int
-    rate: float = 1.0 / 120.0      # интенсивность в день (§7: порядок 1/120)
+    rate: float = 1.0 / 120.0      # rate per day (§7: of order 1/120)
     decay: Decay = Decay.LINEAR
     tau: float = 1.0
     good: str | None = None
     category: str | None = None
-    source: str = ""               # человекочитаемое описание для лога
+    source: str = ""               # free-text description for the log
 
     def probability(self) -> float:
-        """Вероятность срабатывания за день: 1 − exp(−rate)."""
+        """Probability of firing on a day: 1 − exp(−rate)."""
         return 1.0 - math.exp(-self.rate)
 
 
 def generate(world: World, state: SimState, templates) -> list[Effect]:
-    """Создать эффекты от сработавших шаблонов на текущий день (§4, шаг 0).
+    """Create effects from the templates that fire on the current day (§4, step 0).
 
-    Возвращает список новых эффектов; обходим шаблоны и цели в фиксированном
-    порядке (§9). Детерминизм обеспечивает счётчиковый RNG по (seed, день, цель,
-    шаблон)."""
+    Returns the list of new effects; templates and targets are visited in a fixed
+    order (§9). Determinism comes from the counter-based RNG on (seed, day, target,
+    template)."""
     new: list[Effect] = []
     day = state.day
     prob_cache: dict[str, float] = {}

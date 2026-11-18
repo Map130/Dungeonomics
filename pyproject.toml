@@ -5,16 +5,16 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ddeco"
 version = "0.1.0"
-description = "Живая экономика для настольных RPG: Python-прототип ядра симуляции"
+description = "A living economy for tabletop RPGs: Python prototype of the simulation core"
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.11"
-# Ядро намеренно без runtime-зависимостей (stdlib only): детерминизм требует
-# явного порядка суммирования, и чистый Python прямо мапится на будущий порт в Rust.
+# The core deliberately has no runtime dependencies (stdlib only): determinism needs
+# an explicit summation order, and plain Python maps directly onto the Rust port.
 dependencies = []
 
 [project.optional-dependencies]
-# Инструменты разработки и notebook-калибровки. Ядро их не импортирует.
+# Development and notebook-calibration tools. The core does not import them.
 dev = ["pytest>=8", "numpy>=1.26", "matplotlib>=3.8", "jupyter>=1.0"]
 
 [tool.setuptools.packages.find]

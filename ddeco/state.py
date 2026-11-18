@@ -1,14 +1,14 @@
-"""Состояние симуляции (MODEL.md §2). Эволюционирует само; эффекты меняют только
-параметры мира, не это.
+"""Simulation state (MODEL.md §2). It evolves on its own; effects change only
+the world's parameters, not this.
 
-Содержит запасы s_ig, множители цен m_ig, процветание π_i, конвейеры товаров в
-пути q[e][d] и список активных эффектов. Всё, что нужно для отката/повтора дня
-(§7, §8.4), лежит здесь — снимок делается через clone().
+Holds stocks s_ig, price multipliers m_ig, prosperity π_i, pipelines of goods in
+transit q[e][d] and the list of active effects. Everything needed to undo/replay a day
+(§7, §8.4) lives here — a snapshot is taken with clone().
 
-Конвейер дуги: pipeline[edge_id] — список словарей {good_id: amount}, где индекс p
-означает «прибудет через p шагов прибытия». На шаге прибытия (§4, шаг 2) берётся
-индекс 0 и список сдвигается. Отправка с задержкой τ кладёт груз в индекс τ−1
-(см. trade.py).
+Arc pipeline: pipeline[edge_id] — a list of dicts {good_id: amount}, where index p
+means "arrives in p arrival steps". The arrival step (§4, step 2) takes
+index 0 and shifts the list. Dispatch with delay τ puts the cargo at index τ−1
+(see trade.py).
 """
 
 from __future__ import annotations
@@ -30,15 +30,15 @@ class SimState:
     prosperity: dict[str, float] = field(default_factory=dict)   # π_i
     pipeline: dict[str, list[dict[str, float]]] = field(default_factory=dict)  # q[e][d]
     effects: list[Effect] = field(default_factory=list)
-    # Накопленная стоимость потока по дуге с последней материализации (§5.10).
+    # Accumulated value of the flow along an arc since the last materialisation (§5.10).
     caravan_accum: dict[str, float] = field(default_factory=dict)
-    # Материализованные караваны (лента мастеру, §5.10). Элементы — frozen dataclass.
+    # Materialised caravans (the GM feed, §5.10). Elements are frozen dataclasses.
     caravans: list = field(default_factory=list)
 
     def clone(self) -> "SimState":
-        """Глубокий снимок для отката/повтора. Effect/Caravan неизменяемы → списки
-        копируем поверхностно; остальное — вручную, чтобы не тянуть copy.deepcopy и
-        держать поведение явным и детерминированным."""
+        """A deep snapshot for undo/replay. Effect/Caravan are immutable → lists
+        are copied shallowly; the rest by hand, to avoid copy.deepcopy and
+        keep the behaviour explicit and deterministic."""
         return SimState(
             day=self.day,
             stock=dict(self.stock),
@@ -51,9 +51,9 @@ class SimState:
         )
 
     def in_transit_to(self, world: World, node_id: str, good_id: str) -> float:
-        """Q_jg: суммарный товар good_id в пути в узел node_id (§5.6).
+        """Q_jg: total good_id in transit to node node_id (§5.6).
 
-        Суммируем в фиксированном порядке дуг и слотов (§9)."""
+        Summed in a fixed order of arcs and slots (§9)."""
         total = 0.0
         for e in world.edge_ids():
             if world.edges[e].dst != node_id:
@@ -64,7 +64,7 @@ class SimState:
 
 
 def blank_state(world: World) -> SimState:
-    """Пустое состояние: нулевые запасы, m = 1, π = π0, пустые конвейеры."""
+    """Empty state: zero stocks, m = 1, π = π0, empty pipelines."""
     st = SimState(day=0)
     for n in world.node_ids():
         node = world.nodes[n]

@@ -1,4 +1,4 @@
-//! R2: загрузчик TOML читает тот же мир, что и Python (`tests/test_loader.py`).
+//! R2: the TOML loader reads the same world as Python (`tests/test_loader.py`).
 
 use ddeco_core::loader::world_from_toml;
 use ddeco_core::world::NodeKind;
@@ -16,8 +16,8 @@ fn example_world() -> ddeco_core::world::World {
 fn loads_nodes_and_edges() {
     let w = example_world();
     assert_eq!(w.seed, 42);
-    assert_eq!(w.nodes.len(), 7); // 3 города + 4 деревни
-    assert_eq!(w.edges.len(), 14); // 7 дорог → 14 дуг
+    assert_eq!(w.nodes.len(), 7); // 3 cities + 4 villages
+    assert_eq!(w.edges.len(), 14); // 7 roads → 14 arcs
     assert_eq!(w.nodes["redwater"].kind, NodeKind::City);
     assert_eq!(w.nodes["millbrook"].kind, NodeKind::Village);
     assert_eq!(w.nodes["millbrook"].hub.as_deref(), Some("redwater"));
@@ -29,11 +29,11 @@ fn loads_nodes_and_edges() {
 fn good_overrides_and_class_defaults() {
     let w = example_world();
     let fish = w.catalog.get("fish");
-    assert_eq!(fish.spoilage, 0.03); // переопределение из TOML
-    assert_eq!(fish.alpha, 0.5); // дефолт класса necessity (§7)
+    assert_eq!(fish.spoilage, 0.03); // override from TOML
+    assert_eq!(fish.alpha, 0.5); // necessity class default (§7)
     assert!(fish.in_food_basket);
     let food: Vec<&String> = w.catalog.food_ids().collect();
-    assert_eq!(food, vec!["fish", "grain"]); // отсортировано BTreeMap
+    assert_eq!(food, vec!["fish", "grain"]); // sorted by the BTreeMap
 }
 
 #[test]

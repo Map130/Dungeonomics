@@ -1,4 +1,4 @@
-"""Влияние покупки/продажи игрока на цену (§5.7)."""
+"""Effect of a player's purchase/sale on the price (§5.7)."""
 
 import pytest
 
@@ -19,7 +19,7 @@ def test_bulk_buy_costs_more_per_unit_than_small_buy():
     world, st = _state(1000.0)
     small = quote(world, st, NODE, GOOD, 10.0)
     big = quote(world, st, NODE, GOOD, 500.0)
-    assert big.avg_price > small.avg_price   # выпуклая кривая: хвост дороже
+    assert big.avg_price > small.avg_price   # convex curve: the tail is pricier
 
 
 def test_buy_above_sticker_due_to_spread_and_curve():
@@ -40,7 +40,7 @@ def test_apply_updates_stock_and_multiplier():
     world, st = _state(1000.0, m=1.0)
     t = apply(world, st, NODE, GOOD, 200.0)
     assert st.stock[(NODE, GOOD)] == 800.0
-    assert st.multiplier[(NODE, GOOD)] > 1.0           # дефицит после скупки
+    assert st.multiplier[(NODE, GOOD)] > 1.0           # shortage after buying out
     assert abs(st.multiplier[(NODE, GOOD)] - t.new_multiplier) < 1e-12
 
 

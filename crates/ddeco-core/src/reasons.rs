@@ -248,7 +248,7 @@ mod tests {
             tau: 1.0,
             good: None,
             category: Some("food".into()),
-            source: "неурожай".into(),
+            source: "blight".into(),
         }
     }
 
@@ -274,7 +274,7 @@ mod tests {
         assert_eq!(c.kind, CauseKind::NodeEffect);
         assert_eq!((c.param.as_str(), c.op), ("pcap", Some(Op::Mult)));
         assert!((c.value - 0.3).abs() < 1e-12);
-        assert_eq!(c.source, "неурожай");
+        assert_eq!(c.source, "blight");
     }
 
     #[test]

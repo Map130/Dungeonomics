@@ -1,7 +1,7 @@
-//! Сверка Rust-ядра с golden-прогонами Python-эталона (R3: одноузловые сценарии).
+//! Checking the Rust core against golden runs of the Python reference (R3: single-node scenarios).
 //!
-//! Числа сверяются с относительным допуском 1e-9 (разные libm, §9). Остальные
-//! сценарии (пример мира, шоки, события) подключаются в R4/R5.
+//! Numbers are compared with a relative tolerance of 1e-9 (different libm, §9). The other
+//! scenarios (example world, shocks, events) live in the R4/R5 test files.
 
 use std::collections::BTreeMap;
 
@@ -148,7 +148,7 @@ fn run_single(name: &str) {
             }
         }
     }
-    assert!(next.is_none(), "{name}: не все кадры сверены");
+    assert!(next.is_none(), "{name}: not all frames were checked");
 }
 
 #[test]

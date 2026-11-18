@@ -1,4 +1,4 @@
-> **Status:** in progress — R10–R12 done; next R13. Decision: `DECISIONS.md` D5.
+> **Status:** in progress — R10–R13 done; next R14. Decision: `DECISIONS.md` D5.
 
 # Plan: Dungeonomics goes English (open-source readiness)
 
@@ -80,7 +80,14 @@ are green on the new world; README credits the SRD.
 **Done when:** UI fully usable in both languages; no Cyrillic in `web/src` outside `ru.ts`;
 `npm run build` and the node smoke pass.
 
-## R13 — Code comments and test names in English
+## R13 — Code comments and test names in English ✅
+
+> Done: ~870 lines across Python (`ddeco/`, `tests/`, `scripts/`), Rust (core, facade, tests,
+> benches), the node smoke, manifests, CI, `.gitignore` and the calibration notebook
+> (re-executed so the plots carry English labels). Error messages are English. Test-only effect
+> sources were renamed `неурожай → blight`, `бандиты → bandits`, `монстр на дороге → monster on
+> the road`; `golden/shocks_run.json` changed only in those 16 strings. Outside `*.md`, Cyrillic
+> remains only in `web/src/i18n/ru.ts` and the language's own name «Русский» in the switch.
 
 - Python (`ddeco/`, `tests/`, `scripts/`), Rust (`crates/`), Svelte/TS, the smoke script,
   `pyproject`/`Cargo`/`package.json` descriptions. WASM facade error messages in English.

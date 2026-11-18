@@ -1,8 +1,8 @@
-"""Автотест §8.3: разгон не бесконечен.
+"""Autotest §8.3: runaway growth is bounded.
 
-Узел с избытком производства (Pcap = 1.5·D). Реакция предложения на цену (§5.2:
-при низкой цене выпуск падает) плюс порча как сток должны вывести запас на конечный
-потолок, а множитель не залипает на границе коридора.
+A node with excess production (Pcap = 1.5·D). The supply response to price (§5.2:
+output falls at a low price) plus spoilage as a sink must bring the stock to a finite
+ceiling, and the multiplier does not stick to the corridor edge.
 """
 
 import math
@@ -37,13 +37,13 @@ def test_overproduction_hits_ceiling():
         trace.append(st.stock[(NODE, GOOD)])
 
     final_r = trace[-1] / star
-    assert final_r < 5.0, f"запас разогнался: s/s*={final_r:.2f}"
+    assert final_r < 5.0, f"stock ran away: s/s*={final_r:.2f}"
 
-    # Наклон log(s) за последние 300 дней ≈ 0 (вышли на плато, не растём).
+    # Slope of log(s) over the last 300 days ≈ 0 (reached a plateau, not growing).
     a, b = trace[-300], trace[-1]
     slope = (math.log(b) - math.log(a)) / 300.0
-    assert abs(slope) < 1e-4, f"запас всё ещё растёт, наклон log s = {slope:.2e}"
+    assert abs(slope) < 1e-4, f"stock is still growing, slope of log s = {slope:.2e}"
 
-    # Производство упало (m < 1), но множитель не прилип к нижней границе.
+    # Production fell (m < 1), but the multiplier did not stick to the lower bound.
     m = st.multiplier[(NODE, GOOD)]
     assert world.catalog[GOOD].m_min + 1e-3 < m < 1.0, f"m={m:.3f}"

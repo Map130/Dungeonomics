@@ -3003,82 +3003,82 @@
  ],
  "fired": [
   {
-   "source": "бандиты",
+   "source": "bandits",
    "target": "eastford__redwater",
    "start_day": 194
   },
   {
-   "source": "бандиты",
+   "source": "bandits",
    "target": "greenvale__redwater",
    "start_day": 197
   },
   {
-   "source": "бандиты",
+   "source": "bandits",
    "target": "greenvale__stonehaven",
    "start_day": 195
   },
   {
-   "source": "бандиты",
+   "source": "bandits",
    "target": "greyrock__stonehaven",
    "start_day": 193
   },
   {
-   "source": "бандиты",
+   "source": "bandits",
    "target": "lakeside__greenvale",
    "start_day": 193
   },
   {
-   "source": "бандиты",
+   "source": "bandits",
    "target": "redwater__eastford",
    "start_day": 195
   },
   {
-   "source": "бандиты",
+   "source": "bandits",
    "target": "stonehaven__redwater",
    "start_day": 196
   },
   {
-   "source": "неурожай",
+   "source": "blight",
    "target": "eastford",
    "start_day": 193
   },
   {
-   "source": "неурожай",
+   "source": "blight",
    "target": "eastford",
    "start_day": 198
   },
   {
-   "source": "неурожай",
+   "source": "blight",
    "target": "greenvale",
    "start_day": 198
   },
   {
-   "source": "неурожай",
+   "source": "blight",
    "target": "greyrock",
    "start_day": 186
   },
   {
-   "source": "неурожай",
+   "source": "blight",
    "target": "greyrock",
    "start_day": 188
   },
   {
-   "source": "неурожай",
+   "source": "blight",
    "target": "millbrook",
    "start_day": 187
   },
   {
-   "source": "неурожай",
+   "source": "blight",
    "target": "redwater",
    "start_day": 194
   },
   {
-   "source": "неурожай",
+   "source": "blight",
    "target": "stonehaven",
    "start_day": 188
   },
   {
-   "source": "неурожай",
+   "source": "blight",
    "target": "stonehaven",
    "start_day": 193
   }

@@ -1,34 +1,34 @@
-//! Влияние покупки/продажи игрока на цену (MODEL.md §5.7). Порт `ddeco/purchase.py`.
+//! Effect of a player's purchase/sale on the price (MODEL.md §5.7). Port of `ddeco/purchase.py`.
 //!
-//! Крупная сделка сдвигает цену на каждой единице, игрок платит среднюю по кривой, а
-//! не цену с ценника — защита от скупки. Предельный множитель после u единиц:
-//! m·(s/(s−u))^α при покупке. Коридор [m_min, m_max] применяется в каждой точке,
-//! поэтому считаем численным суммированием по шагам, а не замкнутой формулой. После
-//! сделки m устанавливается равным предельному множителю на последней единице,
-//! дальше работает обычное сглаживание.
+//! A large deal moves the price on every unit; the player pays the average along the curve, not
+//! the price tag — protection against buying out the market. The marginal multiplier after u units:
+//! m·(s/(s−u))^α for a purchase. The [m_min, m_max] corridor applies at every point,
+//! so we sum numerically over steps rather than use a closed form. After
+//! the deal m is set to the marginal multiplier at the last unit,
+//! then the usual smoothing takes over.
 
 use crate::mathf::{self, clamp};
 use crate::state::SimState;
 use crate::world::World;
 
-/// Детали проведённой/посчитанной сделки.
+/// Details of an executed / computed deal.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Trade {
     pub good: String,
     pub qty: f64,
-    pub total: f64,          // суммарная цена сделки (с учётом спреда)
-    pub avg_price: f64,      // средняя цена за единицу
-    pub new_multiplier: f64, // множитель после сделки
+    pub total: f64,          // total price of the deal (spread included)
+    pub avg_price: f64,      // average price per unit
+    pub new_multiplier: f64, // multiplier after the deal
 }
 
-/// Ошибки сделки (вместо Python `ValueError`).
+/// Deal errors (instead of Python's `ValueError`).
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum TradeError {
-    NonPositiveQty,  // qty должно быть > 0
-    BuyExceedsStock, // нельзя купить весь запас (q < s)
+    NonPositiveQty,  // qty must be > 0
+    BuyExceedsStock, // cannot buy the whole stock (q < s)
 }
 
-/// Предельный множитель после u изъятых единиц (u>0 покупка, u<0 продажа).
+/// Marginal multiplier after u units taken out (u>0 purchase, u<0 sale).
 fn price_multiplier(m0: f64, s0: f64, u: f64, alpha: f64, m_min: f64, m_max: f64) -> f64 {
     let denom = s0 - u;
     if denom <= 0.0 {
@@ -37,9 +37,9 @@ fn price_multiplier(m0: f64, s0: f64, u: f64, alpha: f64, m_min: f64, m_max: f64
     clamp(m0 * mathf::powf(s0 / denom, alpha), m_min, m_max)
 }
 
-/// Посчитать сделку, НЕ меняя состояние (для предпросмотра цены мастеру).
+/// Compute a deal WITHOUT changing the state (price preview for the GM).
 ///
-/// `sell = false` — покупка (изымает запас, u>0), `true` — продажа (добавляет, u<0).
+/// `sell = false` — a purchase (takes stock out, u>0), `true` — a sale (adds, u<0).
 pub fn quote(
     world: &World,
     state: &SimState,
@@ -57,7 +57,7 @@ pub fn quote(
     let s0 = state.stock[&key];
     let m0 = state.multiplier[&key];
     let spread = world.nodes[node].spread;
-    let sign = if sell { -1.0 } else { 1.0 }; // покупка изымает (u>0), продажа добавляет (u<0)
+    let sign = if sell { -1.0 } else { 1.0 }; // a purchase takes out (u>0), a sale adds (u<0)
     if !sell && qty >= s0 {
         return Err(TradeError::BuyExceedsStock);
     }
@@ -66,7 +66,7 @@ pub fn quote(
     let spread_factor = if sell { 1.0 - spread } else { 1.0 + spread };
     let mut total = 0.0;
     for i in 0..steps {
-        let u = sign * (i as f64 + 0.5) * du; // середина шага
+        let u = sign * (i as f64 + 0.5) * du; // middle of the step
         let m = price_multiplier(m0, s0, u, g.alpha, g.m_min, g.m_max);
         let unit = g.base_price * m * spread_factor;
         total += unit * du;
@@ -81,7 +81,7 @@ pub fn quote(
     })
 }
 
-/// Провести сделку: обновить запас и множитель. Возвращает детали сделки.
+/// Execute a deal: update the stock and the multiplier. Returns the deal details.
 pub fn apply(
     world: &World,
     state: &mut SimState,
@@ -157,8 +157,8 @@ mod tests {
     fn buy_raises_price_and_drains_stock() {
         let (w, mut st) = setup(1000.0);
         let t = apply(&w, &mut st, "n", "x", 100.0, false, 256).unwrap();
-        assert!(t.new_multiplier > 1.0, "покупка поднимает множитель");
-        // Средняя цена выше ценника (база·спред), т.к. цена растёт по кривой.
+        assert!(t.new_multiplier > 1.0, "a purchase raises the multiplier");
+        // The average price is above the price tag (base·spread) because the price rises along the curve.
         assert!(t.avg_price > 2.0 * 1.1);
         assert_eq!(st.stock[&("n".into(), "x".into())], 900.0);
         assert_eq!(st.multiplier[&("n".into(), "x".into())], t.new_multiplier);
@@ -168,8 +168,11 @@ mod tests {
     fn sell_lowers_price_and_adds_stock() {
         let (w, mut st) = setup(1000.0);
         let t = apply(&w, &mut st, "n", "x", 100.0, true, 256).unwrap();
-        assert!(t.new_multiplier < 1.0, "продажа опускает множитель");
-        assert!(t.avg_price < 2.0, "цена продажи ниже ценника (спред вниз)");
+        assert!(t.new_multiplier < 1.0, "a sale lowers the multiplier");
+        assert!(
+            t.avg_price < 2.0,
+            "the sale price is below the price tag (spread down)"
+        );
         assert_eq!(st.stock[&("n".into(), "x".into())], 1100.0);
     }
 
@@ -182,7 +185,7 @@ mod tests {
         );
         assert_eq!(
             quote(&w, &st, "n", "x", 50.0, false, 256),
-            Err(TradeError::BuyExceedsStock) // нельзя купить весь запас
+            Err(TradeError::BuyExceedsStock) // cannot buy the whole stock
         );
     }
 }

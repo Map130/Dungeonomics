@@ -4,10 +4,10 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
-description = "WASM-биндинги ядра «живой экономики» для веб-UI (обёртка над ddeco-core)"
+description = "WASM bindings of the living-economy core for the web UI (a wrapper over ddeco-core)"
 
 [lib]
-# cdylib — для сборки в WASM; rlib — чтобы крейт можно было тестировать на хосте.
+# cdylib — for the WASM build; rlib — so the crate can be tested on the host.
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]

@@ -1,8 +1,8 @@
-"""Процветание (§5.8): сходимость к ограниченной точке и естественный потолок.
+"""Prosperity (§5.8): convergence to a bounded point and the natural ceiling.
 
-Процветание — медленная переменная с отрицательной обратной связью: рост π
-поднимает спрос (§5.3), что снижает обеспеченность r и тянет π* вниз. Значит
-π не должно уходить в разнос (контур против разгона §5.10).
+Prosperity is a slow variable with negative feedback: growth of π
+raises demand (§5.3), which lowers provisioning r and pulls π* down. So
+π must not run away (the anti-runaway loop §5.10).
 """
 
 from ddeco.goods import Catalog, GoodParams
@@ -37,7 +37,7 @@ def _world(grain_cap, cloth_cap, population=100.0):
 def _run(world, days=2000):
     st = blank_state(world)
     for g in world.catalog.ids():
-        # старт из равновесия по запасу, чтобы ловить именно динамику π
+        # start from the stock equilibrium to catch the π dynamics specifically
         st.stock[(NODE, g)] = world.catalog[g].coverage_days * world.nodes[NODE].population
     for _ in range(days):
         step_day(world, st)
@@ -49,7 +49,7 @@ def test_prosperity_converges_and_bounded():
     st = _run(world)
     pi = st.prosperity[NODE]
     assert 0.0 <= pi <= 1.0
-    # ещё 50 дней — изменение пренебрежимо (сошлось)
+    # another 50 days — the change is negligible (converged)
     before = pi
     for _ in range(50):
         step_day(world, st)
@@ -63,7 +63,7 @@ def test_more_capacity_gives_higher_prosperity():
 
 
 def test_prosperity_never_exceeds_one_under_glut():
-    """Даже при огромном избытке производства π ≤ 1 (нет разгона)."""
+    """Even with a huge production surplus π ≤ 1 (no runaway)."""
     world = _world(grain_cap=5000.0, cloth_cap=5000.0)
     st = blank_state(world)
     for _ in range(3000):

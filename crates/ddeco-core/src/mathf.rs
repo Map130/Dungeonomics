@@ -1,11 +1,11 @@
-//! Единая реализация трансцендентных функций через `libm` (MODEL.md §9).
+//! A single implementation of transcendental functions via `libm` (MODEL.md §9).
 //!
-//! `std::f64::powf/exp/ln` могут давать разные последние биты на разных платформах
-//! и в WASM. `libm` даёт одинаковый результат на всех таргетах, поэтому внутри одной
-//! сборки Rust симуляция детерминирована бит-в-бит (нативный x86 == wasm32).
+//! `std::f64::powf/exp/ln` may give different last bits on different platforms
+//! and in WASM. `libm` gives the same result on all targets, so within one
+//! Rust build the simulation is bit-for-bit deterministic (native x86 == wasm32).
 //!
-//! Весь код ядра должен звать арифметику степеней/логарифмов/экспонент ТОЛЬКО отсюда,
-//! а не через методы f64, иначе кросс-таргетная воспроизводимость теряется.
+//! All core code must call power/log/exponent arithmetic ONLY from here,
+//! not via f64 methods, otherwise cross-target reproducibility is lost.
 
 #[inline]
 pub fn powf(x: f64, y: f64) -> f64 {
@@ -24,7 +24,7 @@ pub fn ln(x: f64) -> f64 {
 
 #[inline]
 pub fn clamp(x: f64, lo: f64, hi: f64) -> f64 {
-    // Повторяет max(lo, min(hi, x)) из Python (ddeco/formulas.py:clamp).
+    // Mirrors max(lo, min(hi, x)) from Python (ddeco/formulas.py:clamp).
     if x < lo {
         lo
     } else if x > hi {

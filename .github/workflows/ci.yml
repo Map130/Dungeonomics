@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-      # Бенчи не гоняем в CI (шумно), только проверяем компиляцию.
+      # Benches are not run in CI (noisy), we only check that they compile.
       - run: cargo build --workspace --benches
 
   wasm:
@@ -41,9 +41,9 @@ jobs:
         with:
           targets: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
-      # Ядро обязано быть WASM-совместимо (цель §7: компиляция в WASM).
+      # The core must be WASM-compatible (goal §7: compiles to WASM).
       - run: cargo build -p ddeco-core --target wasm32-unknown-unknown
-      # Биндинги для UI собираются в тот же target.
+      # The UI bindings are built for the same target.
       - run: cargo build -p ddeco-wasm --target wasm32-unknown-unknown
 
   wasm-pack:
@@ -59,11 +59,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      # Упаковка под Node и smoke-тест формы JSON (слой serde-wasm-bindgen,
-      # который host-тесты фасада проверить не могут).
+      # Package for Node and smoke-test the JSON shape (the serde-wasm-bindgen layer,
+      # which the facade's host tests cannot check).
       - run: wasm-pack build crates/ddeco-wasm --target nodejs --out-dir pkg-node
       - run: node crates/ddeco-wasm/smoke/smoke.cjs
-      # Веб-UI: собрать пакет под браузер и прогнать type-check + vite build.
+      # Web UI: build the browser package and run type-check + vite build.
       - run: wasm-pack build crates/ddeco-wasm --target web --out-dir ../../web/src/pkg
       - run: npm ci
         working-directory: web

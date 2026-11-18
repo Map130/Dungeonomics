@@ -1,12 +1,12 @@
-//! Загрузка мира и состояния из TOML (REQUIREMENTS §5.9). Порт `ddeco/loader.py`.
+//! Loading the world and state from TOML (REQUIREMENTS §5.9). Port of `ddeco/loader.py`.
 //!
-//! Схема описана в `ddeco/loader.py` и `worlds/example_region.toml`. Неизвестные
-//! поля товаров serde игнорирует (в Python они трактовались как переопределения §7;
-//! известные override-поля мы разбираем явно).
+//! The schema is described in `ddeco/loader.py` and `worlds/example_region.toml`. Unknown
+//! good fields are ignored by serde (Python treated them as §7 overrides;
+//! the known override fields are parsed explicitly).
 //!
-//! I/O (чтение файла, атомарная запись) остаётся на вызывающем — ядро целится в WASM
-//! и работает со строками: `world_from_toml`/`state_from_toml` берут `&str`,
-//! `state_to_toml` возвращает `String`.
+//! I/O (reading the file, atomic writes) is left to the caller — the core targets WASM
+//! and works with strings: `world_from_toml`/`state_from_toml` take `&str`,
+//! `state_to_toml` returns a `String`.
 
 use std::collections::BTreeMap;
 
@@ -47,7 +47,7 @@ struct RawGood {
     volume: f64,
     #[serde(default = "one")]
     weight: f64,
-    // Переопределения §7 (если присутствуют).
+    // §7 overrides (if present).
     alpha: Option<f64>,
     epsilon: Option<f64>,
     beta: Option<f64>,
@@ -113,7 +113,7 @@ fn f64_inf() -> f64 {
     f64::INFINITY
 }
 
-/// Загрузить мир из строки TOML.
+/// Load a world from a TOML string.
 pub fn world_from_toml(text: &str) -> Result<World, toml::de::Error> {
     let raw: RawWorld = toml::from_str(text)?;
     Ok(build_world(raw))
@@ -147,7 +147,7 @@ fn build_world(raw: RawWorld) -> World {
         })
         .collect();
 
-    // Каждая неориентированная дорога → две направленные дуги a→b и b→a.
+    // Each undirected road → two directed arcs a→b and b→a.
     let mut edges = BTreeMap::new();
     for road in raw.roads {
         for (src, dst) in [(&road.a, &road.b), (&road.b, &road.a)] {
@@ -214,17 +214,17 @@ fn build_params(raw: RawParams) -> GlobalParams {
             "shock_rate" => p.shock_rate = v,
             "lo_prod" => p.lo_prod = v,
             "hi_prod" => p.hi_prod = v,
-            _ => {} // неизвестный параметр игнорируем, как и Python
+            _ => {} // unknown parameter is ignored, like in Python
         }
     }
     p
 }
 
-// --- Сохранение/загрузка состояния (§5.9) -------------------------------------
+// --- Saving/loading the state (§5.9) -------------------------------------------
 //
-// Эффекты и материализованные караваны НЕ сериализуются (их восстанавливает
-// мастер/лог сценария, v1). Откат/повтор внутри сессии идёт по in-memory снимкам
-// (`SimState::clone`), поэтому файл не влияет на детерминизм прогона.
+// Effects and materialised caravans are NOT serialised (the GM / scenario log
+// restores them, v1). Undo/replay within a session uses in-memory snapshots
+// (`SimState::clone`), so the file does not affect the determinism of a run.
 
 #[derive(Debug, Default, Deserialize)]
 struct RawState {
@@ -242,7 +242,7 @@ struct RawState {
     caravan_accum: BTreeMap<String, f64>,
 }
 
-/// Разобрать снимок состояния из TOML.
+/// Parse a state snapshot from TOML.
 pub fn state_from_toml(text: &str) -> Result<SimState, toml::de::Error> {
     let raw: RawState = toml::from_str(text)?;
     let mut st = SimState {
@@ -265,8 +265,8 @@ pub fn state_from_toml(text: &str) -> Result<SimState, toml::de::Error> {
     Ok(st)
 }
 
-/// Компактный TOML под схему `SimState`. Ключи сортируются (стабильные диффы);
-/// формат совпадает с Python-эмиттером (`ddeco/loader.py:state_to_toml`).
+/// Compact TOML for the `SimState` schema. Keys are sorted (stable diffs);
+/// the format matches the Python emitter (`ddeco/loader.py:state_to_toml`).
 pub fn state_to_toml(st: &SimState) -> String {
     let mut lines: Vec<String> = vec![format!("day = {}", st.day), String::new()];
 
@@ -319,12 +319,12 @@ pub fn state_to_toml(st: &SimState) -> String {
     s
 }
 
-// --- Шаблоны фоновых шоков (§5.11) --------------------------------------------
+// --- Background shock templates (§5.11) ---------------------------------------
 //
-// Необязательная секция `[[shocks]]` в файле мира. Генератор по умолчанию выключен
-// (пустой список = нет шоков), поэтому секция аддитивна и golden-прогоны не меняет.
-// Перечисления Op/Decay/TargetKind не реализуют Deserialize — разбираем строки и
-// маплем явно, как `build_params`.
+// Optional `[[shocks]]` section in the world file. The generator is off by default
+// (an empty list = no shocks), so the section is additive and does not change golden runs.
+// The Op/Decay/TargetKind enums do not implement Deserialize — we parse strings and
+// map them explicitly, like `build_params`.
 
 #[derive(Debug, Deserialize)]
 struct RawShockFile {
@@ -359,7 +359,7 @@ fn parse_target_kind(s: &str) -> Result<TargetKind, String> {
     match s {
         "node" => Ok(TargetKind::Node),
         "edge" => Ok(TargetKind::Edge),
-        other => Err(format!("неизвестный target_kind шока: {other}")),
+        other => Err(format!("unknown shock target_kind: {other}")),
     }
 }
 
@@ -367,7 +367,7 @@ fn parse_op(s: &str) -> Result<Op, String> {
     match s {
         "mult" => Ok(Op::Mult),
         "add" => Ok(Op::Add),
-        other => Err(format!("неизвестный op шока: {other}")),
+        other => Err(format!("unknown shock op: {other}")),
     }
 }
 
@@ -376,12 +376,12 @@ fn parse_decay(s: &str) -> Result<Decay, String> {
         "step" => Ok(Decay::Step),
         "linear" => Ok(Decay::Linear),
         "exp" => Ok(Decay::Exp),
-        other => Err(format!("неизвестный decay шока: {other}")),
+        other => Err(format!("unknown shock decay: {other}")),
     }
 }
 
-/// Разобрать шаблоны фоновых шоков из TOML мира. Прочие секции serde игнорирует;
-/// отсутствие `[[shocks]]` даёт пустой список (генератор выключен).
+/// Parse background shock templates from the world TOML. serde ignores other sections;
+/// a missing `[[shocks]]` gives an empty list (generator off).
 pub fn shocks_from_toml(text: &str) -> Result<Vec<ShockTemplate>, String> {
     let raw: RawShockFile = toml::from_str(text).map_err(|e| e.to_string())?;
     raw.shocks
@@ -405,11 +405,11 @@ pub fn shocks_from_toml(text: &str) -> Result<Vec<ShockTemplate>, String> {
         .collect()
 }
 
-/// Float как валидный TOML-float с полной точностью (shortest round-trip).
+/// A float as a valid TOML float with full precision (shortest round-trip).
 ///
-/// Rust `{}` для f64 даёт кратчайшее представление, которое парсится обратно в тот же
-/// f64 (как `repr` в Python). Гарантируем наличие точки/экспоненты — иначе TOML счёл
-/// бы «1» целым, и десериализация в f64 упала бы.
+/// Rust `{}` for f64 gives the shortest representation that parses back to the same
+/// f64 (like `repr` in Python). We ensure a dot/exponent is present — otherwise TOML would
+/// read "1" as an integer and deserialising into f64 would fail.
 fn num(x: f64) -> String {
     if x == f64::INFINITY {
         return "inf".into();
@@ -431,7 +431,7 @@ mod tests {
 
     #[test]
     fn no_shocks_section_is_empty() {
-        // Файл мира без [[shocks]] — генератор выключен.
+        // A world file without [[shocks]] — the generator is off.
         assert!(shocks_from_toml("seed = 1\n").unwrap().is_empty());
     }
 
@@ -449,7 +449,7 @@ mod tests {
             rate = 0.008
             decay = "linear"
             category = "food"
-            source = "неурожай"
+            source = "blight"
         "#;
         let s = shocks_from_toml(toml).unwrap();
         assert_eq!(s.len(), 1);
@@ -460,7 +460,7 @@ mod tests {
         assert_eq!(t.decay, Decay::Linear);
         assert_eq!(t.category.as_deref(), Some("food"));
         assert_eq!(t.good, None);
-        assert_eq!(t.tau, 1.0, "tau по умолчанию 1.0");
+        assert_eq!(t.tau, 1.0, "tau defaults to 1.0");
     }
 
     #[test]

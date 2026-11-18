@@ -1,6 +1,6 @@
-//! Описание мира: узлы, дороги, граф поставок (REQUIREMENTS §5.1, MODEL.md §2).
+//! World description: nodes, roads, the supply graph (REQUIREMENTS §5.1, MODEL.md §2).
 //!
-//! Порт `ddeco/world.py`. Мир — это *параметры*; состояние живёт отдельно в [`crate::state`].
+//! Port of `ddeco/world.py`. The world is *parameters*; the state lives separately in [`crate::state`].
 
 use std::collections::BTreeMap;
 
@@ -16,13 +16,13 @@ pub enum NodeKind {
     Camp,
 }
 
-/// Узел графа. Деревня привязывается к городу (`hub`) — иерархия §5.1.
+/// A graph node. A village is bound to a city (`hub`) — the §5.1 hierarchy.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Node {
     pub id: String,
     pub kind: NodeKind,
     pub population: f64,  // N_i
-    pub prosperity0: f64, // стартовое π_i
+    pub prosperity0: f64, // starting π_i
     pub spread: f64,      // σ
     pub hub: Option<String>,
     pub hub_share: f64,                  // η_v
@@ -40,7 +40,7 @@ impl Node {
     }
 }
 
-/// Направленная дуга i→j. Дорога между узлами даёт две дуги (§2).
+/// Directed arc i→j. A road between nodes gives two arcs (§2).
 #[derive(Debug, Clone, PartialEq)]
 pub struct Edge {
     pub id: String,
@@ -52,14 +52,14 @@ pub struct Edge {
 }
 
 impl Edge {
-    /// τ_e = max(1, ceil(L_e · k_e)) — задержка конвейера (§5.6).
+    /// τ_e = max(1, ceil(L_e · k_e)) — pipeline delay (§5.6).
     pub fn delay_days(&self) -> usize {
         let raw = (self.travel_time * self.difficulty).ceil() as i64;
         raw.max(1) as usize
     }
 }
 
-/// Глобальные настройки симуляции (§7). `Default` повторяет Python-значения.
+/// Global simulation settings (§7). `Default` mirrors the Python values.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct GlobalParams {
     pub lam: f64,
@@ -95,7 +95,7 @@ impl Default for GlobalParams {
     }
 }
 
-/// Полное описание региона. Обход узлов/дуг — в отсортированном порядке (§9).
+/// Full region description. Nodes/arcs are visited in sorted order (§9).
 #[derive(Debug, Clone)]
 pub struct World {
     pub catalog: Catalog,

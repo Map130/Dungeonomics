@@ -1,12 +1,12 @@
-"""Автосохранение состояния сессии (REQUIREMENTS §5.9).
+"""Autosaving the session state (REQUIREMENTS §5.9).
 
-Состояние пишется в state.toml периодически (по умолчанию раз в минуту wall-clock),
-а НЕ на каждый тик: тиков за вечер игры тысячи, а на диск достаточно сбрасываться
-изредка для защиты от падения. Запись атомарна (tmp + rename) — см. loader.dump_state.
+The state is written to state.toml periodically (by default once a minute of wall-clock time),
+NOT on every tick: an evening of play has thousands of ticks, and flushing to disk
+occasionally is enough to survive a crash. The write is atomic (tmp + rename) — see loader.dump_state.
 
-Откат/повтор внутри сессии идёт по in-memory снимкам (SimState.clone), файл в этот
-путь не вовлечён, поэтому потеря нескольких бит float при сериализации не влияет на
-детерминизм прогона.
+Undo/replay within a session uses in-memory snapshots (SimState.clone); the file is not
+involved in that path, so losing a few float bits during serialisation does not affect
+the determinism of a run.
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from .state import SimState
 
 
 class Autosaver:
-    """Сбрасывает состояние на диск не чаще, чем раз в interval секунд."""
+    """Flushes the state to disk no more often than once every interval seconds."""
 
     def __init__(self, path: str | Path, interval: float = 60.0, clock=time.monotonic):
         self.path = Path(path)
@@ -28,7 +28,7 @@ class Autosaver:
         self._last = clock()
 
     def maybe_save(self, state: SimState, *, force: bool = False) -> bool:
-        """Сохранить, если прошёл интервал (или force). Вернуть True, если записали."""
+        """Save if the interval has passed (or force). Return True if written."""
         now = self._clock()
         if not force and now - self._last < self.interval:
             return False

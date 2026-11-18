@@ -1,4 +1,4 @@
-"""Караваны (§5.10), разовые события (§3) и лог причин (§5.12)."""
+"""Caravans (§5.10), one-shot events (§3) and the reasons log (§5.12)."""
 
 from pathlib import Path
 
@@ -15,28 +15,28 @@ WORLD = Path(__file__).resolve().parent.parent / "worlds" / "example_region.toml
 
 
 def _traded_world():
-    """Пример мира, прогретый так, что по дорогам идут потоки."""
+    """The example world, warmed up so that flows run along the roads."""
     world = load_world(WORLD)
     st = seed_state(world)
     run(world, st, 200)
     return world, st
 
 
-# --- Караваны -----------------------------------------------------------------
+# --- Caravans -------------------------------------------------------------------
 
 def test_caravan_materializes_with_cargo_and_guard():
     world, st = _traded_world()
-    # Крутим, пока не накопится хоть один караван.
+    # Run until at least one caravan has accumulated.
     for _ in range(400):
         step_day(world, st)
         if st.caravans:
             break
-    assert st.caravans, "караваны не материализовались"
+    assert st.caravans, "no caravans materialised"
     c = st.caravans[0]
     assert c.value >= world.params.caravan_threshold - 1e-6
     assert c.day_arrival > c.day_departed
     assert c.guard > 0.0
-    assert c.cargo, "у каравана пустой груз"
+    assert c.cargo, "caravan has empty cargo"
 
 
 def test_caravan_guard_is_deterministic():
@@ -50,11 +50,11 @@ def test_caravan_guard_is_deterministic():
     assert guards1 == guards2
 
 
-# --- Разовые события ----------------------------------------------------------
+# --- One-shot events ------------------------------------------------------------
 
 def test_loot_removes_cargo_from_pipeline():
     world, st = _traded_world()
-    # Найти дугу с грузом в пути.
+    # Find an arc with cargo in transit.
     edge = next(e for e in world.edge_ids()
                 if any(slot for slot in st.pipeline.get(e, ())))
     before = sum(v for slot in st.pipeline[edge] for v in slot.values())
@@ -75,16 +75,16 @@ def test_prosperity_hit_and_stock_edit():
     assert st.stock[(n, "grain")] == 42.0
 
 
-# --- Лог причин ---------------------------------------------------------------
+# --- Reasons log ---------------------------------------------------------------
 
 def test_reasons_name_the_blocked_road():
     world = load_world(WORLD)
     st = seed_state(world)
-    # Монстр на дороге eastford→redwater: ×2.5 сложности на 10 дней (§5.4 пример).
+    # A monster on the road eastford→redwater: ×2.5 difficulty for 10 days (§5.4 example).
     st.effects.append(Effect(
         param="difficulty", target_kind=TargetKind.EDGE, target_id="eastford__redwater",
         op=Op.MULT, value=2.5, start_day=st.day, duration=10, decay=Decay.LINEAR,
-        source="монстр на дороге",
+        source="monster on the road",
     ))
     run(world, st, 5)
     report = explain_price(world, st, "redwater", "grain")
@@ -92,13 +92,13 @@ def test_reasons_name_the_blocked_road():
     assert road, report.causes
     c = road[0]
     assert (c.src, c.dst, c.param, c.op) == ("eastford", "redwater", "difficulty", "mult")
-    assert c.source == "монстр на дороге"
+    assert c.source == "monster on the road"
     assert c.value > 1.0
 
 
 def test_reasons_verdict_scarcity():
     world = load_world(WORLD)
     st = seed_state(world)
-    events.set_stock(st, "redwater", "grain", 1.0)  # искусственный дефицит
+    events.set_stock(st, "redwater", "grain", 1.0)  # artificial shortage
     report = explain_price(world, st, "redwater", "grain")
     assert report.verdict == reasons.SHORTAGE

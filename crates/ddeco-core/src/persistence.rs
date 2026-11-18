@@ -1,26 +1,26 @@
-//! Автосохранение состояния сессии (REQUIREMENTS §5.9). Порт `ddeco/persistence.py`.
+//! Autosaving the session state (REQUIREMENTS §5.9). Port of `ddeco/persistence.py`.
 //!
-//! Состояние сбрасывается на диск периодически (по умолчанию раз в минуту wall-clock),
-//! а НЕ на каждый тик: тиков за вечер игры тысячи, диску достаточно изредка — защита
-//! от падения. Откат/повтор внутри сессии идёт по in-memory снимкам (`SimState::clone`),
-//! файл в этот путь не вовлечён.
+//! The state is flushed to disk periodically (by default once a minute of wall-clock time),
+//! NOT on every tick: an evening of play has thousands of ticks, occasional flushes are enough
+//! to survive a crash. Undo/replay within a session uses in-memory snapshots (`SimState::clone`),
+//! the file is not involved in that path.
 //!
-//! Ядро целится в WASM и не трогает ФС/системные часы: `maybe_save` лишь решает, пора
-//! ли сохранять, по переданному времени, и, если да, отдаёт сериализованное состояние.
-//! Атомарную запись (tmp + rename) и источник времени обеспечивает вызывающий — тот же
-//! принцип, что и с чтением мира ([`crate::loader::world_from_toml`]).
+//! The core targets WASM and does not touch the FS/system clock: `maybe_save` only decides
+//! whether it is time to save, given the passed-in time, and if so returns the serialised state.
+//! The atomic write (tmp + rename) and the time source are up to the caller — the same
+//! principle as reading the world ([`crate::loader::world_from_toml`]).
 
 use crate::loader::state_to_toml;
 use crate::state::SimState;
 
-/// Троттлинг автосейва: отдаёт состояние не чаще, чем раз в `interval` секунд.
+/// Autosave throttling: returns the state no more often than once every `interval` seconds.
 pub struct Autosaver {
     interval: f64,
     last: f64,
 }
 
 impl Autosaver {
-    /// `interval` — минимальная пауза между записями (сек), `now` — текущее время.
+    /// `interval` — minimum pause between writes (s), `now` — the current time.
     pub fn new(interval: f64, now: f64) -> Self {
         Self {
             interval,
@@ -28,8 +28,8 @@ impl Autosaver {
         }
     }
 
-    /// TOML состояния, если прошёл интервал (или `force`); иначе `None`. При выдаче
-    /// точка отсчёта сдвигается на `now`, чтобы следующая запись ждала новый интервал.
+    /// State TOML if the interval has passed (or `force`); otherwise `None`. When returned,
+    /// the reference point moves to `now`, so the next write waits a new interval.
     pub fn maybe_save(&mut self, state: &SimState, now: f64, force: bool) -> Option<String> {
         if !force && now - self.last < self.interval {
             return None;
@@ -50,19 +50,19 @@ mod tests {
 
         assert!(
             saver.maybe_save(&st, 30.0, false).is_none(),
-            "рано — не пишем"
+            "too early — no write"
         );
         assert!(
             saver.maybe_save(&st, 60.0, false).is_some(),
-            "интервал прошёл — пишем"
+            "interval passed — write"
         );
         assert!(
             saver.maybe_save(&st, 90.0, false).is_none(),
-            "отсчёт сдвинулся на последнюю запись"
+            "reference moved to the last write"
         );
         assert!(
             saver.maybe_save(&st, 120.0, false).is_some(),
-            "снова прошёл интервал"
+            "interval passed again"
         );
     }
 
@@ -72,7 +72,7 @@ mod tests {
         let mut saver = Autosaver::new(60.0, 0.0);
         assert!(
             saver.maybe_save(&st, 1.0, true).is_some(),
-            "force игнорирует интервал"
+            "force ignores the interval"
         );
     }
 }

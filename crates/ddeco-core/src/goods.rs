@@ -1,6 +1,6 @@
-//! Справочник товаров и их параметры (MODEL.md §2, §7).
+//! Goods catalogue and their parameters (MODEL.md §2, §7).
 //!
-//! Порт `ddeco/goods.py`. Числовые значения по умолчанию — стартовые догадки §7.
+//! Port of `ddeco/goods.py`. Numeric defaults are the §7 starting guesses.
 
 use std::collections::BTreeMap;
 
@@ -9,36 +9,36 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum PriceClass {
-    Necessity, // первая необходимость (еда и т.п.)
-    Common,    // обычные товары
-    Luxury,    // роскошь
+    Necessity, // necessities (food etc.)
+    Common,    // ordinary goods
+    Luxury,    // luxury
 }
 
-/// Параметры одного товара (обозначения — §2).
+/// Parameters of one good (notation — §2).
 #[derive(Debug, Clone, PartialEq)]
 pub struct GoodParams {
     pub id: String,
     pub category: String,
     pub base_price: f64, // P0_g
 
-    pub alpha: f64,         // α: обеспеченность r → множитель цены
-    pub epsilon: f64,       // ε: эластичность спроса по цене
-    pub beta: f64,          // β: эластичность предложения по цене
-    pub m_min: f64,         // нижняя граница коридора
-    pub m_max: f64,         // верхняя граница коридора
-    pub spoilage: f64,      // δ: порча в день
+    pub alpha: f64,         // α: provisioning r → price multiplier
+    pub epsilon: f64,       // ε: price elasticity of demand
+    pub beta: f64,          // β: price elasticity of supply
+    pub m_min: f64,         // lower bound of the corridor
+    pub m_max: f64,         // upper bound of the corridor
+    pub spoilage: f64,      // δ: spoilage per day
     pub coverage_days: f64, // T: s* = T·D
-    pub c0: f64,            // доля спроса вне богатства
-    pub kappa: f64,         // κ: рост душевого спроса с π
-    pub per_capita: f64,    // δc_g: душевое потребление при π_ref
+    pub c0: f64,            // share of demand independent of wealth
+    pub kappa: f64,         // κ: growth of per-capita demand with π
+    pub per_capita: f64,    // δc_g: per-capita consumption at π_ref
     pub volume: f64,        // vol_g
     pub weight: f64,        // ω_g
 
-    pub in_food_basket: bool, // вклад в F_i (иначе в M_i), §5.8
+    pub in_food_basket: bool, // counts towards F_i (else M_i), §5.8
     pub basket_weight: f64,   // w_g / v_g
 }
 
-/// Стартовые параметры §7 для прайс-класса (α, ε, β, коридор, δ, T, c0, κ).
+/// §7 starting parameters for a price class (α, ε, β, corridor, δ, T, c0, κ).
 pub fn defaults_for(pc: PriceClass) -> ClassDefaults {
     match pc {
         PriceClass::Necessity => ClassDefaults {
@@ -77,7 +77,7 @@ pub fn defaults_for(pc: PriceClass) -> ClassDefaults {
     }
 }
 
-/// Параметры §7, которые задаются прайс-классом и могут переопределяться в TOML.
+/// §7 parameters set by the price class that may be overridden in TOML.
 #[derive(Debug, Clone, Copy)]
 pub struct ClassDefaults {
     pub alpha: f64,
@@ -91,8 +91,8 @@ pub struct ClassDefaults {
     pub kappa: f64,
 }
 
-/// Справочник товаров мира. Обход — в отсортированном по id порядке (§9), что
-/// обеспечивает `BTreeMap`.
+/// The world's goods catalogue. Iteration in id-sorted order (§9), which
+/// `BTreeMap` guarantees.
 #[derive(Debug, Clone, Default)]
 pub struct Catalog {
     pub goods: BTreeMap<String, GoodParams>,
@@ -103,7 +103,7 @@ impl Catalog {
         &self.goods[id]
     }
 
-    /// Детерминированный порядок товаров.
+    /// Deterministic order of goods.
     pub fn ids(&self) -> impl Iterator<Item = &String> {
         self.goods.keys()
     }

@@ -1,8 +1,8 @@
-//! Фоновые шоки (MODEL.md §5.11). Порт `ddeco/shocks.py`.
+//! Background shocks (MODEL.md §5.11). Port of `ddeco/shocks.py`.
 //!
-//! Для каждого шаблона и каждой подходящей цели в день с вероятностью 1 − exp(−rate)
-//! создаётся эффект. RNG счётчиковый (bit-exact с Python), поэтому откат и повтор дня
-//! дают те же шоки. Генератор отключается передачей пустого списка шаблонов.
+//! For each template and each matching target, an effect is created on a day with
+//! probability 1 − exp(−rate). The RNG is counter-based (bit-exact with Python), so undoing
+//! and replaying a day gives the same shocks. Pass an empty template list to turn the generator off.
 
 use crate::effects::{Decay, Effect, Op, TargetKind};
 use crate::mathf;
@@ -10,7 +10,7 @@ use crate::rng;
 use crate::state::SimState;
 use crate::world::World;
 
-/// Шаблон шока: какой эффект, на какие цели, с какой интенсивностью.
+/// Shock template: which effect, on which targets, at what rate.
 #[derive(Debug, Clone)]
 pub struct ShockTemplate {
     pub id: String,
@@ -19,7 +19,7 @@ pub struct ShockTemplate {
     pub op: Op,
     pub value: f64,
     pub duration: f64,
-    pub rate: f64, // интенсивность в день (§7: порядок 1/120)
+    pub rate: f64, // rate per day (§7: of order 1/120)
     pub decay: Decay,
     pub tau: f64,
     pub good: Option<String>,
@@ -28,15 +28,15 @@ pub struct ShockTemplate {
 }
 
 impl ShockTemplate {
-    /// Вероятность срабатывания за день: 1 − exp(−rate).
+    /// Probability of firing on a day: 1 − exp(−rate).
     pub fn probability(&self) -> f64 {
         1.0 - mathf::exp(-self.rate)
     }
 }
 
-/// Создать эффекты от сработавших шаблонов на текущий день (§4, шаг 0).
+/// Create effects from the templates that fire on the current day (§4, step 0).
 ///
-/// Обход шаблонов — в порядке списка, целей — в отсортированном порядке id (§9).
+/// Templates are visited in list order, targets in sorted id order (§9).
 pub fn generate(world: &World, state: &SimState, templates: &[ShockTemplate]) -> Vec<Effect> {
     let day = state.day;
     let mut new = Vec::new();
@@ -47,7 +47,7 @@ pub fn generate(world: &World, state: &SimState, templates: &[ShockTemplate]) ->
             TargetKind::Edge => world.edge_ids().collect(),
         };
         for target_id in targets {
-            // Порядок частей (target, template) — как в Python (ddeco/shocks.py).
+            // Order of the parts (target, template) — as in Python (ddeco/shocks.py).
             if !rng::chance(world.seed, day, p, &[target_id.as_str(), tpl.id.as_str()]) {
                 continue;
             }

@@ -1,14 +1,14 @@
-//! Торговые потоки: арбитраж и поставка в хаб (MODEL.md §5.6). Порт `ddeco/trade.py`.
+//! Trade flows: arbitrage and hub delivery (MODEL.md §5.6). Port of `ddeco/trade.py`.
 //!
-//! Фоновая торговля без агентов: если ожидаемая разница цен между узлами превышает
-//! стоимость пути, часть запаса уходит в конвейер дуги с задержкой. Решение о
-//! перевозке принимается по *ожидаемому* множителю с учётом уже едущего товара Q
-//! (иначе торговцы слали бы груз каждый день, пока едет первая партия → перелив).
+//! Background trade without agents: if the expected price difference between nodes exceeds
+//! the travel cost, part of the stock goes into the arc's pipeline with a delay. The decision to
+//! ship is taken on the *expected* multiplier, accounting for goods already in transit Q
+//! (otherwise traders would ship every day while the first batch is on the road → overflow).
 //!
-//! Всё считается по синхронному снимку запасов на начало шага 6: сначала
-//! обязательные поставки деревень в хаб, затем арбитраж по остатку. Порядок обхода
-//! дуг/товаров фиксирован (§9), поэтому результат воспроизводим. Параметры дуги
-//! (travel_time, difficulty, capacity) берутся базовыми — как в Python-эталоне.
+//! Everything is computed from a synchronous snapshot of stocks at the start of step 6: first
+//! the mandatory village deliveries to the hub, then arbitrage on the remainder. The order of
+//! arcs/goods is fixed (§9), so the result is reproducible. Arc parameters
+//! (travel_time, difficulty, capacity) are taken at base values — as in the Python reference.
 
 use std::collections::BTreeMap;
 
@@ -16,10 +16,10 @@ use crate::mathf::{self, clamp};
 use crate::state::{Key, SimState};
 use crate::world::World;
 
-/// Положить груз в конвейер дуги с задержкой τ (прибудет через τ дней).
+/// Put cargo into the arc's pipeline with delay τ (arrives in τ days).
 ///
-/// Индекс τ−1: шаг прибытия (§4.2) снимает индекс 0 в начале каждого дня, поэтому
-/// груз на индексе τ−1 будет снят ровно через τ дней.
+/// Index τ−1: the arrival step (§4.2) takes index 0 at the start of each day, so
+/// cargo at index τ−1 is taken exactly τ days later.
 pub fn add_to_pipeline(state: &mut SimState, edge_id: &str, tau: usize, good: &str, amount: f64) {
     let slots = state.pipeline.entry(edge_id.to_string()).or_default();
     let idx = tau - 1;
@@ -29,8 +29,8 @@ pub fn add_to_pipeline(state: &mut SimState, edge_id: &str, tau: usize, good: &s
     *slots[idx].entry(good.to_string()).or_insert(0.0) += amount;
 }
 
-/// Обязательная поставка деревни в город-хаб: доля η_v производства независимо от
-/// разницы цен (§5.6). Арбитраж дальше работает с остатком.
+/// Mandatory delivery from a village to its hub city: a share η_v of production regardless of
+/// the price difference (§5.6). Arbitrage then works on the remainder.
 fn hub_deliveries(world: &World, state: &mut SimState, produced: &BTreeMap<Key, f64>) {
     for n in world.node_ids().cloned().collect::<Vec<_>>() {
         let node = &world.nodes[&n];
@@ -41,7 +41,7 @@ fn hub_deliveries(world: &World, state: &mut SimState, produced: &BTreeMap<Key, 
         let edge_id = format!("{n}__{hub}");
         let edge = match world.edges.get(&edge_id) {
             Some(e) => e,
-            None => continue, // нет дороги деревня→хаб — поставку пропускаем
+            None => continue, // no village→hub road — skip the delivery
         };
         let tau = edge.delay_days();
         let hub_share = node.hub_share;
@@ -63,7 +63,7 @@ fn hub_deliveries(world: &World, state: &mut SimState, produced: &BTreeMap<Key, 
     }
 }
 
-/// m̂ = clamp(((s + Q)/s*)^(−α), m_min, m_max) — с учётом товара в пути в узел.
+/// m̂ = clamp(((s + Q)/s*)^(−α), m_min, m_max) — accounting for goods in transit to the node.
 fn expected_multiplier(world: &World, state: &SimState, node: &str, good: &str, star: f64) -> f64 {
     let good_p = world.catalog.get(good);
     if star <= 0.0 {
@@ -77,11 +77,11 @@ fn expected_multiplier(world: &World, state: &SimState, node: &str, good: &str, 
     clamp(mathf::powf(r, -good_p.alpha), good_p.m_min, good_p.m_max)
 }
 
-/// Перелив запасов по дугам, где выгода превышает стоимость пути (§5.6).
+/// Move stock along arcs where the gain exceeds the travel cost (§5.6).
 fn arbitrage(world: &World, state: &mut SimState, star: &BTreeMap<Key, f64>) {
     let p = &world.params;
 
-    // Ожидаемые множители и доступное к вывозу по снимку начала шага.
+    // Expected multipliers and the amount available for export from the start-of-step snapshot.
     let mut mhat: BTreeMap<Key, f64> = BTreeMap::new();
     let mut avail: BTreeMap<Key, f64> = BTreeMap::new();
     for n in world.node_ids() {
@@ -96,7 +96,7 @@ fn arbitrage(world: &World, state: &mut SimState, star: &BTreeMap<Key, f64>) {
         }
     }
 
-    // Желаемый поток по каждой дуге и товару (u_eg).
+    // Desired flow along each arc and good (u_eg).
     let mut u: BTreeMap<(String, String), f64> = BTreeMap::new();
     for e in world.edge_ids() {
         let edge = &world.edges[e];
@@ -116,7 +116,7 @@ fn arbitrage(world: &World, state: &mut SimState, star: &BTreeMap<Key, f64>) {
         }
     }
 
-    // ψ_ig: не вывезти больше, чем доступно, суммируя по исходящим дугам (на товар).
+    // ψ_ig: do not ship out more than is available, summing over outgoing arcs (per good).
     let mut psi: BTreeMap<Key, f64> = BTreeMap::new();
     for n in world.node_ids() {
         for g in world.catalog.ids() {
@@ -134,7 +134,7 @@ fn arbitrage(world: &World, state: &mut SimState, star: &BTreeMap<Key, f64>) {
         }
     }
 
-    // φ_e: ограничение по ёмкости дороги (суммируя объём по товарам).
+    // φ_e: road capacity limit (summing volume over goods).
     for e in world.edge_ids().cloned().collect::<Vec<_>>() {
         let (src, capacity, tau) = {
             let edge = &world.edges[&e];
@@ -168,7 +168,7 @@ fn arbitrage(world: &World, state: &mut SimState, star: &BTreeMap<Key, f64>) {
     }
 }
 
-/// Шаг 6 целиком: сначала обязательные поставки в хаб, затем арбитраж.
+/// The whole step 6: mandatory hub deliveries first, then arbitrage.
 pub fn dispatch(
     world: &World,
     state: &mut SimState,

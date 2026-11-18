@@ -1,10 +1,10 @@
-//! Именные караваны (MODEL.md §5.10). Порт `ddeco/caravans.py`.
+//! Named caravans (MODEL.md §5.10). Port of `ddeco/caravans.py`.
 //!
-//! Караван — это лицо уже идущего потока, а не источник новых товаров. Когда
-//! накопленная стоимость потока по дуге превышает порог θ_car, система
-//! «материализует» крупный поток в именной караван: груз — партии, лежащие сейчас в
-//! конвейере дуги, сила охраны случайна и зависит от опасности дороги (k_e).
-//! Ограбление применяет §5.9 к конвейеру этой дуги.
+//! A caravan is the face of a flow already under way, not a source of new goods. When
+//! the accumulated value of the flow along an arc exceeds the threshold θ_car, the system
+//! "materialises" the large flow into a named caravan: the cargo is the batches currently in
+//! the arc's pipeline, the guard strength is random and depends on road danger (k_e).
+//! Looting applies §5.9 to that arc's pipeline.
 
 use std::collections::BTreeMap;
 
@@ -12,7 +12,7 @@ use crate::rng;
 use crate::state::SimState;
 use crate::world::World;
 
-/// Материализованный караван — лицо уже идущего потока по дуге.
+/// A materialised caravan — the face of a flow already under way along an arc.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Caravan {
     pub edge: String,
@@ -20,10 +20,10 @@ pub struct Caravan {
     pub day_arrival: i64,
     pub value: f64,
     pub guard: f64,
-    pub cargo: Vec<(String, f64)>, // отсортированный снимок груза в пути
+    pub cargo: Vec<(String, f64)>, // sorted snapshot of the cargo in transit
 }
 
-/// Снимок груза в пути по дуге: суммарный объём каждого товара, порядок по id (§9).
+/// Snapshot of the cargo in transit on an arc: total volume per good, ordered by id (§9).
 fn cargo_snapshot(state: &SimState, edge: &str) -> Vec<(String, f64)> {
     let mut totals: BTreeMap<String, f64> = BTreeMap::new();
     if let Some(slots) = state.pipeline.get(edge) {
@@ -36,9 +36,9 @@ fn cargo_snapshot(state: &SimState, edge: &str) -> Vec<(String, f64)> {
     totals.into_iter().collect()
 }
 
-/// Шаг 9: породить караваны по дугам, где накоплен поток ≥ θ_car.
+/// Step 9: spawn caravans on arcs where the accumulated flow is ≥ θ_car.
 ///
-/// Детерминированно: сила охраны берётся из счётчикового RNG (seed, день, дуга).
+/// Deterministic: the guard strength comes from the counter-based RNG (seed, day, arc).
 pub fn materialize(world: &World, state: &mut SimState) -> Vec<Caravan> {
     let theta = world.params.caravan_threshold;
     let mut made = Vec::new();
@@ -48,7 +48,7 @@ pub fn materialize(world: &World, state: &mut SimState) -> Vec<Caravan> {
             continue;
         }
         let edge = &world.edges[&e];
-        // Опасность дороги k_e масштабирует силу охраны; шум из счётчикового RNG.
+        // Road danger k_e scales the guard strength; noise from the counter-based RNG.
         let guard =
             edge.difficulty * (0.5 + rng::uniform(world.seed, state.day, &[&e, "caravan_guard"]));
         let tau = edge.delay_days() as i64;
@@ -62,12 +62,12 @@ pub fn materialize(world: &World, state: &mut SimState) -> Vec<Caravan> {
         };
         made.push(caravan.clone());
         state.caravans.push(caravan);
-        state.caravan_accum.insert(e, accum - theta); // остаток переносим
+        state.caravan_accum.insert(e, accum - theta); // carry the remainder over
     }
     made
 }
 
-/// Округление до 3 знаков (повторяет `round(x, 3)` Python-эталона для поля guard).
+/// Round to 3 decimals (mirrors the Python reference's `round(x, 3)` for the guard field).
 fn round3(x: f64) -> f64 {
     (x * 1000.0).round() / 1000.0
 }

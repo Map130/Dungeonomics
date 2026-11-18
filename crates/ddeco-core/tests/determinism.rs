@@ -1,8 +1,8 @@
-//! R4: определённость (§8.4). Два прогона с одним seed совпадают; откат (clone) и
-//! повтор дают то же состояние. Шоки включены — проверяет счётчиковый RNG.
+//! R4: determinism (§8.4). Two runs with one seed match; undo (clone) and
+//! replay give the same state. Shocks are on — this checks the counter-based RNG.
 //!
-//! Мир без дуг (торговля ещё заглушка до R5), зато с едой — чтобы шоки категории
-//! «food» срабатывали. Сравнение точное: `SimState` выводит `PartialEq`.
+//! A world without arcs (trade was a stub until R5), but with food — so that shocks of the
+//! "food" category fire. The comparison is exact: `SimState` derives `PartialEq`.
 
 use std::collections::BTreeMap;
 
@@ -78,7 +78,7 @@ fn shocks() -> Vec<ShockTemplate> {
         tau: 1.0,
         good: None,
         category: Some("food".into()),
-        source: "неурожай".into(),
+        source: "blight".into(),
     }]
 }
 
@@ -103,7 +103,7 @@ fn rollback_and_replay() {
     for _ in 0..100 {
         step_day(&w, &mut st, &sh);
     }
-    let checkpoint = st.clone(); // in-memory снимок (§7)
+    let checkpoint = st.clone(); // in-memory snapshot (§7)
     for _ in 0..50 {
         step_day(&w, &mut st, &sh);
     }
@@ -129,5 +129,5 @@ fn shocks_actually_fire() {
             break;
         }
     }
-    assert!(fired, "шоки ни разу не сработали");
+    assert!(fired, "shocks never fired");
 }

@@ -1,11 +1,11 @@
-//! Чистые функции модели (MODEL.md §5.1–5.8). Порт `ddeco/formulas.py`.
+//! Pure functions of the model (MODEL.md §5.1–5.8). Port of `ddeco/formulas.py`.
 //!
-//! Степени/экспоненты — только через [`crate::mathf`] (детерминизм §9).
+//! Powers/exponents go only through [`crate::mathf`] (determinism, §9).
 
 use crate::goods::GoodParams;
 use crate::mathf::{self, clamp};
 
-// §5.3 Спрос и потребление ----------------------------------------------------
+// §5.3 Demand and consumption -------------------------------------------------
 
 /// c_g(π) = c0 + (1 − c0)·(π/π_ref)^κ.
 pub fn wealth_factor(g: &GoodParams, prosperity: f64, pi_ref: f64) -> f64 {
@@ -34,25 +34,25 @@ pub fn consumption(g: &GoodParams, demand: f64, multiplier: f64, stock: f64) -> 
     desired.min(stock)
 }
 
-// §5.1 Целевой запас ----------------------------------------------------------
+// §5.1 Target stock -----------------------------------------------------------
 
 pub fn target_stock(g: &GoodParams, demand: f64) -> f64 {
     g.coverage_days * demand
 }
 
-// §5.2 Производство (реакция предложения на цену) -----------------------------
+// §5.2 Production (supply response to price) ----------------------------------
 
 pub fn production(g: &GoodParams, pcap: f64, multiplier: f64, lo: f64, hi: f64) -> f64 {
     pcap * clamp(mathf::powf(multiplier, g.beta), lo, hi)
 }
 
-// §5.4 Порча ------------------------------------------------------------------
+// §5.4 Spoilage ---------------------------------------------------------------
 
 pub fn after_spoilage(g: &GoodParams, stock: f64) -> f64 {
     stock * (1.0 - g.spoilage)
 }
 
-// §5.5 Цена (множитель) -------------------------------------------------------
+// §5.5 Price (multiplier) -----------------------------------------------------
 
 /// m*_ig = clamp(r^(−α), m_min, m_max), r = s/s*.
 pub fn target_multiplier(g: &GoodParams, stock: f64, star: f64) -> f64 {
@@ -70,9 +70,9 @@ pub fn smooth_multiplier(current: f64, target: f64, lam: f64) -> f64 {
     current + lam * (target - current)
 }
 
-// §5.8 Процветание ------------------------------------------------------------
+// §5.8 Prosperity -------------------------------------------------------------
 
-/// Σ w_g·min(r_g, 1) / Σ w_g по списку (weight, r).
+/// Σ w_g·min(r_g, 1) / Σ w_g over a list of (weight, r).
 pub fn basket_fill(terms: &[(f64, f64)]) -> f64 {
     let mut total_w = 0.0;
     let mut acc = 0.0;

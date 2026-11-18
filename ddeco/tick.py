@@ -1,23 +1,23 @@
-"""Оркестрация одного дня симуляции (MODEL.md §4).
+"""Orchestration of one simulated day (MODEL.md §4).
 
-Порядок шагов фиксирован и менять его нельзя. Все узлы и дуги обрабатываются по
-синхронному снимку состояния на начало соответствующего шага, поэтому порядок
-обхода не влияет на результат.
+The order of steps is fixed and must not change. All nodes and arcs are processed from
+a synchronous snapshot of the state at the start of the respective step, so the traversal
+order does not affect the result.
 
-    0. События (эффекты добавляются извне до вызова step_day)
-    1. Пересчёт эффективных параметров; истёкшие эффекты удаляются
-    2. Прибытие (конвейеры сдвигаются, груз с d=0 попадает в запас)
-    3. Производство
-    4. Потребление
-    5. Порча
-    6. Торговая отправка
-    7. Процветание
-    8. Цена
-    9. Материализация караванов
-    10. Лог причин
+    0. Events (effects are added from outside before calling step_day)
+    1. Recompute effective parameters; expired effects are removed
+    2. Arrivals (pipelines shift, cargo with d=0 goes into the stock)
+    3. Production
+    4. Consumption
+    5. Spoilage
+    6. Trade dispatch
+    7. Prosperity
+    8. Price
+    9. Caravan materialisation
+    10. Reasons log
 
-Торговля (6), процветание (7), караваны (9) и лог (10) подключаются в своих
-задачах; сейчас это заглушки, не влияющие на результат.
+Trade (6), prosperity (7), caravans (9) and the log (10) are wired in by their own
+modules.
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ from .state import SimState
 from .world import World
 
 
-# --- Эффективные параметры (база из мира + активные эффекты, §3) ---------------
+# --- Effective parameters (base from the world + active effects, §3) -----------
 
 def effective_pcap(world: World, state: SimState, node: str, good: str) -> float:
     base = world.nodes[node].pcap(good)
@@ -77,21 +77,21 @@ def effective_capacity(world: World, state: SimState, edge: str) -> float:
     )
 
 
-# --- Шаги дня ------------------------------------------------------------------
+# --- Steps of the day ----------------------------------------------------------
 
 def _drop_expired(state: SimState) -> None:
-    """Шаг 1: удалить эффекты, у которых вес уже всегда 0."""
+    """Step 1: remove effects whose weight is 0 from now on."""
     day = state.day
     state.effects = [e for e in state.effects if not e.expired(day)]
 
 
 def _arrivals(world: World, state: SimState) -> None:
-    """Шаг 2: груз с d=0 прибывает в узел назначения, конвейер сдвигается."""
+    """Step 2: cargo with d=0 arrives at the destination node, the pipeline shifts."""
     for e in world.edge_ids():
         slots = state.pipeline.get(e)
         if not slots:
             continue
-        arrived = slots.pop(0)  # индекс 0 = прибывает сегодня; остальное сдвигается
+        arrived = slots.pop(0)  # index 0 = arrives today; the rest shift
         dst = world.edges[e].dst
         for g, amt in arrived.items():
             state.stock[(dst, g)] = state.stock.get((dst, g), 0.0) + amt
@@ -100,9 +100,9 @@ def _arrivals(world: World, state: SimState) -> None:
 def _production_consumption_spoilage(
     world: World, state: SimState, m0: dict, demand: dict, star: dict, produced: dict
 ) -> None:
-    """Шаги 3–5: производство, потребление, порча по снимку начала дня (m0).
+    """Steps 3–5: production, consumption, spoilage from the start-of-day snapshot (m0).
 
-    produced[(n,g)] — выпуск за день (нужен для обязательной поставки в хаб, §5.6)."""
+    produced[(n,g)] — daily output (needed for the mandatory hub delivery, §5.6)."""
     p = world.params
     for n in world.node_ids():
         pros = state.prosperity[n]
@@ -122,7 +122,7 @@ def _production_consumption_spoilage(
 
 
 def _prices(world: World, state: SimState, star: dict) -> None:
-    """Шаг 8: целевой множитель от обеспеченности и сглаживание к нему."""
+    """Step 8: target multiplier from provisioning and smoothing towards it."""
     lam = world.params.lam
     for n in world.node_ids():
         for g in world.catalog.ids():
@@ -132,7 +132,7 @@ def _prices(world: World, state: SimState, star: dict) -> None:
 
 
 def _basket_terms(world: World, state: SimState, node: str, good_ids: list[str], star: dict):
-    """Список (basket_weight, r) по товарам корзины с ненулевым спросом."""
+    """List of (basket_weight, r) over basket goods with non-zero demand."""
     terms = []
     for g in good_ids:
         good = world.catalog[g]
@@ -140,16 +140,16 @@ def _basket_terms(world: World, state: SimState, node: str, good_ids: list[str],
             continue
         s_star = star[(node, g)]
         if s_star <= 0.0:
-            continue  # нет спроса — товар не входит в корзину этого узла
+            continue  # no demand — the good is not in this node's basket
         terms.append((good.basket_weight, state.stock[(node, g)] / s_star))
     return terms
 
 
 def _prosperity(world: World, state: SimState, star: dict) -> None:
-    """Шаг 7: процветание π как медленная переменная (§5.8).
+    """Step 7: prosperity π as a slow variable (§5.8).
 
-    Естественный потолок: выше π → выше спрос (§5.3) → ниже r → ниже π*, поэтому
-    π упирается в уровень, где потребление съедает излишек производства."""
+    Natural ceiling: higher π → higher demand (§5.3) → lower r → lower π*, so
+    π levels off where consumption eats up the production surplus."""
     p = world.params
     catalog = world.catalog
     food_ids = catalog.food_ids()
@@ -162,15 +162,15 @@ def _prosperity(world: World, state: SimState, star: dict) -> None:
 
 
 def step_day(world: World, state: SimState, shocks=()) -> SimState:
-    """Продвинуть состояние на один день. Мутирует state и возвращает его.
+    """Advance the state by one day. Mutates state and returns it.
 
-    shocks — список ShockTemplate для фоновых шоков (§5.11); пусто = генератор
-    выключен. Снимок для отката делается вызывающим кодом через state.clone()."""
+    shocks — a list of ShockTemplate for background shocks (§5.11); empty = generator
+    off. The caller takes the undo snapshot via state.clone()."""
     if shocks:
         state.effects.extend(shocks_mod.generate(world, state, shocks))  # 0
     _drop_expired(state)                              # 1
     _arrivals(world, state)                           # 2
-    m0 = dict(state.multiplier)                       # снимок цен на начало дня
+    m0 = dict(state.multiplier)                       # price snapshot at the start of the day
     demand: dict = {}
     star: dict = {}
     produced: dict = {}
@@ -184,7 +184,7 @@ def step_day(world: World, state: SimState, shocks=()) -> SimState:
 
 
 def run(world: World, state: SimState, days: int, shocks=()) -> SimState:
-    """Прокрутить N дней (REQUIREMENTS §5.7)."""
+    """Run N days (REQUIREMENTS §5.7)."""
     for _ in range(days):
         step_day(world, state, shocks)
     return state

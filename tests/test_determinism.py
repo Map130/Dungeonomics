@@ -1,8 +1,8 @@
-"""Автотест §8.4: определённость.
+"""Autotest §8.4: determinism.
 
-Два прогона с одним seed совпадают бит-в-бит; откат на N дней и повтор дают тот же
-результат. Проверяется и с включёнными фоновыми шоками — за счёт счётчикового RNG
-(§5.11) результат не зависит от числа и порядка обращений к генератору.
+Two runs with one seed match bit for bit; undoing N days and replaying gives the same
+result. Also checked with background shocks on — thanks to the counter-based RNG
+(§5.11) the result does not depend on how many times and in what order the generator is called.
 """
 
 from ddeco.calibration import seed_state
@@ -17,14 +17,14 @@ WORLD = Path(__file__).resolve().parent.parent / "worlds" / "example_region.toml
 SHOCKS = [
     ShockTemplate(id="blight", target_kind=TargetKind.NODE, param="pcap",
                   op=Op.MULT, value=0.3, duration=15, rate=1 / 20,
-                  category="food", source="неурожай"),
+                  category="food", source="blight"),
     ShockTemplate(id="bandits", target_kind=TargetKind.EDGE, param="difficulty",
-                  op=Op.MULT, value=2.5, duration=10, rate=1 / 15, source="бандиты"),
+                  op=Op.MULT, value=2.5, duration=10, rate=1 / 15, source="bandits"),
 ]
 
 
 def _snapshot(state):
-    """Сравнимое представление состояния (dict'ы и конвейеры)."""
+    """A comparable representation of the state (dicts and pipelines)."""
     return (
         state.day,
         dict(state.stock),
@@ -50,12 +50,12 @@ def test_rollback_and_replay():
     for _ in range(100):
         step_day(world, st, SHOCKS)
 
-    checkpoint = st.clone()                       # in-memory снимок (§7)
+    checkpoint = st.clone()                       # in-memory snapshot (§7)
     for _ in range(50):
         step_day(world, st, SHOCKS)
     after = _snapshot(st)
 
-    # Откатиться к снимку и повторить те же 50 дней.
+    # Roll back to the snapshot and replay the same 50 days.
     st = checkpoint
     for _ in range(50):
         step_day(world, st, SHOCKS)
@@ -63,7 +63,7 @@ def test_rollback_and_replay():
 
 
 def test_shocks_actually_fire():
-    """Санити: за 200 дней шоки хоть раз срабатывают (иначе тест детерминизма пуст)."""
+    """Sanity: in 200 days the shocks fire at least once (otherwise the determinism test is empty)."""
     world = load_world(WORLD)
     st = seed_state(world)
     fired = False

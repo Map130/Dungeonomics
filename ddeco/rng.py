@@ -1,12 +1,12 @@
-"""Счётчиковый RNG (MODEL.md §5.11, §9).
+"""Counter-based RNG (MODEL.md §5.11, §9).
 
-Значение выводится из координат (seed, день, id цели, id шаблона), а НЕ из
-последовательности вызовов. Тогда откат и повтор дня дают тот же результат
-независимо от порядка обращений, и воспроизводимость не зависит от того, сколько
-раз и в каком порядке дёргали генератор.
+A value is derived from coordinates (seed, day, target id, template id), NOT from
+a call sequence. So undoing and replaying a day gives the same result
+regardless of access order, and reproducibility does not depend on how many
+times and in what order the generator was called.
 
-Используем blake2b: хеш детерминирован и одинаков на всех платформах и в WASM
-(в отличие от pow/exp/ln, §9), поэтому годится как эталон.
+We use blake2b: the hash is deterministic and identical on all platforms and in WASM
+(unlike pow/exp/ln, §9), so it is fit to be the reference.
 """
 
 from __future__ import annotations
@@ -29,13 +29,13 @@ def _digest(seed: int, day: int, *parts: object) -> bytes:
 
 
 def uniform(seed: int, day: int, *parts: object) -> float:
-    """Равномерное число в [0, 1) для координат (seed, day, *parts)."""
+    """A uniform number in [0, 1) for the coordinates (seed, day, *parts)."""
     (value,) = struct.unpack("<Q", _digest(seed, day, *parts)[:8])
     return value / 2.0**64
 
 
 def chance(seed: int, day: int, probability: float, *parts: object) -> bool:
-    """True с вероятностью probability, детерминированно по координатам."""
+    """True with the given probability, deterministically by coordinates."""
     if probability <= 0.0:
         return False
     if probability >= 1.0:
