@@ -1,18 +1,23 @@
 <script lang="ts">
   import { app } from "../store.svelte";
+  import { t } from "../i18n/index.svelte";
 
-  // Показываем только дуги, где что-то едет или копится поток.
+  // Only show arcs where something is in transit or flow is accumulating.
   const active = $derived(app.flows.filter((f) => f.in_transit > 0 || f.accum > 0));
 </script>
 
 <div class="panel">
-  <h2>Потоки и караваны</h2>
+  <h2>{t("flows.title")}</h2>
 
-  <h3>Поток по дорогам</h3>
+  <h3>{t("flows.roads")}</h3>
   {#if active.length}
     <table>
       <thead>
-        <tr><th>дорога</th><th>в пути</th><th>накоплено</th><th>до θ</th></tr>
+        <tr>
+          <th>{t("flows.road")}</th><th>{t("flows.inTransit")}</th><th>{t("flows.accum")}</th><th
+            >{t("flows.toTheta")}</th
+          >
+        </tr>
       </thead>
       <tbody>
         {#each active as f}
@@ -26,25 +31,30 @@
       </tbody>
     </table>
   {:else}
-    <p class="muted" style="margin:.2rem 0;">Активных потоков нет.</p>
+    <p class="muted" style="margin:.2rem 0;">{t("flows.none")}</p>
   {/if}
 
-  <h3 style="margin-top:.7rem;">Караваны <span class="muted">({app.caravans.length})</span></h3>
+  <h3 style="margin-top:.7rem;">{t("caravans.title")} <span class="muted">({app.caravans.length})</span></h3>
   {#if app.caravans.length}
     <ul style="margin:0; padding-left:1.1rem; max-height: 22vh; overflow:auto;">
       {#each app.caravans.slice().reverse() as c}
         <li class="row" style="justify-content: space-between;">
           <span>
-            <strong>караван {c.src}→{c.dst}</strong>
+            <strong>{t("caravans.name", { src: c.src, dst: c.dst })}</strong>
             <span class="muted">
-              дни {c.day_departed}→{c.day_arrival} · ценность {c.value.toFixed(0)} · охрана {c.guard.toFixed(1)}
+              {t("caravans.details", {
+                from: c.day_departed,
+                to: c.day_arrival,
+                value: c.value.toFixed(0),
+                guard: c.guard.toFixed(1),
+              })}
             </span>
           </span>
-          <button onclick={() => app.lootCaravan(c.edge, 0.5)}>ограбить ½</button>
+          <button onclick={() => app.lootCaravan(c.edge, 0.5)}>{t("caravans.loot")}</button>
         </li>
       {/each}
     </ul>
   {:else}
-    <p class="muted" style="margin:.2rem 0;">Караванов пока нет.</p>
+    <p class="muted" style="margin:.2rem 0;">{t("caravans.none")}</p>
   {/if}
 </div>

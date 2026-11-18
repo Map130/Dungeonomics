@@ -2,22 +2,22 @@ import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { VitePWA } from "vite-plugin-pwa";
 
-// Статический офлайн-PWA (REQUIREMENTS §5.8, цель §7). База относительная, чтобы
-// приложение открывалось из любого подкаталога/файловой раздачи.
+// Static offline PWA (REQUIREMENTS §5.8, goal §7). Relative base so the app
+// opens from any subdirectory or plain file hosting.
 export default defineConfig({
   base: "./",
-  // Разрешаем читать файлы репозитория (пример мира worlds/*.toml лежит выше web/).
+  // Allow reading repository files (the example world worlds/*.toml lives above web/).
   server: { fs: { allow: [".."] } },
   plugins: [
     svelte(),
     VitePWA({
       registerType: "autoUpdate",
-      // .wasm попадает в precache (нужен офлайн); по умолчанию workbox его не берёт.
+      // Put .wasm into the precache (needed offline); workbox skips it by default.
       workbox: { globPatterns: ["**/*.{js,css,html,wasm}"] },
       manifest: {
-        name: "Dungeonomics — живая экономика",
+        name: "Dungeonomics — living economy",
         short_name: "Dungeonomics",
-        description: "Живая региональная экономика для настольных RPG",
+        description: "A living regional economy for tabletop RPGs",
         theme_color: "#1b1b1f",
         background_color: "#1b1b1f",
         display: "standalone",

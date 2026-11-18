@@ -6,12 +6,13 @@
   import EffectsPanel from "./components/EffectsPanel.svelte";
   import FlowsPanel from "./components/FlowsPanel.svelte";
   import GmPanel from "./components/GmPanel.svelte";
+  import { i18n, LANGS, t, type Lang } from "./i18n/index.svelte";
 
   let runDays = $state(30);
   let warmup = $state(0);
 
   $effect(() => {
-    // Инициализация WASM один раз, затем загрузка мира по умолчанию.
+    // Initialise WASM once, then load the default world.
     app.init().then(() => app.loadWorld(defaultWorld, 0));
   });
 
@@ -36,12 +37,12 @@
 <header class="panel" style="border-radius:0; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
   <h1 style="margin:0; font-size:1.1rem;">Dungeonomics</h1>
   {#if app.ready && app.sim}
-    <span class="tag">день {app.day}</span>
+    <span class="tag">{t("app.day", { day: app.day })}</span>
     <div class="row">
-      <button onclick={() => app.step()}>+1 день</button>
+      <button onclick={() => app.step()}>{t("app.step")}</button>
       <button onclick={() => app.run(runDays)}>+{runDays}</button>
       <input type="number" bind:value={runDays} style="width:4rem;" />
-      <button onclick={() => app.undo()}>откат</button>
+      <button onclick={() => app.undo()}>{t("app.undo")}</button>
     </div>
     {#if app.hasShocks}
       <label class="row">
@@ -50,18 +51,26 @@
           checked={app.shocksEnabled}
           onchange={(e) => app.setShocks((e.target as HTMLInputElement).checked)}
         />
-        фоновые шоки
+        {t("app.shocks")}
       </label>
     {/if}
     <div class="row" style="margin-left:auto;">
-      <label class="muted">warmup <input type="number" bind:value={warmup} style="width:4rem;" /></label>
-      <label class="muted">мир <input type="file" accept=".toml" onchange={onWorldFile} /></label>
-      <label class="muted">состояние <input type="file" accept=".toml" onchange={onStateFile} /></label>
-      <button onclick={() => download("state.toml", app.save())}>сохранить</button>
+      <label class="muted">{t("app.warmup")} <input type="number" bind:value={warmup} style="width:4rem;" /></label>
+      <label class="muted">{t("app.world")} <input type="file" accept=".toml" onchange={onWorldFile} /></label>
+      <label class="muted">{t("app.state")} <input type="file" accept=".toml" onchange={onStateFile} /></label>
+      <button onclick={() => download("state.toml", app.save())}>{t("app.save")}</button>
     </div>
   {:else}
-    <span class="muted">загрузка ядра…</span>
+    <span class="muted">{t("app.loading")}</span>
   {/if}
+  <select
+    aria-label={t("app.language")}
+    value={i18n.lang}
+    onchange={(e) => i18n.set((e.target as HTMLSelectElement).value as Lang)}
+    style={app.ready && app.sim ? "" : "margin-left:auto;"}
+  >
+    {#each LANGS as l}<option value={l.id}>{l.label}</option>{/each}
+  </select>
 </header>
 
 {#if app.error}

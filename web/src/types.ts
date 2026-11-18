@@ -1,11 +1,11 @@
-// TS-зеркало DTO из crates/ddeco-wasm/src/lib.rs. Методы фасада возвращают `any`
-// (serde-wasm-bindgen) — приводим к этим типам в обёртке store.
+// TS mirror of the DTOs in crates/ddeco-wasm/src/lib.rs. Facade methods return `any`
+// (serde-wasm-bindgen) — the store casts them to these types.
 
 export interface GoodView {
   good: string;
   stock: number;
   multiplier: number;
-  price: number; // base·m (ценник)
+  price: number; // base·m (price tag)
   buy_price: number; // price·(1+spread)
   sell_price: number; // price·(1−spread)
   in_transit: number;

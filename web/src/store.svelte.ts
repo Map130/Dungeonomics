@@ -1,8 +1,8 @@
-// Реактивная обёртка над WASM-фасадом `Sim` (Svelte 5 runes).
+// Reactive wrapper over the WASM `Sim` facade (Svelte 5 runes).
 //
-// Одно состояние на приложение: держит экземпляр Sim и перечитывает все
-// производные снимки в `refresh()` после каждого действия. Компоненты читают
-// поля `$state` и перерисовываются автоматически.
+// One store per app: it holds the Sim instance and re-reads every derived
+// snapshot in `refresh()` after each action. Components read the `$state`
+// fields and re-render automatically.
 
 import initWasm, { Sim } from "./pkg/ddeco_wasm.js";
 import type {
@@ -19,7 +19,9 @@ class AppStore {
   ready = $state(false);
   error = $state<string | null>(null);
 
-  sim: Sim | null = null;
+  // $state.raw: the header renders on `app.sim`, so it must be reactive; raw keeps
+  // the WASM object unproxied.
+  sim = $state.raw<Sim | null>(null);
   world = $state<WorldInfo | null>(null);
   snapshot = $state<Snapshot | null>(null);
   day = $state(0);
@@ -30,7 +32,7 @@ class AppStore {
   flows = $state<FlowView[]>([]);
   caravans = $state<CaravanView[]>([]);
 
-  // Транзиентные результаты последних запросов мастера.
+  // Transient results of the GM's latest requests.
   report = $state<PriceReport | null>(null);
   lastTrade = $state<TradeResult | null>(null);
 
@@ -39,15 +41,15 @@ class AppStore {
     this.ready = true;
   }
 
-  /** Загрузить мир из TOML и откалибровать/прогреть. */
+  /** Load a world from TOML and calibrate / warm it up. */
   loadWorld(worldToml: string, warmupDays = 0): void {
     try {
       const sim = new Sim(worldToml, warmupDays);
       this.sim?.free();
       this.sim = sim;
       this.world = sim.world_info() as WorldInfo;
-      // Шоки доступны к включению, только если в файле есть [[shocks]]: грубая
-      // эвристика по тексту (фасад молча игнорирует тумблер, если шаблонов нет).
+      // Shocks can be enabled only if the file has [[shocks]]: a rough text
+      // heuristic (the facade silently ignores the toggle when there are no templates).
       this.hasShocks = /\[\[\s*shocks\s*\]\]/.test(worldToml);
       this.report = null;
       this.lastTrade = null;

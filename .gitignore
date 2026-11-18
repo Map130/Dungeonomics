@@ -41,4 +41,4 @@ references/*.html
 references/srd/
 
 # Claude Code: machine-local settings
-.claude/settings.local.json
+.claude/

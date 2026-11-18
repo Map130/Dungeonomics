@@ -1,8 +1,9 @@
 <script lang="ts">
   import { app } from "../store.svelte";
+  import { t } from "../i18n/index.svelte";
   import type { GoodView } from "../types";
 
-  // Товары берём из world_info для стабильного порядка колонок.
+  // Goods come from world_info for a stable column order.
   const goods = $derived(app.world?.goods ?? []);
 
   function verdictClass(g: GoodView): string {
@@ -14,13 +15,13 @@
 </script>
 
 <div class="panel">
-  <h2>Цены по узлам <span class="muted">· клик по ячейке — причины</span></h2>
+  <h2>{t("prices.title")} <span class="muted">· {t("prices.hint")}</span></h2>
   {#if app.snapshot}
     <div style="overflow:auto; max-height: 48vh;">
       <table>
         <thead>
           <tr>
-            <th>Узел</th>
+            <th>{t("prices.node")}</th>
             <th>π</th>
             {#each goods as g}
               <th title={g.category}>{g.id}</th>
@@ -35,7 +36,12 @@
               {#each n.goods as gv}
                 <td
                   class="clickable"
-                  title={`запас ${gv.stock.toFixed(0)} · в пути ${gv.in_transit.toFixed(0)}\nпокупка ${gv.buy_price.toFixed(3)} / продажа ${gv.sell_price.toFixed(3)}`}
+                  title={t("prices.cellTitle", {
+                    stock: gv.stock.toFixed(0),
+                    transit: gv.in_transit.toFixed(0),
+                    buy: gv.buy_price.toFixed(3),
+                    sell: gv.sell_price.toFixed(3),
+                  })}
                   onclick={() => app.explain(n.node, gv.good)}
                 >
                   <span class={"tag " + verdictClass(gv)}>×{gv.multiplier.toFixed(2)}</span>
@@ -47,6 +53,6 @@
       </table>
     </div>
   {:else}
-    <p class="muted">Мир не загружен.</p>
+    <p class="muted">{t("prices.noWorld")}</p>
   {/if}
 </div>

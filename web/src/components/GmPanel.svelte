@@ -1,5 +1,6 @@
 <script lang="ts">
   import { app } from "../store.svelte";
+  import { t } from "../i18n/index.svelte";
   import type { TradeResult } from "../types";
 
   const nodes = $derived(app.world?.nodes.map((n) => n.id) ?? []);
@@ -23,43 +24,51 @@
 </script>
 
 <div class="panel">
-  <h2>Действия мастера</h2>
+  <h2>{t("gm.title")}</h2>
 
   <div class="row">
     <select bind:value={node}>{#each nodes as n}<option>{n}</option>{/each}</select>
     <select bind:value={good}>{#each goods as g}<option>{g}</option>{/each}</select>
   </div>
 
-  <h3 style="margin-top:.6rem;">Сделка игрока</h3>
+  <h3 style="margin-top:.6rem;">{t("gm.trade")}</h3>
   <div class="row">
-    <label class="muted">кол-во <input type="number" bind:value={qty} style="width:5rem;" /></label>
-    <button onclick={() => doQuote(false)}>котировка покупки</button>
-    <button onclick={() => doQuote(true)}>котировка продажи</button>
+    <label class="muted">{t("gm.qty")} <input type="number" bind:value={qty} style="width:5rem;" /></label>
+    <button onclick={() => doQuote(false)}>{t("gm.quoteBuy")}</button>
+    <button onclick={() => doQuote(true)}>{t("gm.quoteSell")}</button>
   </div>
   {#if preview}
     <p class="muted" style="margin:.4rem 0;">
-      итого {preview.total.toFixed(2)} · средняя {preview.avg_price.toFixed(3)} · m→{preview.new_multiplier.toFixed(2)}
+      {t("gm.quote", {
+        total: preview.total.toFixed(2),
+        avg: preview.avg_price.toFixed(3),
+        m: preview.new_multiplier.toFixed(2),
+      })}
     </p>
     <div class="row">
-      <button onclick={() => { app.trade(node, good, qty, false); preview = null; }}>провести покупку</button>
-      <button onclick={() => { app.trade(node, good, qty, true); preview = null; }}>провести продажу</button>
+      <button onclick={() => { app.trade(node, good, qty, false); preview = null; }}>{t("gm.doBuy")}</button>
+      <button onclick={() => { app.trade(node, good, qty, true); preview = null; }}>{t("gm.doSell")}</button>
     </div>
   {/if}
   {#if app.lastTrade}
     <p class="muted" style="margin:.3rem 0;">
-      последняя сделка: {app.lastTrade.good} ×{app.lastTrade.qty} = {app.lastTrade.total.toFixed(2)}
+      {t("gm.lastTrade", {
+        good: app.lastTrade.good,
+        qty: app.lastTrade.qty,
+        total: app.lastTrade.total.toFixed(2),
+      })}
     </p>
   {/if}
 
-  <h3 style="margin-top:.6rem;">Запас и процветание</h3>
+  <h3 style="margin-top:.6rem;">{t("gm.stockTitle")}</h3>
   <div class="row">
-    <label class="muted">кол-во <input type="number" bind:value={amount} style="width:5rem;" /></label>
-    <button onclick={() => app.setStock(node, good, amount)}>задать запас</button>
-    <button onclick={() => app.addStock(node, good, amount)}>+ к запасу</button>
-    <button onclick={() => app.addStock(node, good, -amount)}>− из запаса</button>
+    <label class="muted">{t("gm.qty")} <input type="number" bind:value={amount} style="width:5rem;" /></label>
+    <button onclick={() => app.setStock(node, good, amount)}>{t("gm.setStock")}</button>
+    <button onclick={() => app.addStock(node, good, amount)}>{t("gm.addStock")}</button>
+    <button onclick={() => app.addStock(node, good, -amount)}>{t("gm.removeStock")}</button>
   </div>
   <div class="row" style="margin-top:.4rem;">
     <label class="muted">ρ <input type="number" step="0.05" bind:value={rho} style="width:4rem;" /></label>
-    <button onclick={() => app.prosperityHit(node, rho)}>удар по процветанию</button>
+    <button onclick={() => app.prosperityHit(node, rho)}>{t("gm.prosperityHit")}</button>
   </div>
 </div>

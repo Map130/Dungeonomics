@@ -1,4 +1,4 @@
-> **Status:** in progress — R10–R11 done; next R12. Decision: `DECISIONS.md` D5.
+> **Status:** in progress — R10–R12 done; next R13. Decision: `DECISIONS.md` D5.
 
 # Plan: Dungeonomics goes English (open-source readiness)
 
@@ -60,7 +60,17 @@ are green on the new world; README credits the SRD.
 **Done when:** the core contains no user-facing natural-language strings; golden parity holds;
 `explain` in the facade returns structured causes.
 
-## R12 — Web UI i18n (EN default, RU)
+## R12 — Web UI i18n (EN default, RU) ✅
+
+> Done: `web/src/i18n/` — `en.ts` (reference keys), `ru.ts` (typed as `Messages`, so a missing
+> key fails `svelte-check`), `index.svelte.ts` with `t()`, a reactive `i18n.lang`, the
+> structured-cause renderer `causeText()`, and detection localStorage → `navigator.language`
+> → EN. Language switch in the header; `<html lang>` and the tab title follow it. The PWA
+> manifest and `index.html` are English (a manifest cannot be localised at runtime). Web
+> comments are translated too. Only `ru.ts` and the language's own name «Русский» in the
+> switch contain Cyrillic. Also fixed an R9 bug: the header stuck on "loading core…" because
+> `app.sim` was not reactive. Checked in the browser: EN and RU, reasons for a road effect,
+> persistence across reload.
 
 - String catalogs `web/src/i18n/en.ts` and `ru.ts`, a tiny `t(key, params)` helper (no heavy
   dependency), a language switch persisted in localStorage, default from `navigator.language`
