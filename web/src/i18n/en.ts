@@ -112,6 +112,7 @@ export const en = {
   "shop.showing": "showing {n} of {total}",
   "shop.none": "nothing found",
   "shop.noDriver": "not traded here — price from the town average",
+  "shop.noDriverShort": "no driver",
   "shop.via": "via {good}",
   "shop.done": "{verb} {qty} × {item} for {total}",
   "shop.bought": "bought",

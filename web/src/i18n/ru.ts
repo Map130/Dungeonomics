@@ -114,6 +114,7 @@ export const ru: Messages = {
   "shop.showing": "показано {n} из {total}",
   "shop.none": "ничего не найдено",
   "shop.noDriver": "здесь не торгуют — цена по среднему городу",
+  "shop.noDriverShort": "нет драйвера",
   "shop.via": "через {good}",
   "shop.done": "{verb} {qty} × {item} за {total}",
   "shop.bought": "куплено",

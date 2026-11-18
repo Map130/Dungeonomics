@@ -27,10 +27,16 @@
     preview = null;
     done = "";
   });
-  // Changing the item or quantity invalidates the quote.
+  // Loading another world drops the selection.
+  $effect(() => {
+    void app.world;
+    selected = null;
+  });
+  // Any change of item, quantity or simulation state (day, trade, undo, load) invalidates the quote.
   $effect(() => {
     void selected;
     void qty;
+    void app.snapshot;
     preview = null;
   });
 
@@ -55,7 +61,7 @@
   const canTrade = $derived(!!current?.driver && driverBase > 0 && qty >= 1);
 
   const driverLabel = (p: Priced) =>
-    p.driver ? `← ${p.driver} ×${p.m.toFixed(2)}` : `← ${p.m.toFixed(2)} (${t("shop.noDriver").split(" — ")[0]})`;
+    p.driver ? `← ${p.driver} ×${p.m.toFixed(2)}` : `← ${p.m.toFixed(2)} (${t("shop.noDriverShort")})`;
 
   function quote(sell: boolean) {
     if (!current?.driver || !canTrade) return;
@@ -72,9 +78,9 @@
       item: current.item.name,
       total: total(r.total),
     });
-    app.trade(node, current.driver, units, sell);
+    const res = app.trade(node, current.driver, units, sell);
     preview = null;
-    done = text;
+    done = res ? text : "";
   }
 </script>
 
