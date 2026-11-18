@@ -9,6 +9,7 @@
     "checkJs": false,
     "isolatedModules": true,
     "strict": true,
+    "allowUnreachableCode": false,
     "skipLibCheck": true,
     "types": ["svelte", "vite/client", "vite-plugin-pwa/client"]
   },
