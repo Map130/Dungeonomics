@@ -50,7 +50,7 @@ Planner's calls (not discussed with the user, easy to revisit):
 
 ---
 
-### R15: Trade and caravans honour road effects (both cores)
+### Task 1 (R15): Trade and caravans honour road effects (both cores)
 
 **Files:**
 - Modify: `ddeco/world.py` (`Edge.delay_days`), `ddeco/trade.py`, `ddeco/caravans.py`, `ddeco/tick.py` (move the two road helpers)
@@ -76,7 +76,7 @@ Planner's calls (not discussed with the user, easy to revisit):
 
 **Done when:** a road effect changes flows, delays and caravans in both cores; golden parity holds.
 
-### R16: Atomic `add_effects` in the WASM facade
+### Task 2 (R16): Atomic `add_effects` in the WASM facade
 
 **Files:**
 - Modify: `crates/ddeco-wasm/src/lib.rs`, `crates/ddeco-wasm/tests/facade.rs`, `crates/ddeco-wasm/smoke/smoke.cjs`, `web/src/types.ts`, `web/src/store.svelte.ts`
@@ -109,7 +109,7 @@ Planner's calls (not discussed with the user, easy to revisit):
 
 **Done when:** a list of effects is applied all-or-nothing with a single undo step, from Rust and from JS.
 
-### R17: Preset catalogue and expansion (web, unit-tested)
+### Task 3 (R17): Preset catalogue and expansion (web, unit-tested)
 
 **Files:**
 - Create: `web/src/presets.ts`, `web/src/presets.test.ts`
@@ -143,7 +143,7 @@ Planner's calls (not discussed with the user, easy to revisit):
 
 **Done when:** the six presets expand into correct effect specs, both languages name them, tests run in CI.
 
-### R18: Presets panel, docs, close M5
+### Task 4 (R18): Presets panel, docs, close M5
 
 **Files:**
 - Create: `web/src/components/PresetsPanel.svelte`
