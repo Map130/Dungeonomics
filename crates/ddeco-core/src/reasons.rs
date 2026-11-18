@@ -94,23 +94,22 @@ pub fn explain_price(world: &World, state: &SimState, node: &str, good: &str) ->
         if e.weight(day) == 0.0 {
             continue;
         }
-        let label;
-        if e.target_kind == TargetKind::Node && e.target_id == node {
+        let label = if e.target_kind == TargetKind::Node && e.target_id == node {
             if (e.param == "pcap" || e.param == "garrison")
                 && !e.matches_good(Some(good), Some(&g.category))
             {
                 continue;
             }
-            label = node_label(&e.param);
+            node_label(&e.param)
         } else if e.target_kind == TargetKind::Edge
             && inbound.contains(&e.target_id)
             && (e.param == "difficulty" || e.param == "capacity")
         {
             let edge = &world.edges[&e.target_id];
-            label = format!("дорога {}→{}", edge.src, edge.dst);
+            format!("дорога {}→{}", edge.src, edge.dst)
         } else {
             continue;
-        }
+        };
         let (mag, factor) = effect_factor(e, day);
         let src = if e.source.is_empty() {
             String::new()
