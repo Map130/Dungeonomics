@@ -75,6 +75,16 @@ export const en = {
   "effects.category": "category (opt.)",
   "effects.source": "cause",
   "effects.submit": "add",
+  "preset.craftsman_killed": "Craftsman killed",
+  "preset.blight": "Blight",
+  "preset.army_billeted": "Army billeted",
+  "preset.epidemic": "Epidemic",
+  "preset.bandits": "Bandits on the road",
+  "preset.bridge_collapsed": "Bridge collapsed",
+  "presets.title": "Quick events",
+  "presets.apply": "apply",
+  "presets.good": "good",
+  "presets.needsGood": "choose a good",
 } as const;
 
 export type MessageKey = keyof typeof en;
