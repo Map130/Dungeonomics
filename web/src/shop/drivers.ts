@@ -13,9 +13,9 @@ put("luxury", [
 ]);
 put("tools", ["iron-1-lb", "copper-1-lb"]);
 
-const CLOTH = ["clothes", "robe", "cloak", "blanket", "bedroll", "tent", "sack", "backpack", "pouch", "rope", "cloth", "net"];
+const CLOTH = ["clothes", "robe", "robes", "cloak", "blanket", "bedroll", "tent", "sack", "backpack", "pouch", "rope", "cloth", "net"];
 const FOOD = ["rations", "waterskin"];
-const LUXURY = ["perfume", "signet", "ring", "mirror", "spyglass", "book", "ink", "paper", "parchment"];
+const LUXURY = ["perfume", "signet", "ring", "mirror", "spyglass", "book", "spellbook", "ink", "paper", "parchment"];
 /** Whole id segments only (split on "-"), so "signet-ring" is not a "net". */
 const hasWord = (id: string, words: string[]) => id.split("-").some((w) => words.includes(w));
 

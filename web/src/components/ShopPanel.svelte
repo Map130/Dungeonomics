@@ -11,10 +11,13 @@
   let { node }: { node: string } = $props();
 
   const CAP = 50;
-  const categories = [...new Set(CATALOG.map((i) => i.category))].sort();
+  // Fixed tab order: what players ask for most comes first; categories missing here go last.
+  const ORDER = ["weapon", "armor", "adventuring-gear", "tools", "trade-goods", "food-drink", "mounts-and-vehicles"];
+  const present = new Set(CATALOG.map((i) => i.category));
+  const categories = [...ORDER.filter((c) => present.has(c)), ...[...present].filter((c) => !ORDER.includes(c)).sort()];
 
   let query = $state("");
-  let category = $state("");
+  let category = $state(categories[0]);
   let selected = $state<ShopItem | null>(null);
   let qty = $state(1);
   let preview = $state<{ r: TradeResult; sell: boolean; units: number; driver: string } | null>(null);
@@ -60,18 +63,40 @@
     return { item, driver, m, tooBig, buy: item.priceGp * m * (1 + spread), sell: item.priceGp * m * (1 - spread) };
   }
 
-  const filtered = $derived.by(() => {
-    const q = query.trim().toLowerCase();
-    return CATALOG.filter((i) => (!category || i.category === category) && (!q || i.name.toLowerCase().includes(q)));
-  });
+  const matches = (i: ShopItem, q: string) => !q || i.name.toLowerCase().includes(q);
+  const q = $derived(query.trim().toLowerCase());
+  // Always exactly one category; the search narrows it.
+  const filtered = $derived(CATALOG.filter((i) => i.category === category && matches(i, q)));
+  // With a query that finds nothing here, say where it does find something.
+  const elsewhere = $derived(
+    q && filtered.length === 0
+      ? categories
+          .filter((c) => c !== category)
+          .map((c) => ({ c, n: CATALOG.filter((i) => i.category === c && matches(i, q)).length }))
+          .filter((x) => x.n > 0)
+      : [],
+  );
   const rows = $derived(filtered.slice(0, CAP).map(pricedOf));
   const current = $derived(selected ? pricedOf(selected) : null);
   const driverBase = $derived(current?.driver ? (app.world?.goods.find((g) => g.id === current.driver)?.base_price ?? 0) : 0);
   const canTrade = $derived(!!current?.driver && driverBase > 0 && Number.isInteger(qty) && qty >= 1);
   const canBuy = $derived(canTrade && !current?.tooBig);
 
+  // Keep the reasons log on the selected item's driver fresh after every refresh (day, trade, undo).
+  $effect(() => {
+    void app.snapshot;
+    const d = selected ? resolveDriver(roleOf(selected), app.world?.goods ?? [], nodeGoods) : null;
+    if (d) app.explain(node, d);
+  });
+
   const driverLabel = (p: Priced) =>
     p.driver ? `← ${p.driver} ×${p.m.toFixed(2)}` : `← ${p.m.toFixed(2)} (${t("shop.noDriverShort")})`;
+
+  function select(p: Priced) {
+    selected = p.item;
+    if (p.driver) app.explain(node, p.driver);
+    else app.report = null;
+  }
 
   function quote(sell: boolean) {
     if (!current?.driver || !canTrade) return;
@@ -97,23 +122,27 @@
 <div class="panel">
   <h2>{t("shop.title")}</h2>
   <div class="row">
-    <input type="search" placeholder={t("shop.search")} bind:value={query} />
-    <select bind:value={category}>
-      <option value="">{t("shop.all")}</option>
-      {#each categories as c}
-        <option value={c}>{t(`shopcat.${c}` as MessageKey)}</option>
-      {/each}
-    </select>
+    <input type="search" placeholder={t("shop.search")} bind:value={query} style="flex:1; min-width:12rem;" />
+  </div>
+  <div class="row tabs" style="margin-top:.5rem;">
+    {#each categories as c}
+      <button class:active={c === category} onclick={() => (category = c)}>{t(`shopcat.${c}` as MessageKey)}</button>
+    {/each}
   </div>
 
   {#if rows.length === 0}
-    <p class="muted">{t("shop.none")}</p>
+    <p class="muted">
+      {t("shop.none")}
+      {#each elsewhere as x}
+        · <button class="link" onclick={() => (category = x.c)}>{t(`shopcat.${x.c}` as MessageKey)} ({x.n})</button>
+      {/each}
+    </p>
   {:else}
     <table>
       <thead><tr><th></th><th>{t("node.buy")}</th><th>{t("node.sell")}</th><th></th></tr></thead>
       <tbody>
         {#each rows as p (p.item.id)}
-          <tr class="clickable" class:selected={p.item.id === selected?.id} onclick={() => (selected = p.item)}>
+          <tr class="clickable" class:selected={p.item.id === selected?.id} onclick={() => select(p)}>
             <td>{p.item.name}</td>
             <td>{price(p.buy)}</td>
             <td>{price(p.sell)}</td>
@@ -154,5 +183,20 @@
 <style>
   tr.selected td {
     background: var(--panel-2);
+  }
+  .tabs {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+  .tabs button.active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  button.link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--accent);
+    cursor: pointer;
   }
 </style>

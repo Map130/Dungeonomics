@@ -3,19 +3,18 @@
   import { labelOf, price, t } from "../i18n/index.svelte";
   import type { GoodView, Verdict } from "../types";
   import ReasonsPanel from "./ReasonsPanel.svelte";
-  import TradePanel from "./TradePanel.svelte";
+  import ShopPanel from "./ShopPanel.svelte";
   import PresetsPanel from "./PresetsPanel.svelte";
   import EffectsPanel from "./EffectsPanel.svelte";
-  import ShopPanel from "./ShopPanel.svelte";
 
-  // One settlement's page: goods by category, reasons and trade for the selected good,
-  // settlement actions (presets, stock, prosperity).
+  // One settlement's page. Players buy and sell through the shop (every SRD item, priced off the
+  // simulated driver goods); the simulated market itself is a collapsed GM tool at the bottom.
   let { id }: { id: string } = $props();
 
   const info = $derived(app.world?.nodes.find((n) => n.id === id) ?? null);
   const view = $derived(app.snapshot?.nodes.find((n) => n.node === id) ?? null);
 
-  // Goods grouped by category, in the world's catalogue order.
+  // Simulated goods grouped by category, in the world's catalogue order.
   const groups = $derived.by(() => {
     const byGood = new Map((view?.goods ?? []).map((g) => [g.good, g]));
     const out = new Map<string, GoodView[]>();
@@ -32,20 +31,14 @@
   let amount = $state(100);
   let rho = $state(0.2);
 
-  // Leaving the node or loading another world clears the selection.
   $effect(() => {
     void id;
     selected = "";
   });
 
-  // Keep the reasons log in sync with the selected good after every refresh (day, trade, undo).
-  $effect(() => {
-    void app.snapshot;
-    if (selected) app.explain(id, selected);
-  });
-
   function select(good: string) {
     selected = good;
+    app.explain(id, good);
   }
 
   function tagClass(v: Verdict): string {
@@ -68,9 +61,11 @@
         </p>
       </div>
 
-      <div class="panel">
-        <h2>{t("node.goods")} <span class="muted">· {t("node.hint")}</span></h2>
-        <table>
+      <ShopPanel node={id} />
+
+      <details class="panel">
+        <summary><strong>{t("node.market")}</strong> <span class="muted">· {t("node.marketHint")}</span></summary>
+        <table style="margin-top:.6rem;">
           <thead>
             <tr><th></th><th>{t("node.buy")}</th><th>{t("node.sell")}</th><th>{t("node.stock")}</th><th></th></tr>
           </thead>
@@ -89,24 +84,6 @@
             {/each}
           </tbody>
         </table>
-      </div>
-
-      <ShopPanel node={id} />
-
-      <EffectsPanel node={id} showForm={false} />
-    </div>
-
-    <div style="display:grid; gap:1rem;">
-      {#if selected}
-        <ReasonsPanel />
-        <TradePanel node={id} good={selected} />
-      {:else}
-        <div class="panel"><p class="muted" style="margin:0;">{t("node.hint")}</p></div>
-      {/if}
-
-      <div class="panel">
-        <h2>{t("node.actions")}</h2>
-        <PresetsPanel mode="node" node={id} />
         {#if selected}
           <h3 style="margin-top:.6rem;">{t("gm.stockTitle")} · {selected}</h3>
           <div class="row">
@@ -116,11 +93,22 @@
             <button onclick={() => app.addStock(id, selected, -amount)}>{t("gm.removeStock")}</button>
           </div>
         {/if}
+      </details>
+    </div>
+
+    <div style="display:grid; gap:1rem;">
+      {#if app.report}<ReasonsPanel />{/if}
+
+      <div class="panel">
+        <h2>{t("node.actions")}</h2>
+        <PresetsPanel mode="node" node={id} />
         <div class="row" style="margin-top:.6rem;">
           <label class="muted">ρ <input type="number" step="0.05" bind:value={rho} style="width:4rem;" /></label>
           <button onclick={() => app.prosperityHit(id, rho)}>{t("gm.prosperityHit")}</button>
         </div>
       </div>
+
+      <EffectsPanel node={id} showForm={false} />
     </div>
   </main>
 {:else}
@@ -135,5 +123,8 @@
 <style>
   tr.selected td {
     background: var(--panel-2);
+  }
+  summary {
+    cursor: pointer;
   }
 </style>

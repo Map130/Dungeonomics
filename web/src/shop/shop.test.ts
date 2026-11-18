@@ -39,6 +39,8 @@ describe("roleOf", () => {
     ["wine-common-pitcher", "wine"],
     ["horse-riding", null],
     ["signet-ring", "luxury"],
+    ["robes", "cloth"],
+    ["spellbook", "luxury"],
     ["ball-bearings-bag-of-1000", "tools"],
   ])("%s -> %s", (id, role) => {
     expect(roleOf(byId(id))).toBe(role);
