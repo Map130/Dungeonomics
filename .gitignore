@@ -35,8 +35,10 @@ web/dev-dist/
 .idea/
 .DS_Store
 
-# Сохранённая чужая страница-источник прайс-листа (не наша, не публикуем; gear.csv коммитится)
+# Price-list sources: the old dm-stuff.ru page (never published) and the SRD JSON
+# (fetched by scripts/build_srd_gear.py; only references/srd_gear.csv is committed)
 references/*.html
+references/srd/
 
-# Claude Code: локальные настройки конкретной машины
+# Claude Code: machine-local settings
 .claude/settings.local.json

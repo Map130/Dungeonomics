@@ -1,4 +1,4 @@
-> **Status:** planned — stages R10–R14. Decision: `DECISIONS.md` D5.
+> **Status:** in progress — R10 done; next R11. Decision: `DECISIONS.md` D5.
 
 # Plan: Dungeonomics goes English (open-source readiness)
 
@@ -24,7 +24,12 @@ existing code references remain valid.
 
 ---
 
-## R10 — Price list from SRD 5.1
+## R10 — Price list from SRD 5.1 ✅
+
+> Done: `references/srd_gear.csv` (261 items) from `scripts/build_srd_gear.py`. Equipment comes
+> from 5e-bits JSON (`references/srd/`, gitignored), Trade Goods and Food/Drink tables are
+> transcribed from the official SRD 5.1 PDF (pp. 72–73). All five example-world prices already
+> matched SRD values, so only comments changed and the golden fixtures are byte-identical.
 
 - New `references/srd_gear.csv` built from the SRD 5.1 "Adventuring Gear", "Tools", "Trade
   Goods" and "Food, Drink and Lodging" tables, coins normalised to gp as before (D2). Keep the

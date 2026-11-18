@@ -11,7 +11,7 @@ Milestones closed (plans in `docs/plans/`):
 - **M3** `m3-wasm-web-ui.md` — WASM facade, wasm-pack packaging, offline PWA web UI, R7–R9.
 
 Production chains (§5.13) are deferred to v1.1. **Current milestone: M4** `m4-open-source.md` —
-English + i18n + SRD price list, stages R10–R14, none closed yet. Commits from now on are in
+English + i18n + SRD price list, stages R10–R14; R10 (SRD price list) done, next R11. Commits from now on are in
 English and carry no Claude attribution (D5). Decisions go to
 `DECISIONS.md` (D1 TOML, D2 price list, D3 chains → v1.1, D4 name Dungeonomics + MIT, D5 English + i18n + SRD). Specs remain the source of truth:
 
@@ -31,7 +31,7 @@ python3 -m venv .venv && .venv/bin/python -m pip install -e ".[dev]"   # setup
 .venv/bin/python -m pytest tests/test_single_node.py -q   # one test file
 .venv/bin/python -m pytest -q -k runaway             # tests matching a name
 .venv/bin/python -m jupyter nbconvert --to notebook --execute notebooks/calibration.ipynb  # run notebook
-python3 scripts/extract_gear.py                      # regenerate references/gear.csv from the HTML
+python3 -I scripts/build_srd_gear.py                 # regenerate references/srd_gear.csv (needs references/srd/*.json, see script)
 ```
 
 ## Code map (`ddeco/`, stdlib-only core)
