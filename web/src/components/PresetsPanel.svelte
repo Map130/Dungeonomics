@@ -1,7 +1,7 @@
 <script lang="ts">
   import { app } from "../store.svelte";
   import { t } from "../i18n/index.svelte";
-  import { PRESETS, expandPreset, presetName } from "../presets";
+  import { PRESETS, expandPresetOnTargets, presetName, roadsFromEdges } from "../presets";
 
   let presetId = $state(PRESETS[0].id);
   let targetId = $state("");
@@ -9,17 +9,26 @@
   let duration = $state(PRESETS[0].duration);
 
   const preset = $derived(PRESETS.find((p) => p.id === presetId) ?? PRESETS[0]);
+  // Node presets list nodes; road presets list roads (one per unordered pair, both arcs).
   const targets = $derived(
     preset.target === "node"
-      ? (app.world?.nodes.map((n) => n.id) ?? [])
-      : (app.world?.edges.map((e) => e.id) ?? []),
+      ? (app.world?.nodes.map((n) => ({ key: n.id, label: n.id, arcs: [n.id] })) ?? [])
+      : roadsFromEdges(app.world?.edges ?? []),
   );
   const goods = $derived(app.world?.goods.map((g) => g.id) ?? []);
-  const blocked = $derived(preset.needsGood && !good);
+  const durationOk = $derived(Number.isFinite(duration) && duration >= 1);
+  const blocked = $derived((preset.needsGood && !good) || !targetId || !durationOk);
 
   // Keep targetId valid when the preset (and so the target kind) changes.
   $effect(() => {
-    if (targets.length && !targets.includes(targetId)) targetId = targets[0];
+    const keys = targets.map((r) => r.key);
+    if (keys.length && !keys.includes(targetId)) targetId = keys[0];
+    else if (!keys.length && targetId) targetId = "";
+  });
+
+  // Keep good valid when the world changes.
+  $effect(() => {
+    if (good && !goods.includes(good)) good = "";
   });
 
   // Reset duration to the preset default on preset change.
@@ -28,9 +37,14 @@
   });
 
   function apply() {
-    if (!targetId || blocked) return;
+    const road = targets.find((r) => r.key === targetId);
+    if (!road || blocked) return;
     app.addEffects(
-      expandPreset(preset, targetId, { good: good || undefined, duration, source: presetName(preset.id) }),
+      expandPresetOnTargets(preset, road.arcs, {
+        good: good || undefined,
+        duration,
+        source: presetName(preset.id),
+      }),
     );
   }
 </script>
@@ -42,7 +56,7 @@
       {#each PRESETS as p}<option value={p.id}>{presetName(p.id)}</option>{/each}
     </select>
     <select bind:value={targetId}>
-      {#each targets as id}<option value={id}>{id}</option>{/each}
+      {#each targets as r}<option value={r.key}>{r.label}</option>{/each}
     </select>
     {#if preset.needsGood}
       <select bind:value={good} aria-label={t("presets.good")}>
@@ -51,6 +65,6 @@
       </select>
     {/if}
     <label class="muted">{t("effects.days")} <input type="number" min="1" bind:value={duration} style="width:4rem;" /></label>
-    <button onclick={apply} disabled={blocked} title={blocked ? t("presets.needsGood") : ""}>{t("presets.apply")}</button>
+    <button onclick={apply} disabled={blocked} title={preset.needsGood && !good ? t("presets.needsGood") : ""}>{t("presets.apply")}</button>
   </div>
 </div>

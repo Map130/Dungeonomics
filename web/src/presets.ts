@@ -102,3 +102,32 @@ export function expandPreset(
     source: opts.source,
   }));
 }
+
+/** Expand a preset onto several targets (e.g. both arcs of a road) as one batch. */
+export function expandPresetOnTargets(
+  p: Preset,
+  targetIds: string[],
+  opts: { good?: string; duration?: number; source: string },
+): EffectSpec[] {
+  return targetIds.flatMap((id) => expandPreset(p, id, opts));
+}
+
+/** Group directed arcs into roads: one entry per unordered pair of endpoints. */
+export function roadsFromEdges(
+  edges: { id: string; src: string; dst: string }[],
+): { key: string; label: string; arcs: string[] }[] {
+  const roads = new Map<string, { key: string; label: string; arcs: string[] }>();
+  for (const e of edges) {
+    const [a, b] = [e.src, e.dst].sort();
+    const key = `${a}__${b}`;
+    let r = roads.get(key);
+    if (!r) {
+      r = { key, label: `${a} ↔ ${b}`, arcs: [] };
+      roads.set(key, r);
+    }
+    r.arcs.push(e.id);
+  }
+  const out = [...roads.values()];
+  for (const r of out) r.arcs.sort();
+  return out.sort((x, y) => (x.key < y.key ? -1 : x.key > y.key ? 1 : 0));
+}
