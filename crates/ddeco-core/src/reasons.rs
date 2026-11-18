@@ -1,75 +1,110 @@
-//! Лог причин (MODEL.md §5.12). Порт `ddeco/reasons.py`.
+//! Reasons log (MODEL.md §5.12). Port of `ddeco/reasons.py`.
 //!
-//! Для каждого изменения цены система называет причину. Цепочка:
-//!     цена ← обеспеченность r ← {производство, спрос, потоки, порча}
-//!           ← {активные эффекты, сложность дорог}.
+//! For every price change the system names a cause. The chain is:
+//!     price ← provisioning r ← {production, demand, flows, spoilage}
+//!           ← {active effects, road difficulty}.
 //!
-//! Лента показывает обеспеченность узла и главные причины по величине вклада, с
-//! источником эффекта. Вклад оцениваем по относительному отклонению параметра,
-//! наведённому эффектом (в v1 — без точного контрфактуала; граф мал, можно усилить
-//! позже).
+//! The report gives the node's provisioning and the main causes ranked by contribution,
+//! with the effect's source. A contribution is estimated by the relative deviation the
+//! effect induces in its parameter (no exact counterfactual in v1).
+//!
+//! The core emits **structured** causes only (D5): a kind plus parameters. Rendering to
+//! text (and translation) is the UI's job, so the core contains no natural-language strings.
 
 use crate::effects::{Effect, Op, TargetKind};
 use crate::formulas as f;
 use crate::state::SimState;
 use crate::world::World;
 
-/// Один вклад в объяснение цены.
-#[derive(Debug, Clone, PartialEq)]
-pub struct Cause {
-    pub magnitude: f64, // величина вклада (для ранжирования)
-    pub text: String,   // человекочитаемое описание с источником
+/// Verdict by provisioning r = s/s*: below 0.9 — shortage, above 1.1 — surplus.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Verdict {
+    Shortage,
+    Surplus,
+    Normal,
 }
 
-/// Отчёт по множителю цены товара в узле.
+impl Verdict {
+    /// Stable code shared with the Python oracle and the UI.
+    pub fn code(self) -> &'static str {
+        match self {
+            Verdict::Shortage => "shortage",
+            Verdict::Surplus => "surplus",
+            Verdict::Normal => "normal",
+        }
+    }
+}
+
+/// What a cause refers to.
+#[derive(Debug, Clone, PartialEq)]
+pub enum CauseKind {
+    /// An effect on a node parameter (pcap, garrison, population, ...).
+    NodeEffect,
+    /// An effect on an inbound road (difficulty, capacity) `src→dst`.
+    EdgeEffect { src: String, dst: String },
+    /// No active effects: the stock balance itself (`value` = r).
+    Stock,
+}
+
+impl CauseKind {
+    pub fn code(&self) -> &'static str {
+        match self {
+            CauseKind::NodeEffect => "node_effect",
+            CauseKind::EdgeEffect { .. } => "edge_effect",
+            CauseKind::Stock => "stock",
+        }
+    }
+}
+
+/// One contribution to a price explanation.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Cause {
+    pub kind: CauseKind,
+    pub magnitude: f64, // size of the contribution (for ranking)
+    pub value: f64,     // Mult: current factor; Add: current addend; Stock: r
+    pub op: Option<Op>, // None for Stock
+    pub param: String,  // effect parameter, empty for Stock
+    pub source: String, // free-text origin of the effect (GM / template)
+}
+
+/// Report on a good's price multiplier at a node.
 #[derive(Debug, Clone, PartialEq)]
 pub struct PriceReport {
     pub node: String,
     pub good: String,
     pub multiplier: f64,
     pub provisioning: f64, // r = s/s*
-    pub verdict: String,   // "дефицит" | "избыток" | "норма"
+    pub verdict: Verdict,
     pub causes: Vec<Cause>,
 }
 
 impl PriceReport {
-    /// Тексты n главных причин.
-    pub fn top(&self, n: usize) -> Vec<String> {
-        self.causes.iter().take(n).map(|c| c.text.clone()).collect()
+    /// The n main causes.
+    pub fn top(&self, n: usize) -> &[Cause] {
+        &self.causes[..n.min(self.causes.len())]
     }
 }
 
-/// Мгновенный вклад эффекта и его текстовое представление.
-fn effect_factor(e: &Effect, day: i64) -> (f64, String) {
+/// Current contribution of an effect: (magnitude, value).
+fn effect_factor(e: &Effect, day: i64) -> (f64, f64) {
     let w = e.weight(day);
     match e.op {
         Op::Mult => {
             let factor = 1.0 + (e.value - 1.0) * w;
-            ((factor - 1.0).abs(), format!("×{factor:.2}"))
+            ((factor - 1.0).abs(), factor)
         }
-        Op::Add => ((e.value * w).abs(), format!("+{:.1}", e.value * w)),
+        Op::Add => ((e.value * w).abs(), e.value * w),
     }
 }
 
-/// Текстовая метка для параметра узла (повторяет словарь Python-эталона).
-fn node_label(param: &str) -> String {
-    match param {
-        "pcap" => "производство",
-        "garrison" => "гарнизон",
-        "population" => "население",
-        other => other,
-    }
-    .to_string()
-}
-
-/// Объяснить текущий множитель цены товара в узле (§5.12).
+/// Explain the current price multiplier of a good at a node (§5.12).
 pub fn explain_price(world: &World, state: &SimState, node: &str, good: &str) -> PriceReport {
     let g = world.catalog.get(good);
     let day = state.day;
     let key = (node.to_string(), good.to_string());
     let s = state.stock[&key];
 
-    // Обеспеченность r считаем по базовому спросу (без эффектов — для вердикта).
+    // Provisioning r uses the base demand (without effects — for the verdict).
     let nd = &world.nodes[node];
     let demand = f::base_demand(
         g,
@@ -81,11 +116,11 @@ pub fn explain_price(world: &World, state: &SimState, node: &str, good: &str) ->
     let star = f::target_stock(g, demand);
     let r = if star > 0.0 { s / star } else { f64::INFINITY };
     let verdict = if r < 0.9 {
-        "дефицит"
+        Verdict::Shortage
     } else if r > 1.1 {
-        "избыток"
+        Verdict::Surplus
     } else {
-        "норма"
+        Verdict::Normal
     };
 
     let inbound: Vec<String> = world.incoming(node).cloned().collect();
@@ -94,43 +129,49 @@ pub fn explain_price(world: &World, state: &SimState, node: &str, good: &str) ->
         if e.weight(day) == 0.0 {
             continue;
         }
-        let label = if e.target_kind == TargetKind::Node && e.target_id == node {
+        let kind = if e.target_kind == TargetKind::Node && e.target_id == node {
             if (e.param == "pcap" || e.param == "garrison")
                 && !e.matches_good(Some(good), Some(&g.category))
             {
                 continue;
             }
-            node_label(&e.param)
+            CauseKind::NodeEffect
         } else if e.target_kind == TargetKind::Edge
             && inbound.contains(&e.target_id)
             && (e.param == "difficulty" || e.param == "capacity")
         {
             let edge = &world.edges[&e.target_id];
-            format!("дорога {}→{}", edge.src, edge.dst)
+            CauseKind::EdgeEffect {
+                src: edge.src.clone(),
+                dst: edge.dst.clone(),
+            }
         } else {
             continue;
         };
-        let (mag, factor) = effect_factor(e, day);
-        let src = if e.source.is_empty() {
-            String::new()
-        } else {
-            format!(" ({})", e.source)
-        };
+        let (magnitude, value) = effect_factor(e, day);
         causes.push(Cause {
-            magnitude: mag,
-            text: format!("{label} {factor}{src}"),
+            kind,
+            magnitude,
+            value,
+            op: Some(e.op),
+            param: e.param.clone(),
+            source: e.source.clone(),
         });
     }
 
-    // Если эффектов нет, причина — сам баланс запаса.
+    // With no effects, the cause is the stock balance itself.
     if causes.is_empty() {
         causes.push(Cause {
+            kind: CauseKind::Stock,
             magnitude: (r - 1.0).abs(),
-            text: format!("запас {:.0}% от целевого", r * 100.0),
+            value: r,
+            op: None,
+            param: String::new(),
+            source: String::new(),
         });
     }
 
-    // Сортировка по вкладу, стабильная (как у Python) — порядок равных сохраняется.
+    // Stable sort by contribution (like Python) — equal items keep their order.
     causes.sort_by(|a, b| b.magnitude.partial_cmp(&a.magnitude).unwrap());
 
     PriceReport {
@@ -138,7 +179,7 @@ pub fn explain_price(world: &World, state: &SimState, node: &str, good: &str) ->
         good: good.to_string(),
         multiplier: state.multiplier[&key],
         provisioning: r,
-        verdict: verdict.to_string(),
+        verdict,
         causes,
     }
 }
@@ -218,7 +259,7 @@ mod tests {
         // star = coverage_days·demand = 10·100 = 1000.
         st.stock.insert(("n".into(), "grain".into()), 500.0); // r = 0.5
         let rep = explain_price(&w, &st, "n", "grain");
-        assert_eq!(rep.verdict, "дефицит");
+        assert_eq!(rep.verdict, Verdict::Shortage);
         assert!((rep.provisioning - 0.5).abs() < 1e-12);
     }
 
@@ -229,10 +270,11 @@ mod tests {
         st.stock.insert(("n".into(), "grain".into()), 1000.0);
         st.effects.push(blight(0.3));
         let rep = explain_price(&w, &st, "n", "grain");
-        assert_eq!(
-            rep.top(1),
-            vec!["производство ×0.30 (неурожай)".to_string()]
-        );
+        let c = &rep.top(1)[0];
+        assert_eq!(c.kind, CauseKind::NodeEffect);
+        assert_eq!((c.param.as_str(), c.op), ("pcap", Some(Op::Mult)));
+        assert!((c.value - 0.3).abs() < 1e-12);
+        assert_eq!(c.source, "неурожай");
     }
 
     #[test]
@@ -241,7 +283,9 @@ mod tests {
         let mut st = blank_state(&w);
         st.stock.insert(("n".into(), "grain".into()), 1000.0); // r = 1.0
         let rep = explain_price(&w, &st, "n", "grain");
-        assert_eq!(rep.verdict, "норма");
-        assert_eq!(rep.top(3), vec!["запас 100% от целевого".to_string()]);
+        assert_eq!(rep.verdict, Verdict::Normal);
+        assert_eq!(rep.causes.len(), 1);
+        assert_eq!(rep.causes[0].kind, CauseKind::Stock);
+        assert!((rep.causes[0].value - 1.0).abs() < 1e-12);
     }
 }

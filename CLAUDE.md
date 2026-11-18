@@ -11,7 +11,7 @@ Milestones closed (plans in `docs/plans/`):
 - **M3** `m3-wasm-web-ui.md` — WASM facade, wasm-pack packaging, offline PWA web UI, R7–R9.
 
 Production chains (§5.13) are deferred to v1.1. **Current milestone: M4** `m4-open-source.md` —
-English + i18n + SRD price list, stages R10–R14; R10 (SRD price list) done, next R11. Commits from now on are in
+English + i18n + SRD price list, stages R10–R14; R10 (SRD price list) and R11 (structured reasons log) done, next R12. Commits from now on are in
 English and carry no Claude attribution (D5). Decisions go to
 `DECISIONS.md` (D1 TOML, D2 price list, D3 chains → v1.1, D4 name Dungeonomics + MIT, D5 English + i18n + SRD). Specs remain the source of truth:
 

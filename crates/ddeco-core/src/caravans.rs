@@ -21,7 +21,6 @@ pub struct Caravan {
     pub value: f64,
     pub guard: f64,
     pub cargo: Vec<(String, f64)>, // отсортированный снимок груза в пути
-    pub source: String,
 }
 
 /// Снимок груза в пути по дуге: суммарный объём каждого товара, порядок по id (§9).
@@ -60,7 +59,6 @@ pub fn materialize(world: &World, state: &mut SimState) -> Vec<Caravan> {
             value: accum,
             guard: round3(guard),
             cargo: cargo_snapshot(state, &e),
-            source: format!("караван {}→{}", edge.src, edge.dst),
         };
         made.push(caravan.clone());
         state.caravans.push(caravan);

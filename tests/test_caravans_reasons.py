@@ -7,6 +7,7 @@ from ddeco.caravans import materialize
 from ddeco.calibration import seed_state
 from ddeco.effects import Decay, Effect, Op, TargetKind
 from ddeco.loader import load_world
+from ddeco import reasons
 from ddeco.reasons import explain_price
 from ddeco.tick import run, step_day
 
@@ -87,9 +88,12 @@ def test_reasons_name_the_blocked_road():
     ))
     run(world, st, 5)
     report = explain_price(world, st, "redwater", "grain")
-    top = " | ".join(report.top())
-    assert "eastford→redwater" in top
-    assert "монстр на дороге" in top
+    road = [c for c in report.top() if c.kind == reasons.EDGE_EFFECT]
+    assert road, report.causes
+    c = road[0]
+    assert (c.src, c.dst, c.param, c.op) == ("eastford", "redwater", "difficulty", "mult")
+    assert c.source == "монстр на дороге"
+    assert c.value > 1.0
 
 
 def test_reasons_verdict_scarcity():
@@ -97,4 +101,4 @@ def test_reasons_verdict_scarcity():
     st = seed_state(world)
     events.set_stock(st, "redwater", "grain", 1.0)  # искусственный дефицит
     report = explain_price(world, st, "redwater", "grain")
-    assert report.verdict == "дефицит"
+    assert report.verdict == reasons.SHORTAGE

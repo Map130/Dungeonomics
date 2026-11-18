@@ -52,17 +52,27 @@ export interface WorldInfo {
   edges: EdgeInfo[];
 }
 
+/** Structured cause from the core (§5.12, D5); the UI renders it to text. */
 export interface Cause {
+  kind: "node_effect" | "edge_effect" | "stock";
   magnitude: number;
-  text: string;
+  /** mult: current factor; add: current addend; stock: provisioning r */
+  value: number;
+  op: "mult" | "add" | null;
+  param: string;
+  src: string | null;
+  dst: string | null;
+  source: string;
 }
+
+export type Verdict = "shortage" | "surplus" | "normal";
 
 export interface PriceReport {
   node: string;
   good: string;
   multiplier: number;
   provisioning: number;
-  verdict: string;
+  verdict: Verdict;
   causes: Cause[];
 }
 
@@ -109,6 +119,7 @@ export interface CaravanView {
   day_arrival: number;
   value: number;
   guard: number;
-  source: string;
+  src: string;
+  dst: string;
   cargo: CargoView[];
 }

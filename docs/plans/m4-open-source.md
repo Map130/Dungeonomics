@@ -1,4 +1,4 @@
-> **Status:** in progress — R10 done; next R11. Decision: `DECISIONS.md` D5.
+> **Status:** in progress — R10–R11 done; next R12. Decision: `DECISIONS.md` D5.
 
 # Plan: Dungeonomics goes English (open-source readiness)
 
@@ -42,7 +42,14 @@ existing code references remain valid.
 **Done when:** no Cyrillic in `references/`, `worlds/`; pytest, `cargo test` and the WASM smoke
 are green on the new world; README credits the SRD.
 
-## R11 — Structured reasons log in the core
+## R11 — Structured reasons log in the core ✅
+
+> Done: `Cause` = `kind` (`node_effect | edge_effect | stock`) + `magnitude`, `value`, `op`,
+> `param`, `src`/`dst`, `source`; verdict codes `shortage | surplus | normal` — in both cores
+> and the WASM `explain`. The caravan's text `source` field was dropped; the facade's
+> `caravans()` returns `src`/`dst` instead. The UI renders causes with a temporary RU renderer
+> (`ReasonsPanel.svelte`) until R12. The reasons log was never part of the golden fixtures, so
+> they are unchanged. Test-only effect sources (e.g. `"неурожай"`) are translated in R13.
 
 - Replace text in `ReasonReport` / `Cause` with a key + params form in **both** cores, e.g.
   `{"key": "cause.edge", "src": "A", "dst": "B", "factor": 0.8, "source": "..."}`, verdict as an

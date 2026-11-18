@@ -35,7 +35,7 @@
       {#each app.caravans.slice().reverse() as c}
         <li class="row" style="justify-content: space-between;">
           <span>
-            <strong>{c.source}</strong>
+            <strong>караван {c.src}→{c.dst}</strong>
             <span class="muted">
               дни {c.day_departed}→{c.day_arrival} · ценность {c.value.toFixed(0)} · охрана {c.guard.toFixed(1)}
             </span>

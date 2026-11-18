@@ -24,7 +24,6 @@ class Caravan:
     value: float                       # суммарная стоимость груза
     guard: float                       # сила охраны (0..~3), выше на опасных дорогах
     cargo: tuple = field(default=())   # ((good, amount), ...) снимок груза в пути
-    source: str = ""
 
 
 def _cargo_snapshot(state: SimState, edge: str) -> tuple:
@@ -56,7 +55,6 @@ def materialize(world: World, state: SimState) -> list[Caravan]:
             value=accum,
             guard=round(guard, 3),
             cargo=_cargo_snapshot(state, e),
-            source=f"караван {edge.src}→{edge.dst}",
         )
         made.append(caravan)
         state.caravans.append(caravan)

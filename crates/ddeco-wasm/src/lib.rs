@@ -207,13 +207,30 @@ impl Sim {
             good: r.good,
             multiplier: r.multiplier,
             provisioning: r.provisioning,
-            verdict: r.verdict,
+            verdict: r.verdict.code(),
             causes: r
                 .causes
                 .into_iter()
-                .map(|c| CauseView {
-                    magnitude: c.magnitude,
-                    text: c.text,
+                .map(|c| {
+                    let (src, dst) = match &c.kind {
+                        reasons::CauseKind::EdgeEffect { src, dst } => {
+                            (Some(src.clone()), Some(dst.clone()))
+                        }
+                        _ => (None, None),
+                    };
+                    CauseView {
+                        kind: c.kind.code(),
+                        magnitude: c.magnitude,
+                        value: c.value,
+                        op: c.op.map(|op| match op {
+                            Op::Mult => "mult",
+                            Op::Add => "add",
+                        }),
+                        param: c.param,
+                        src,
+                        dst,
+                        source: c.source,
+                    }
                 })
                 .collect(),
         })
@@ -366,7 +383,8 @@ impl Sim {
                 day_arrival: c.day_arrival,
                 value: c.value,
                 guard: c.guard,
-                source: c.source.clone(),
+                src: self.world.edges[&c.edge].src.clone(),
+                dst: self.world.edges[&c.edge].dst.clone(),
                 cargo: c
                     .cargo
                     .iter()
@@ -524,14 +542,21 @@ struct ReportView {
     good: String,
     multiplier: f64,
     provisioning: f64,
-    verdict: String,
+    verdict: &'static str, // "shortage" | "surplus" | "normal"
     causes: Vec<CauseView>,
 }
 
+/// Structured cause (§5.12, D5): the UI renders and translates it.
 #[derive(Serialize)]
 struct CauseView {
+    kind: &'static str, // "node_effect" | "edge_effect" | "stock"
     magnitude: f64,
-    text: String,
+    value: f64, // mult: factor; add: addend; stock: provisioning r
+    op: Option<&'static str>,
+    param: String,
+    src: Option<String>,
+    dst: Option<String>,
+    source: String,
 }
 
 #[derive(Serialize)]
@@ -588,7 +613,8 @@ struct CaravanView {
     day_arrival: i64,
     value: f64,
     guard: f64,
-    source: String,
+    src: String,
+    dst: String,
     cargo: Vec<CargoView>,
 }
 

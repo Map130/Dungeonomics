@@ -53,7 +53,9 @@ assert.ok(g0.buy_price >= g0.sell_price, "buy_price >= sell_price (спред)")
 const rep = sim.explain(node, good);
 has(rep, ["node", "good", "multiplier", "provisioning", "verdict", "causes"], "explain");
 assert.ok(Array.isArray(rep.causes) && rep.causes.length > 0, "explain.causes непустой");
-has(rep.causes[0], ["magnitude", "text"], "cause");
+has(rep.causes[0], ["kind", "magnitude", "value", "op", "param", "src", "dst", "source"], "cause");
+assert.ok(["shortage", "surplus", "normal"].includes(rep.verdict), "verdict is a code");
+assert.ok(["node_effect", "edge_effect", "stock"].includes(rep.causes[0].kind), "cause.kind is a code");
 
 // --- quote (§5.7) -------------------------------------------------------------
 const q = sim.quote(node, good, 10, false);
