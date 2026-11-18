@@ -87,4 +87,7 @@ export const ru: Messages = {
   "presets.apply": "применить",
   "presets.good": "товар",
   "presets.needsGood": "выберите товар",
+  "coin.gp": "зм",
+  "coin.sp": "см",
+  "coin.cp": "мм",
 };

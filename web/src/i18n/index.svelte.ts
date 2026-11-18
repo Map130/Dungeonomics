@@ -2,6 +2,7 @@
 // No dependency on purpose — the UI is small and must work offline.
 
 import type { Cause, Verdict } from "../types";
+import { formatCoin, formatCoinsMixed, type CoinLabels } from "../coins";
 import { en, type MessageKey, type Messages } from "./en";
 import { ru } from "./ru";
 
@@ -81,3 +82,14 @@ export function causeText(c: Cause): string {
   const factor = c.op === "mult" ? `×${c.value.toFixed(2)}` : `+${c.value.toFixed(1)}`;
   return `${label} ${factor}${c.source ? ` (${c.source})` : ""}`;
 }
+
+/** Coin labels in the current language (gp/sp/cp or зм/см/мм). */
+export function coins(): CoinLabels {
+  return { gp: t("coin.gp"), sp: t("coin.sp"), cp: t("coin.cp") };
+}
+
+/** A price in one coin, current language. */
+export const price = (gp: number): string => formatCoin(gp, coins());
+
+/** A trade total in mixed coins, current language. */
+export const total = (gp: number): string => formatCoinsMixed(gp, coins());

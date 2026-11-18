@@ -85,6 +85,9 @@ export const en = {
   "presets.apply": "apply",
   "presets.good": "good",
   "presets.needsGood": "choose a good",
+  "coin.gp": "gp",
+  "coin.sp": "sp",
+  "coin.cp": "cp",
 } as const;
 
 export type MessageKey = keyof typeof en;
