@@ -106,6 +106,23 @@ export const en = {
   "coin.gp": "gp",
   "coin.sp": "sp",
   "coin.cp": "cp",
+  "shop.title": "Shop",
+  "shop.search": "search",
+  "shop.all": "all categories",
+  "shop.showing": "showing {n} of {total}",
+  "shop.none": "nothing found",
+  "shop.noDriver": "not traded here — price from the town average",
+  "shop.via": "via {good}",
+  "shop.done": "{verb} {qty} × {item} for {total}",
+  "shop.bought": "bought",
+  "shop.sold": "sold",
+  "shopcat.adventuring-gear": "Adventuring gear",
+  "shopcat.armor": "Armor",
+  "shopcat.weapon": "Weapons",
+  "shopcat.tools": "Tools",
+  "shopcat.mounts-and-vehicles": "Mounts and vehicles",
+  "shopcat.trade-goods": "Trade goods",
+  "shopcat.food-drink": "Food and drink",
 } as const;
 
 export type MessageKey = keyof typeof en;

@@ -6,6 +6,7 @@
   import TradePanel from "./TradePanel.svelte";
   import PresetsPanel from "./PresetsPanel.svelte";
   import EffectsPanel from "./EffectsPanel.svelte";
+  import ShopPanel from "./ShopPanel.svelte";
 
   // One settlement's page: goods by category, reasons and trade for the selected good,
   // settlement actions (presets, stock, prosperity).
@@ -89,6 +90,8 @@
           </tbody>
         </table>
       </div>
+
+      <ShopPanel node={id} />
 
       <EffectsPanel node={id} showForm={false} />
     </div>
