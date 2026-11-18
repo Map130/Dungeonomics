@@ -12,7 +12,7 @@ Milestones closed (plans in `docs/plans/`):
 
 Production chains (§5.13) are deferred to v1.1. Next milestone is not planned yet — a new plan
 goes to `docs/plans/m4-<name>.md`, stages continue the numbering from R10. Decisions go to
-`DECISIONS.md` (create on first decision). Specs remain the source of truth:
+`DECISIONS.md` (D1 TOML, D2 price list, D3 chains → v1.1). Specs remain the source of truth:
 
 - `REQUIREMENTS.md` — product requirements v1 (goal, scope, functional/non-functional reqs, risks, open questions).
 - `MODEL.md` — the mathematical model v1 (variables, per-tick update order, formulas, stability analysis, default parameters, acceptance tests). Complements `REQUIREMENTS.md`.
@@ -112,6 +112,5 @@ determinism (two runs with one seed match; rollback-and-replay reproduces).
 ## Open decisions not yet made
 
 Before implementing areas they touch, check these are still open (see `REQUIREMENTS.md` §10 and
-`MODEL.md` §10): world file format (YAML/JSON/TOML), whether production chains ship in v1 vs v1.1,
-goods units (pieces/weight/"batches"), caravan materialization rules, base price-list source, and
+`MODEL.md` §10; already decided: D1–D3 in `DECISIONS.md`): goods units (pieces/weight/"batches"), caravan materialization rules, and
 the stabilization parameters (β, spoilage rate, prosperity ceiling, list of sinks).
