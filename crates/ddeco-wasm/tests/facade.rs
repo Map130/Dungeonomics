@@ -170,6 +170,15 @@ fn add_effect_specs_is_one_undo_step() {
 }
 
 #[test]
+fn unknown_category_is_rejected() {
+    let mut sim = Sim::new(WORLD, 0).expect("world");
+    let err = sim
+        .add_effect_specs(vec![spec("redwater", "pcap", 0.5, Some("nonsense"))])
+        .expect_err("unknown category");
+    assert!(err.contains("no category nonsense"), "{err}");
+}
+
+#[test]
 fn invalid_spec_rejects_whole_batch() {
     let mut sim = Sim::new(WORLD, 0).expect("world");
     let before = sim.save();

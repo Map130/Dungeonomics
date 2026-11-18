@@ -125,6 +125,8 @@ The sender's stock decreases immediately; f_eg is put into the pipeline `q_e,g,�
 
 **Mandatory hub delivery** (an option for villages, the analogue of Bannerlord's constant deliveries): a village sends a share η_v ≈ 0.6 of its production to its bound city regardless of the price difference; arbitrage works on the remainder. The tight coupling of village and city prices comes from arbitrage itself: the difference cannot exceed the travel cost.
 
+Hub delivery is not limited by cap_e (D7); changing that is *(proposed)*.
+
 ### 5.7 Price impact of a player purchase
 A purchase of q units with stock s and current multiplier m. The marginal multiplier after u units is `m·(s/(s-u))^α`; the average price for q units:
 ```

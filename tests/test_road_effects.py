@@ -78,3 +78,12 @@ def test_road_effect_expires():
     step_day(world, st)
     slots = st.pipeline[edge]
     assert len(slots) == 2 and slots[1]
+
+
+def test_zero_multiplier_on_infinite_base_is_zero():
+    import math
+
+    from ddeco.effects import effective
+
+    e = Effect("capacity", TargetKind.EDGE, "a__b", Op.MULT, 0.0, 0, 10)
+    assert effective(math.inf, [e], "capacity", TargetKind.EDGE, "a__b", 0) == 0.0

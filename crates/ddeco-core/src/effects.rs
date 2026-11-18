@@ -107,5 +107,43 @@ pub fn effective(
             Op::Add => add += e.value * w,
         }
     }
-    mathf::clamp(base * mult + add, lo, hi)
+    // 0 · inf = 0: a zero factor closes an unlimited base instead of giving NaN.
+    let scaled = if mult == 0.0 { 0.0 } else { base * mult };
+    mathf::clamp(scaled + add, lo, hi)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn zero_multiplier_on_infinite_base_is_zero() {
+        let e = Effect {
+            param: "capacity".into(),
+            target_kind: TargetKind::Edge,
+            target_id: "a__b".into(),
+            op: Op::Mult,
+            value: 0.0,
+            start_day: 0,
+            duration: 10.0,
+            decay: Decay::Step,
+            tau: 1.0,
+            good: None,
+            category: None,
+            source: "t".into(),
+        };
+        let v = effective(
+            f64::INFINITY,
+            &[e],
+            "capacity",
+            TargetKind::Edge,
+            "a__b",
+            0,
+            None,
+            None,
+            0.0,
+            f64::INFINITY,
+        );
+        assert_eq!(v, 0.0);
+    }
 }

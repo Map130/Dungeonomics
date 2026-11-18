@@ -44,3 +44,8 @@ Production chains stay in v1.1 (D3). One-click event presets in the UI (craftsma
 army billeted, epidemic, bandits, bridge collapsed) cover the table use case and expand into
 ordinary effects. Road effects now reach trade and caravans (spec §2/§5.6 compliance, R15).
 Affects: REQUIREMENTS §5.8; MODEL §5.6. Plan `m5-event-presets.md`.
+
+## D7 · 2026-11-18 · Hub delivery is not limited by road capacity
+Mandatory village→hub delivery ignores cap_e (MODEL §5.6: delivery "regardless of the price difference"; φ_e applies to arbitrage only). Consequence: on village→hub roads "Bridge collapsed" mainly lengthens the delay.
+Making hub delivery capacity-limited is an open *(proposed)* change: it would shift the baseline of all multi-node golden runs and needs calibration.
+Affects: MODEL §5.6.

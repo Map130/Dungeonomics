@@ -62,17 +62,17 @@ Planner's calls (not discussed with the user, easy to revisit):
 - Produces (Python): `trade.effective_difficulty(world, state, edge: str) -> float`, `trade.effective_capacity(world, state, edge: str) -> float` (moved from `tick.py`; `tick.py` re-exports them for existing callers); `Edge.delay_days(self, difficulty: float | None = None) -> int` — uses `difficulty` when given, else `self.difficulty`.
 - Produces (Rust): `pub fn eff_difficulty(world: &World, effects: &[Effect], day: i64, edge: &str) -> f64` and `pub fn eff_capacity(...) -> f64` in `trade.rs` (built on `effects::effective`, `lo = 0.0`, `hi = f64::INFINITY`, `good/category = None`); `Edge::delay_days_with(&self, difficulty: f64) -> usize`, with `delay_days()` delegating to it.
 
-- [ ] **Step 1: Write the failing Python tests** in `tests/test_road_effects.py` (example world prepared like `_traded_world()` in `tests/test_caravans_reasons.py`):
+- [x] **Step 1: Write the failing Python tests** in `tests/test_road_effects.py` (example world prepared like `_traded_world()` in `tests/test_caravans_reasons.py`):
   - `test_difficulty_effect_lengthens_delay`: add `Effect(param="difficulty", target_kind=EDGE, target_id="eastford__redwater", op=MULT, value=2.5, duration=10, decay=STEP)`; after one `step_day`, any cargo dispatched that day on that arc sits at pipeline index `ceil(2 · 2.5) − 1 = 4` (assert `len(state.pipeline["eastford__redwater"]) >= 5` and the last slot is non-empty), whereas without the effect the length stays `<= 2`.
   - `test_capacity_effect_limits_flow`: with `capacity ×0.1` (step, 30 d) on `redwater__eastford` (a city→village arc, so the flow is arbitrage only — the mandatory hub delivery of §5.6 is not capacity-limited today and stays so), over 10 days the volume added to that arc per day never exceeds `600 · 0.1 = 60` (diff of the pipeline total before/after each day, plus arrivals), and the 10-day total is lower than in the baseline run.
   - `test_road_effect_expires`: a `difficulty ×2.5` effect with `duration=5`, `decay=STEP`; on day 6 newly dispatched cargo lands at index `ceil(2 · 1.0) − 1 = 1` again.
-- [ ] **Step 2: Run** `.venv/bin/python -m pytest tests/test_road_effects.py -q` — expected: FAIL (delay stays 2, flow unchanged).
-- [ ] **Step 3: Implement in Python.** Move the two helpers into `trade.py`; use them in `hub_deliveries` and `arbitrage` (γ_e uses effective k_e, φ_e uses effective cap_e, τ_e = `edge.delay_days(k_eff)`), and in `caravans.materialize` (guard and arrival use effective k_e). Effective values are taken from the effects at `state.day` (the synchronous start-of-step snapshot).
-- [ ] **Step 4: Run** `.venv/bin/python -m pytest -q` — expected: all green (35 + 3).
-- [ ] **Step 5: Regenerate golden** `.venv/bin/python scripts/dump_golden.py`; `git diff --stat golden` — expected: only `golden/shocks_run.json` changes.
-- [ ] **Step 6: Port to Rust** the same changes; add `crates/ddeco-core/tests/road_effects.rs` with the three tests above (same names, same assertions). Update the header comments of `tick.rs`/`trade.rs` that say arc parameters are taken at base values.
-- [ ] **Step 7: Run** `cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace` — expected: green, including `multi_node.rs` against the regenerated `shocks_run.json`.
-- [ ] **Step 8: Commit** `fix(core): trade and caravans use effective road parameters (R15)` — body: §2, §5.6, §5.10; golden `shocks_run.json` regenerated.
+- [x] **Step 2: Run** `.venv/bin/python -m pytest tests/test_road_effects.py -q` — expected: FAIL (delay stays 2, flow unchanged).
+- [x] **Step 3: Implement in Python.** Move the two helpers into `trade.py`; use them in `hub_deliveries` and `arbitrage` (γ_e uses effective k_e, φ_e uses effective cap_e, τ_e = `edge.delay_days(k_eff)`), and in `caravans.materialize` (guard and arrival use effective k_e). Effective values are taken from the effects at `state.day` (the synchronous start-of-step snapshot).
+- [x] **Step 4: Run** `.venv/bin/python -m pytest -q` — expected: all green (35 + 3).
+- [x] **Step 5: Regenerate golden** `.venv/bin/python scripts/dump_golden.py`; `git diff --stat golden` — expected: only `golden/shocks_run.json` changes.
+- [x] **Step 6: Port to Rust** the same changes; add `crates/ddeco-core/tests/road_effects.rs` with the three tests above (same names, same assertions). Update the header comments of `tick.rs`/`trade.rs` that say arc parameters are taken at base values.
+- [x] **Step 7: Run** `cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace` — expected: green, including `multi_node.rs` against the regenerated `shocks_run.json`.
+- [x] **Step 8: Commit** `fix(core): trade and caravans use effective road parameters (R15)` — body: §2, §5.6, §5.10; golden `shocks_run.json` regenerated.
 
 **Done when:** a road effect changes flows, delays and caravans in both cores; golden parity holds.
 
@@ -97,15 +97,15 @@ Planner's calls (not discussed with the user, easy to revisit):
   `fn build_effect(&self, spec: &EffectSpec) -> Result<Effect, String>` (all current `add_effect` validation, unchanged messages); host-callable `pub fn add_effect_specs(&mut self, specs: Vec<EffectSpec>) -> Result<(), String>` in a plain `impl Sim` block; exported `pub fn add_effects(&mut self, specs: JsValue) -> Result<(), JsValue>` (deserialise via serde-wasm-bindgen, delegate). `add_effect` keeps its signature and delegates to `build_effect`.
 - Produces (TS): `export interface EffectSpec { target_kind: "node" | "edge"; target_id: string; param: string; op: "mult" | "add"; value: number; duration: number; decay: "step" | "linear" | "exp"; tau?: number; good?: string | null; category?: string | null; source: string }` in `types.ts`; `AppStore.addEffects(specs: EffectSpec[]): void` in `store.svelte.ts` (via `guard`, then `refresh()`).
 
-- [ ] **Step 1: Write the failing host tests** in `facade.rs`:
+- [x] **Step 1: Write the failing host tests** in `facade.rs`:
   - `add_effect_specs_is_one_undo_step`: two specs on `redwater` (`pcap ×0.05` on `food`, `population ×1.3`); after `add_effect_specs` and `run(10)`, two `undo()` calls return `true` and the third returns `false`; the state equals the snapshot taken before `add_effect_specs`.
   - `invalid_spec_rejects_whole_batch`: specs `[valid, {target_id: "nowhere", ..}]` → `Err` containing `"no node nowhere"`; `save()` unchanged and `undo()` returns `false`.
   - `empty_batch_is_rejected`: `add_effect_specs(vec![])` → `Err("no effects")`; `undo()` returns `false`.
-- [ ] **Step 2: Run** `cargo test -p ddeco-wasm` — expected: FAIL (no `EffectSpec`).
-- [ ] **Step 3: Implement** `EffectSpec`, `build_effect`, `add_effect_specs` (validate all specs first, then one `record()`, then push all), `add_effects`; make `add_effect` use `build_effect`.
-- [ ] **Step 4: Run** `cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace` — expected: green.
-- [ ] **Step 5: Smoke + TS.** In `smoke.cjs` call `sim.add_effects([...two specs...])` and assert `sim.effects().length` grew by 2 and one `sim.undo()` brings it back. Add `EffectSpec` and `addEffects` to the web layer. Run the wasm-pack node build + `node crates/ddeco-wasm/smoke/smoke.cjs` (expected `wasm smoke: OK`) and `npm --prefix web run check` (0 errors).
-- [ ] **Step 6: Commit** `feat(wasm): atomic add_effects for effect batches (R16)`.
+- [x] **Step 2: Run** `cargo test -p ddeco-wasm` — expected: FAIL (no `EffectSpec`).
+- [x] **Step 3: Implement** `EffectSpec`, `build_effect`, `add_effect_specs` (validate all specs first, then one `record()`, then push all), `add_effects`; make `add_effect` use `build_effect`.
+- [x] **Step 4: Run** `cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace` — expected: green.
+- [x] **Step 5: Smoke + TS.** In `smoke.cjs` call `sim.add_effects([...two specs...])` and assert `sim.effects().length` grew by 2 and one `sim.undo()` brings it back. Add `EffectSpec` and `addEffects` to the web layer. Run the wasm-pack node build + `node crates/ddeco-wasm/smoke/smoke.cjs` (expected `wasm smoke: OK`) and `npm --prefix web run check` (0 errors).
+- [x] **Step 6: Commit** `feat(wasm): atomic add_effects for effect batches (R16)`.
 
 **Done when:** a list of effects is applied all-or-nothing with a single undo step, from Rust and from JS.
 
@@ -129,17 +129,17 @@ Planner's calls (not discussed with the user, easy to revisit):
 - i18n keys (EN / RU): `preset.craftsman_killed` "Craftsman killed" / "Убит ремесленник"; `preset.blight` "Blight" / "Неурожай"; `preset.army_billeted` "Army billeted" / "Армия на постое"; `preset.epidemic` "Epidemic" / "Эпидемия"; `preset.bandits` "Bandits on the road" / "Бандиты на дороге"; `preset.bridge_collapsed` "Bridge collapsed" / "Мост рухнул"; `presets.title` "Quick events" / "Быстрые события"; `presets.apply` "apply" / "применить"; `presets.good` "good" / "товар"; `presets.needsGood` "choose a good" / "выберите товар".
 - Preset values (verbatim): `craftsman_killed` node, needsGood, 30 d, `[pcap mult 0.2 linear perGood]`; `blight` node, 60 d, `[pcap mult 0.4 linear category "food"]`; `army_billeted` node, 20 d, `[population mult 1.3 step]`; `epidemic` node, 45 d, `[population mult 0.8 linear, pcap mult 0.8 linear]`; `bandits` edge, 14 d, `[difficulty mult 2.5 linear]`; `bridge_collapsed` edge, 30 d, `[capacity mult 0.1 step, difficulty mult 3 step]`.
 
-- [ ] **Step 1: Install Vitest** (`npm --prefix web install -D vitest@^3.2.4`) and add the `test` script.
-- [ ] **Step 2: Write the failing tests** in `presets.test.ts`:
+- [x] **Step 1: Install Vitest** (`npm --prefix web install -D vitest@^3.2.4`) and add the `test` script.
+- [x] **Step 2: Write the failing tests** in `presets.test.ts`:
   - `every preset has EN and RU names` — for each id, `en["preset." + id]` and `ru["preset." + id]` are non-empty.
   - `craftsman_killed expands with the chosen good` — `expandPreset(get("craftsman_killed"), "redwater", {good: "grain", source: "x"})` equals `[{target_kind: "node", target_id: "redwater", param: "pcap", op: "mult", value: 0.2, duration: 30, decay: "linear", tau: 1, good: "grain", category: null, source: "x"}]`.
   - `craftsman_killed without a good throws` — `/needs a good/`.
   - `duration override applies to every effect` — `epidemic` with `{duration: 7}` → both specs have `duration: 7`.
   - `bridge_collapsed targets the edge with two effects` — `target_kind: "edge"`, params `["capacity", "difficulty"]`.
-- [ ] **Step 3: Run** `npm --prefix web test` — expected: FAIL (module missing).
-- [ ] **Step 4: Implement** `presets.ts` with the verbatim values and the i18n keys.
-- [ ] **Step 5: Run** `npm --prefix web test` and `npm --prefix web run check` — expected: 5 passed, 0 errors. Add `npm test` to the CI web job.
-- [ ] **Step 6: Commit** `feat(web): event preset catalogue with unit tests (R17)`.
+- [x] **Step 3: Run** `npm --prefix web test` — expected: FAIL (module missing).
+- [x] **Step 4: Implement** `presets.ts` with the verbatim values and the i18n keys.
+- [x] **Step 5: Run** `npm --prefix web test` and `npm --prefix web run check` — expected: 5 passed, 0 errors. Add `npm test` to the CI web job.
+- [x] **Step 6: Commit** `feat(web): event preset catalogue with unit tests (R17)`.
 
 **Done when:** the six presets expand into correct effect specs, both languages name them, tests run in CI.
 
@@ -152,11 +152,11 @@ Planner's calls (not discussed with the user, easy to revisit):
 **Interfaces:**
 - Consumes: `PRESETS`, `presetName`, `expandPreset` (R17); `app.addEffects` (R16); `app.world` for node ids / edge ids / goods.
 
-- [ ] **Step 1: Build the panel.** A `<select>` of presets (by `presetName`), a target `<select>` that lists node ids or edge ids by `preset.target` and stays valid when the preset changes (same `$effect` pattern as `EffectsPanel`), a goods `<select>` shown only when `needsGood`, a duration `<input type="number">` prefilled with the preset default and reset on preset change, and an apply button disabled when `needsGood` and no good is chosen (tooltip `presets.needsGood`). Apply calls `app.addEffects(expandPreset(p, target, {good, duration, source: presetName(p.id)}))`.
-- [ ] **Step 2: Check** `npm --prefix web run build` — expected: 0 errors, built.
-- [ ] **Step 3: Browser check** (dev server, `.claude/launch.json` → `web`): apply "Bandits on the road" on `eastford__redwater`, run 3 days, open reasons for grain in redwater → a road cause with `difficulty ×…`; the flows panel shows lower/later traffic on that road than before. Apply "Epidemic" on `redwater`, one `undo` removes both effects. Switch to RU: preset names and labels translated.
-- [ ] **Step 4: Docs.** REQUIREMENTS §5.8: "Quick addition of an effect from the interface" gains "including one-click event presets (craftsman killed, blight, army billeted, epidemic, bandits, bridge collapsed)". DECISIONS: `## D6 · <date> · Event presets instead of production chains in M5` — chains stay v1.1 (D3); presets in the UI cover the table use case; road effects now reach trade (spec §2/§5.6 compliance, R15). Mark R15–R18 done here, set the status to closed, update the CLAUDE.md status line (M5 closed, next plan `m6-*.md` from R19).
-- [ ] **Step 5: Full verification** (below) and **commit** `feat(web): event presets panel; close M5 (R18)`.
+- [x] **Step 1: Build the panel.** A `<select>` of presets (by `presetName`), a target `<select>` that lists node ids or edge ids by `preset.target` and stays valid when the preset changes (same `$effect` pattern as `EffectsPanel`), a goods `<select>` shown only when `needsGood`, a duration `<input type="number">` prefilled with the preset default and reset on preset change, and an apply button disabled when `needsGood` and no good is chosen (tooltip `presets.needsGood`). Apply calls `app.addEffects(expandPreset(p, target, {good, duration, source: presetName(p.id)}))`.
+- [x] **Step 2: Check** `npm --prefix web run build` — expected: 0 errors, built.
+- [x] **Step 3: Browser check** (dev server, `.claude/launch.json` → `web`): apply "Bandits on the road" on `eastford__redwater`, run 3 days, open reasons for grain in redwater → a road cause with `difficulty ×…`; the flows panel shows lower/later traffic on that road than before. Apply "Epidemic" on `redwater`, one `undo` removes both effects. Switch to RU: preset names and labels translated.
+- [x] **Step 4: Docs.** REQUIREMENTS §5.8: "Quick addition of an effect from the interface" gains "including one-click event presets (craftsman killed, blight, army billeted, epidemic, bandits, bridge collapsed)". DECISIONS: `## D6 · <date> · Event presets instead of production chains in M5` — chains stay v1.1 (D3); presets in the UI cover the table use case; road effects now reach trade (spec §2/§5.6 compliance, R15). Mark R15–R18 done here, set the status to closed, update the CLAUDE.md status line (M5 closed, next plan `m6-*.md` from R19).
+- [x] **Step 5: Full verification** (below) and **commit** `feat(web): event presets panel; close M5 (R18)`.
 
 **Done when:** the GM can apply any preset in one click, undo it in one step, in EN and RU; docs and status updated.
 

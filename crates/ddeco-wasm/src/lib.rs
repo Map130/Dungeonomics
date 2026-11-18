@@ -490,6 +490,11 @@ impl Sim {
                 return Err(format!("no good {g}"));
             }
         }
+        if let Some(c) = &spec.category {
+            if !self.world.catalog.goods.values().any(|g| &g.category == c) {
+                return Err(format!("no category {c}"));
+            }
+        }
         Ok(Effect {
             param: spec.param.clone(),
             target_kind,

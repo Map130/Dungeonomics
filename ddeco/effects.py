@@ -119,7 +119,9 @@ def effective(
             mult *= 1.0 + (e.value - 1.0) * w
         else:
             add += e.value * w
-    return _clamp(base * mult + add, lo, hi)
+    # 0 · inf = 0: a zero factor closes an unlimited base instead of giving NaN.
+    scaled = 0.0 if mult == 0.0 else base * mult
+    return _clamp(scaled + add, lo, hi)
 
 
 def _clamp(x: float, lo: float, hi: float) -> float:
