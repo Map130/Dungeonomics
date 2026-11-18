@@ -49,3 +49,7 @@ Affects: REQUIREMENTS §5.8; MODEL §5.6. Plan `m5-event-presets.md`.
 Mandatory village→hub delivery ignores cap_e (MODEL §5.6: delivery "regardless of the price difference"; φ_e applies to arbitrage only). Consequence: on village→hub roads "Bridge collapsed" mainly lengthens the delay.
 Making hub delivery capacity-limited is an open *(proposed)* change: it would shift the baseline of all multi-node golden runs and needs calibration.
 Affects: MODEL §5.6.
+
+## D8 · 2026-11-18 · Shop items traded via driver goods
+Settlement shop items are priced and traded through a driver good in value-equivalent units (MODEL §5.7), not simulated individually. This resolves REQUIREMENTS §10.6 for shop items only.
+Affects: REQUIREMENTS §5.5, §5.8; MODEL §5.7. Plan `m7-shop.md`.

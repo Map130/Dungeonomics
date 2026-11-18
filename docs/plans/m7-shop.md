@@ -1,4 +1,4 @@
-> **Status:** planned — stages R22–R24.
+> **Status:** closed — stages R22–R24.
 
 # Plan: M7 — the settlement shop (all SRD items, priced and traded through simulated goods)
 
@@ -43,7 +43,7 @@ Planner's calls (D8, easy to revisit):
 
 ---
 
-### Task 1 (R22): Shop catalogue and drivers (pure, unit-tested)
+### Task 1 (R22) ✅: Shop catalogue and drivers (pure, unit-tested)
 
 **Files:** Create `web/src/shop/catalog.ts`, `web/src/shop/drivers.ts`, `web/src/shop/shop.test.ts`.
 
@@ -81,7 +81,7 @@ Tests (with the example world's goods `grain/fish:food, cloth:cloth, tools:weapo
 
 **Done when:** `npm --prefix web test` and `npm --prefix web run check` green. Commit `feat(web): shop catalogue and item drivers (R22)`.
 
-### Task 2 (R23): Shop panel on the settlement page
+### Task 2 (R23) ✅: Shop panel on the settlement page
 
 **Files:** Create `web/src/components/ShopPanel.svelte`; modify `web/src/components/NodeView.svelte` (render `<ShopPanel node={id} />` below the goods panel), `web/src/i18n/en.ts`, `ru.ts`.
 
@@ -94,7 +94,7 @@ Tests (with the example world's goods `grain/fish:food, cloth:cloth, tools:weapo
 
 **Done when:** `npm --prefix web run build` green. Commit `feat(web): settlement shop with value-equivalent trades (R23)`.
 
-### Task 3 (R24): Docs and close M7
+### Task 3 (R24) ✅: Docs and close M7
 
 - `DECISIONS.md` D8 (date 2026-11-18): shop items are priced and traded through a driver good in value-equivalent units (MODEL §5.7), not simulated individually; resolves REQUIREMENTS §10.6 for shop items only. Affects REQUIREMENTS §5.5, §5.8; MODEL §5.7.
 - REQUIREMENTS §5.8: add "A settlement shop lists every item of the base price list; a deal moves the price of the item's driver good (D8)."

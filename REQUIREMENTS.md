@@ -87,6 +87,7 @@ The idea is borrowed from the economy of Mount & Blade: Bannerlord, where villag
 - **Reasons log:** "the price of bread in X went up because road Y→X is ×2.5 and the stock fell to 40%". The core returns causes in structured form; the UI builds the text in the user's language (D5, MODEL §5.12).
 - Quick addition of an effect from the interface, including one-click event presets (craftsman killed, blight, army billeted, epidemic, bandits, bridge collapsed).
 - Direct stock edits (a player bought out a good, the GM enters it by hand).
+- A settlement shop lists every item of the base price list; a deal moves the price of the item's driver good (D8).
 
 ### 5.9 Data
 - The world is stored in a single text file, convenient for versioning and sharing templates. **Decided: TOML (`DECISIONS.md` D1).**
