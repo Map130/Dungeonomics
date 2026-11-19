@@ -1,4 +1,4 @@
-> **Status:** planned — stages R25–R28.
+> **Status:** closed — stages R25–R28.
 
 # Plan: M8 — a richer example world and goods display names
 
@@ -60,19 +60,19 @@ Planner's calls:
 
 ---
 
-### Task 1 (R25): Good display names
+### Task 1 (R25): Good display names ✅
 
 **Files:** `ddeco/loader.py` (ignore `name`), `crates/ddeco-core/src/loader.rs` (`pub fn good_names_from_toml(text: &str) -> Result<BTreeMap<String, BTreeMap<String, String>>, String>` + unit test; the world loader ignores `name`), `crates/ddeco-wasm/src/lib.rs` (parse names in `Sim::new`, keep in `Sim`, expose `world_info().goods[].names: Record<lang, string>`), smoke check of `names`, `web/src/types.ts` (`GoodInfo.names`), `web/src/i18n/index.svelte.ts` (`goodName(id: string): string` — current language, then `en`, then id), use `goodName` wherever a good id is shown: NodeView market table, SettlementsTable "produces", ShopPanel driver label and `shop.via`, ReasonsPanel header, EffectsPanel good filter, PresetsPanel good select. Tests: Python `tests/test_loader.py` loads a world string with a `name` table; Rust unit test for `good_names_from_toml` (present / absent / partial); Vitest is not needed for `goodName` unless extracted as a pure helper (then test it).
 
 **Done when:** pytest, cargo test, smoke, `npm test`, `npm run build` green; a world with names shows them in RU and EN. Commit `feat: good display names from the world file (R25)`.
 
-### Task 2 (R26): The richer example world
+### Task 2 (R26): The richer example world ✅
 
 **Files:** `worlds/example_region.toml` (rewrite per Context; keep existing node ids, roads and their parameters; add ironhold, saltmarsh, eastport and their roads; every good gets `name = { en, ru }`), tests that count nodes/arcs or name goods (`tests/test_loader.py`, `crates/ddeco-core/tests/loader_parity.rs`, others as needed), a new stability test for the example world (`tests/test_example_world.py` + Rust mirror in `crates/ddeco-core/tests/`) per the acceptance rule in Context, `golden/` regenerated.
 
 **Done when:** all Python and Rust suites green (including §8.1–8.4 and golden parity), the new stability test passes, the warm-up converges. Commit `feat(world): richer example region — 10 settlements, 11 goods (R26)`.
 
-### Task 3 (R27): Shop roles for the new goods
+### Task 3 (R27): Shop roles for the new goods ✅
 
 **Files:** `web/src/shop/drivers.ts`, `web/src/shop/shop.test.ts`, `web/src/presets.test.ts` if it names goods.
 
@@ -84,7 +84,7 @@ Update tests to the new example-world goods (resolveDriver: `weapons` → `weapo
 
 **Done when:** `npm test`, `npm run build` green. Commit `feat(web): shop roles for the new goods (R27)`.
 
-### Task 4 (R28): Docs and close M8
+### Task 4 (R28): Docs and close M8 ✅
 
 `DECISIONS.md` D9 (good display names live in the world file, UI-only data; parsed additively);
 REQUIREMENTS §5.2 note on display names; README example-world line; plan closed; CLAUDE.md M8 under

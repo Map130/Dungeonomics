@@ -53,3 +53,9 @@ Affects: MODEL §5.6.
 ## D8 · 2026-11-18 · Shop items traded via driver goods
 Settlement shop items are priced and traded through a driver good in value-equivalent units (MODEL §5.7), not simulated individually. This resolves REQUIREMENTS §10.6 for shop items only.
 Affects: REQUIREMENTS §5.5, §5.8; MODEL §5.7. Plan `m7-shop.md`.
+
+## D9 · 2026-11-19 · Good display names in the world file; example-world calibration
+Good display names live in the world file as `name = { en, ru }`: UI-only data, parsed additively (Python loader ignores it, Rust `good_names_from_toml`, facade `world_info().goods[].names`); the `World` struct and the model are untouched.
+Example-world calibration (reasons in the header of `worlds/example_region.toml`; do not undo blindly): food/materials/crafts keep deeper stocks (`coverage_days` 30, fish and meat 20); exporting villages send `hub_share = 0.9` to their hub; `per_capita` is in scaled trade units (grain 0.1 per person per day) so flows fit road capacities; meat spoilage 0.02, salt uses the necessity default spoilage, eastport population 300.
+Acceptance: after warm-up no node×good has demand within 1e-3 of the corridor edge (`tests/test_example_world.py`).
+Affects: REQUIREMENTS §5.2; MODEL §7 (defaults), §8 (acceptance). Plan `m8-richer-world.md`.

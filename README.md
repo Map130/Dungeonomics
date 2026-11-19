@@ -24,6 +24,7 @@ Documentation:
 - Nodes are coupled only through trade flows: if the price difference exceeds the travel cost, part of the stock "travels" with a delay.
 - Every price change is explained: "bread in Redwater went up because the road from Millbrook is blocked (×2.5, 7 days left) and the stock fell to 38%".
 - The settlement shop lists every SRD item with local prices; a deal moves the price of its driver good.
+- The example world (`worlds/example_region.toml`) has 10 settlements and 11 goods with English and Russian names.
 - Typical story events (bandits, epidemic, blight…) apply in one click as presets and undo in one step.
 - The world is reproducible: one seed → the same run; undoing and replaying a day gives the same result.
 

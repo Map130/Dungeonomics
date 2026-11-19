@@ -42,6 +42,7 @@ The idea is borrowed from the economy of Mount & Blade: Bannerlord, where villag
 ### 5.2 Goods
 - Goods catalogue: base price, category, demand elasticity, spoilage or storage cost.
 - Goods categories (food, cloth, weapons, etc.) for demand calculation, so the GM does not have to describe every item separately.
+- Display names: a good may carry `name = { en, ru }` in the world file. This is UI-only data; the simulation ignores it and the UI falls back to the current language, then `en`, then the good id (`DECISIONS.md` D9).
 - Production chains (grain → flour → bread): desirable in v1, v1.1 at the latest. **Decided: v1.1 (`DECISIONS.md` D3).**
 
 ### 5.3 Nodes

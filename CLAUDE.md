@@ -14,11 +14,12 @@ Milestones closed (plans in `docs/plans/`):
 - **M5** `m5-event-presets.md` — event presets + road effects in trade, R15–R18.
 - **M6** `m6-node-view-ui.md` — UI split into world overview + settlement pages, prices in coins, R19–R21.
 - **M7** `m7-shop.md` — settlement shop: all SRD items priced and traded through driver goods, R22–R24.
+- **M8** `m8-richer-world.md` — richer example world (10 settlements, 11 goods) and good display names, R25–R28.
 
-Production chains (§5.13) are deferred to v1.1. The next milestone is not planned yet (M8 = a richer simulated world, agreed with the user) — a new plan
-goes to `docs/plans/m8-<name>.md`, stages continue from R25. Decisions go to `DECISIONS.md`
+Production chains (§5.13) are deferred to v1.1. The next milestone is not planned yet — a new plan
+goes to `docs/plans/m9-<name>.md`, stages continue from R29. Decisions go to `DECISIONS.md`
 (D1 TOML, D2 price list, D3 chains → v1.1, D4 name Dungeonomics + MIT, D5 English + i18n + SRD,
-D6 event presets instead of chains in M5, D7 hub delivery ignores road capacity, D8 shop items traded via driver goods).
+D6 event presets instead of chains in M5, D7 hub delivery ignores road capacity, D8 shop items traded via driver goods, D9 good display names in the world file + example-world calibration).
 Specs remain the source of truth:
 
 - `REQUIREMENTS.md` — product requirements v1 (goal, scope, functional/non-functional reqs, risks, open questions).
@@ -62,7 +63,7 @@ Python oracle (`ddeco/`, stdlib-only):
 - `purchase.py` (§5.7), `caravans.py` (§5.10), `reasons.py` (§5.12, structured causes), `events.py` (one-shot events), `loader.py`/`persistence.py` (TOML I/O + autosave).
 
 Tests mirror the spec: `tests/test_single_node.py` (§8.1), `test_multi_node.py` (§8.2),
-`test_runaway.py` (§8.3), `test_determinism.py` (§8.4). `tests/single_node.py` is a shared helper, not a test.
+`test_runaway.py` (§8.3), `test_determinism.py` (§8.4), `test_example_world.py` (example-region calibration, D9). `tests/single_node.py` is a shared helper, not a test.
 
 Rust and web:
 - `crates/ddeco-core` — module-for-module port of `ddeco/` (`mathf.rs` wraps `libm` for §9);
@@ -140,6 +141,6 @@ determinism (two runs with one seed match; rollback-and-replay reproduces).
 ## Open decisions not yet made
 
 Before implementing areas they touch, check these are still open (see `REQUIREMENTS.md` §10 and
-`MODEL.md` §10; already decided: D1–D8 in `DECISIONS.md`): goods units (pieces/weight/"batches"),
+`MODEL.md` §10; already decided: D1–D9 in `DECISIONS.md`): goods units (pieces/weight/"batches"),
 caravan materialization rules, and the stabilization parameters (β, spoilage rate, prosperity
 ceiling, list of sinks).
