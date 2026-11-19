@@ -17,6 +17,10 @@
 #   stocks the villages of a region that does not make a good stay pinned at m_max.
 # - Exporting villages send most of their output to their hub (hub_share 0.9, §5.6); with
 #   the default 0.6 the remainder piles up in a small village and its price sits at m_min.
+# - Weapons keep 60 days of stock (M9, R30): plate armour (1500 gp = 100 longsword units)
+#   must fit into every city's weapons stock after warm-up (shop "too big" rule, D8).
+# - Luxury goods keep 30 days instead of the §7 default 14 (R30): the priciest luxury items
+#   (spyglass 1000 gp = 500 spice units) stay buyable in every city, and luxury prices calm down.
 
 seed = 42
 
@@ -99,7 +103,7 @@ price_class = "common"
 base_price = 15.0        # SRD longsword, 15 gp
 per_capita = 0.003
 basket_weight = 0.1
-coverage_days = 30.0
+coverage_days = 60.0    # deep enough for plate armour in every city (R30)
 
 [goods.wine]
 name = { en = "Wine", ru = "Вино" }
@@ -108,6 +112,7 @@ price_class = "luxury"
 base_price = 10.0        # SRD wine-fine-bottle, 10 gp
 per_capita = 0.01
 basket_weight = 0.15
+coverage_days = 30.0
 
 [goods.spices]
 name = { en = "Spices", ru = "Пряности" }
@@ -116,6 +121,7 @@ price_class = "luxury"
 base_price = 2.0         # SRD pepper-1-lb, 2 gp
 per_capita = 0.01
 basket_weight = 0.1
+coverage_days = 30.0
 
 [goods.silk]
 name = { en = "Silk", ru = "Шёлк" }
@@ -124,6 +130,7 @@ price_class = "luxury"
 base_price = 10.0        # SRD silk-1-sq-yd, 10 gp
 per_capita = 0.005
 basket_weight = 0.05
+coverage_days = 30.0
 
 # --- Cities -------------------------------------------------------------------
 

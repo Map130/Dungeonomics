@@ -76,3 +76,14 @@ fn every_good_has_a_producer() {
         assert!(world.nodes.values().any(|n| n.pcap(g) > 0.0), "{g}");
     }
 }
+
+#[test]
+fn weapons_stock_fits_plate_armour() {
+    // R30: plate armour = 1500 gp / 15 gp = 100 weapon units, plus margin (shop "too big", D8).
+    let world = example_world();
+    let st = warmup(&world, MAX_DAYS, TOL);
+    for city in ["redwater", "stonehaven", "greenvale"] {
+        let s = st.stock[&(city.to_string(), "weapons".to_string())];
+        assert!(s > 110.0, "{city}: {s}");
+    }
+}

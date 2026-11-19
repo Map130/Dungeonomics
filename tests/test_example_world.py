@@ -60,3 +60,10 @@ def test_every_good_has_a_producer():
     world = load_world(WORLD)
     for g in world.catalog.ids():
         assert any(node.pcap(g) > 0.0 for node in world.nodes.values()), g
+
+
+def test_weapons_stock_fits_plate_armour():
+    # R30: plate armour = 1500 gp / 15 gp = 100 weapon units, plus margin (shop "too big", D8).
+    _, st = _settled()
+    for city in ("redwater", "stonehaven", "greenvale"):
+        assert st.stock[(city, "weapons")] > 110.0, city
