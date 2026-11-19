@@ -15,11 +15,12 @@ Milestones closed (plans in `docs/plans/`):
 - **M6** `m6-node-view-ui.md` — UI split into world overview + settlement pages, prices in coins, R19–R21.
 - **M7** `m7-shop.md` — settlement shop: all SRD items priced and traded through driver goods, R22–R24.
 - **M8** `m8-richer-world.md` — richer example world (10 settlements, 11 goods) and good display names, R25–R28.
+- **M9** `m9-polish.md` — overview badge by price, deeper weapons/luxury stocks, world-wide category drivers, quoted shop prices, localised errors, R29–R32.
 
 Production chains (§5.13) are deferred to v1.1. The next milestone is not planned yet — a new plan
-goes to `docs/plans/m9-<name>.md`, stages continue from R29. Decisions go to `DECISIONS.md`
+goes to `docs/plans/m10-<name>.md`, stages continue from R33. Decisions go to `DECISIONS.md`
 (D1 TOML, D2 price list, D3 chains → v1.1, D4 name Dungeonomics + MIT, D5 English + i18n + SRD,
-D6 event presets instead of chains in M5, D7 hub delivery ignores road capacity, D8 shop items traded via driver goods, D9 good display names in the world file + example-world calibration).
+D6 event presets instead of chains in M5, D7 hub delivery ignores road capacity, D8 shop items traded via driver goods, D9 good display names in the world file + example-world calibration, D10 overview badge by price + world-wide category drivers + quoted shop prices).
 Specs remain the source of truth:
 
 - `REQUIREMENTS.md` — product requirements v1 (goal, scope, functional/non-functional reqs, risks, open questions).
@@ -67,7 +68,7 @@ Tests mirror the spec: `tests/test_single_node.py` (§8.1), `test_multi_node.py`
 
 Rust and web:
 - `crates/ddeco-core` — module-for-module port of `ddeco/` (`mathf.rs` wraps `libm` for §9);
-  `tests/` check golden parity with `golden/*.json`.
+  `tests/` check golden parity with `golden/*.json` (generated, not tracked).
 - `crates/ddeco-wasm` — the `Sim` facade (wasm-bindgen) returning plain JSON DTOs; `smoke/smoke.cjs` checks their shape.
 - `web/` — Svelte 5 PWA; `src/store.svelte.ts` wraps `Sim`, `src/i18n/` holds the EN/RU catalogs.
 - `web/src/shop/` — the settlement shop: SRD catalogue, item → driver good roles, value-equivalent units (D8).
@@ -119,7 +120,7 @@ These invariants are the heart of the design. Violating them breaks the whole ap
   growing unboundedly). The main closing loop is supply reacting to price (`MODEL.md` §5.2),
   plus spoilage, sinks, and a prosperity ceiling. See the stability analysis in `MODEL.md` §6.
 - **Python and Rust stay in lockstep.** A change to model logic goes into both cores and is
-  checked by regenerating `golden/` from Python and running the Rust tests.
+  checked by generating `golden/` from Python (not tracked; CI does it too) and running the Rust tests.
 
 ## Reproducibility constraints for any implementation
 
@@ -141,6 +142,6 @@ determinism (two runs with one seed match; rollback-and-replay reproduces).
 ## Open decisions not yet made
 
 Before implementing areas they touch, check these are still open (see `REQUIREMENTS.md` §10 and
-`MODEL.md` §10; already decided: D1–D9 in `DECISIONS.md`): goods units (pieces/weight/"batches"),
+`MODEL.md` §10; already decided: D1–D10 in `DECISIONS.md`): goods units (pieces/weight/"batches"),
 caravan materialization rules, and the stabilization parameters (β, spoilage rate, prosperity
 ceiling, list of sinks).

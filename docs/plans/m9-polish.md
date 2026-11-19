@@ -1,4 +1,4 @@
-> **Status:** planned — stages R29–R32.
+> **Status:** closed — stages R29–R32 done.
 
 # Plan: M9 — overview badges by price, honest shop prices, calmer drivers
 
@@ -44,7 +44,7 @@ Planner's calls:
 
 ---
 
-### Task 1 (R29): Overview badge by price
+### Task 1 (R29): Overview badge by price ✅
 
 **Files:** `web/src/overview.ts` (new, pure), `web/src/overview.test.ts`, `web/src/components/SettlementsTable.svelte`, `web/src/i18n/en.ts`, `ru.ts`.
 
@@ -54,7 +54,7 @@ Planner's calls:
 
 Commit `feat(web): overview badge shows the most expensive good (R29)`.
 
-### Task 2 (R30): Deeper weapons and luxury stocks (world data)
+### Task 2 (R30): Deeper weapons and luxury stocks (world data) ✅
 
 **Files:** `worlds/example_region.toml` (header comment + data), `tests/test_example_world.py`, `crates/ddeco-core/tests/example_world.rs`, `golden/` (regenerated), `DECISIONS.md` (append a line to D9 about the new values).
 
@@ -63,7 +63,7 @@ Commit `feat(web): overview badge shows the most expensive good (R29)`.
 
 Commit `feat(world): deeper weapons and luxury stocks (R30)`.
 
-### Task 3 (R31): World-wide category drivers and quoted list prices
+### Task 3 (R31): World-wide category drivers and quoted list prices ✅
 
 **Files:** `crates/ddeco-wasm/src/lib.rs` (`GoodInfo.total_capacity: f64` = sum of base capacities over nodes), `crates/ddeco-wasm/smoke/smoke.cjs`, `web/src/types.ts`, `web/src/shop/drivers.ts`, `web/src/shop/shop.test.ts`, `web/src/components/ShopPanel.svelte`.
 
@@ -73,7 +73,7 @@ Commit `feat(world): deeper weapons and luxury stocks (R30)`.
 
 Commit `feat(web): world-wide category drivers and quoted shop prices (R31)`.
 
-### Task 4 (R32): Localised errors, effect-form selects, docs, close M9
+### Task 4 (R32): Localised errors, effect-form selects, docs, close M9 ✅
 
 **Files:** `web/src/i18n/errors.ts` (new, pure) + test, `web/src/App.svelte` (render the error via the translator), `web/src/i18n/en.ts`, `ru.ts`, `web/src/components/EffectsPanel.svelte`, `DECISIONS.md` (D10), `REQUIREMENTS.md` §5.8 note, `CLAUDE.md`, this plan.
 

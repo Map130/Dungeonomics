@@ -4,6 +4,7 @@
   import WorldView from "./components/WorldView.svelte";
   import NodeView from "./components/NodeView.svelte";
   import { i18n, LANGS, t, type Lang } from "./i18n/index.svelte";
+  import { translateError } from "./i18n/errors";
 
   let runDays = $state(30);
   let warmup = $state(2000);
@@ -73,7 +74,7 @@
 
 {#if app.error}
   <div class="panel" style="border-radius:0; border-color: var(--bad); color: var(--bad);">
-    {app.error}
+    {translateError(app.error, t)}
   </div>
 {/if}
 

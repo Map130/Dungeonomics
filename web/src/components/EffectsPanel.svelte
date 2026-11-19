@@ -1,6 +1,6 @@
 <script lang="ts">
   import { app } from "../store.svelte";
-  import { goodName, paramLabel, t } from "../i18n/index.svelte";
+  import { goodName, labelOf, paramLabel, t } from "../i18n/index.svelte";
 
   // `node`: show only effects on this settlement or on roads touching it (node page);
   // `showForm`: the manual "add effect" form (world overview only).
@@ -32,6 +32,7 @@
       ? (app.world?.nodes.map((n) => n.id) ?? [])
       : (app.world?.edges.map((e) => e.id) ?? []),
   );
+  const categories = $derived([...new Set((app.world?.goods ?? []).map((g) => g.category))].sort());
   const paramHints = $derived(
     targetKind === "node" ? ["pcap", "population", "garrison"] : ["difficulty", "capacity"],
   );
@@ -110,8 +111,14 @@
     {#if decay === "exp"}
       <label class="muted">τ <input type="number" bind:value={tau} style="width:3.5rem;" /></label>
     {/if}
-    <input bind:value={good} placeholder={t("effects.good")} style="width:6rem;" />
-    <input bind:value={category} placeholder={t("effects.category")} style="width:7rem;" />
+    <select bind:value={good} title={t("effects.good")}>
+      <option value="">{t("effects.good")}</option>
+      {#each app.world?.goods ?? [] as g}<option value={g.id}>{goodName(g.id)}</option>{/each}
+    </select>
+    <select bind:value={category} title={t("effects.category")}>
+      <option value="">{t("effects.category")}</option>
+      {#each categories as c}<option value={c}>{labelOf("category", c)}</option>{/each}
+    </select>
     <input bind:value={source} placeholder={t("effects.source")} style="width:8rem;" />
     <button onclick={submit}>{t("effects.submit")}</button>
   </div>

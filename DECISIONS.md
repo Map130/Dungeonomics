@@ -61,3 +61,8 @@ M9 (R30): `weapons` `coverage_days` 30 → 60, so plate armour (100 weapon units
 Acceptance: after warm-up no node×good has demand within 1e-3 of the corridor edge (`tests/test_example_world.py`).
 The web app loads the bundled world warmed up (cap 2000 days, tolerance 1e-4); the day counter shows the warm-up days.
 Affects: REQUIREMENTS §5.2; MODEL §7 (defaults), §8 (acceptance). Plan `m8-richer-world.md`.
+
+## D10 · 2026-11-19 · Overview badge by price; world-wide category drivers; quoted shop prices
+The overview badge shows the most expensive good when its multiplier is ≥ 1.5; the core verdict (`r = s/s*`) and the reasons log are unchanged (§5.12). Category roles for shop items resolve world-wide to the category's good with the largest total base capacity (ties by id), so one item has the same driver in every town. Shop list prices are real quotes of one item (§5.7 curve), "—" when the quote exceeds the stock. Facade errors are translated in the UI (`translateError`), not in the core.
+Note (D9): the plate-armour depth guarantee (weapons ≥ 110 units after warm-up) covers the three cities, not the eastport camp.
+Affects: REQUIREMENTS §5.8; MODEL §5.7. Plan `m9-polish.md`.
