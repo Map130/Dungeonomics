@@ -85,7 +85,7 @@ export const ru: Messages = {
   "settlements.kind": "тип",
   "settlements.population": "население",
   "settlements.produces": "производит",
-  "settlements.alert": "дефицит",
+  "settlements.expensive": "дорого",
   "settlements.hint": "клик по поселению — открыть",
   "kind.city": "город",
   "kind.village": "деревня",

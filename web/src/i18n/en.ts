@@ -83,7 +83,7 @@ export const en = {
   "settlements.kind": "kind",
   "settlements.population": "population",
   "settlements.produces": "produces",
-  "settlements.alert": "shortage",
+  "settlements.expensive": "expensive",
   "settlements.hint": "click a settlement to open it",
   "kind.city": "city",
   "kind.village": "village",
