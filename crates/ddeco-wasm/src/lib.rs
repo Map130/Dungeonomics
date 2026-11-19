@@ -8,9 +8,13 @@
 //! undo uses in-memory `SimState` snapshots (determinism §8.4), I/O (files, clocks)
 //! stays on the JS side — the facade works with TOML strings, like the core.
 
+use std::collections::BTreeMap;
+
 use ddeco_core::calibration::{seed_state, warmup};
 use ddeco_core::effects::{Decay, Effect, Op, TargetKind};
-use ddeco_core::loader::{shocks_from_toml, state_from_toml, state_to_toml, world_from_toml};
+use ddeco_core::loader::{
+    good_names_from_toml, shocks_from_toml, state_from_toml, state_to_toml, world_from_toml,
+};
 use ddeco_core::purchase::{self, TradeError};
 use ddeco_core::shocks::ShockTemplate;
 use ddeco_core::state::SimState;
@@ -31,6 +35,7 @@ pub struct Sim {
     state: SimState,
     history: Vec<SimState>,
     shocks: Vec<ShockTemplate>,
+    names: BTreeMap<String, BTreeMap<String, String>>,
     shocks_enabled: bool,
 }
 
@@ -45,6 +50,7 @@ impl Sim {
         console_error_panic_hook::set_once();
         let world = world_from_toml(world_toml).map_err(err)?;
         let shocks = shocks_from_toml(world_toml).map_err(|e| JsValue::from_str(&e))?;
+        let names = good_names_from_toml(world_toml).map_err(|e| JsValue::from_str(&e))?;
         let state = if warmup_days > 0 {
             warmup(&world, warmup_days, 1e-6)
         } else {
@@ -55,6 +61,7 @@ impl Sim {
             state,
             history: Vec::new(),
             shocks,
+            names,
             shocks_enabled: false,
         })
     }
@@ -149,6 +156,7 @@ impl Sim {
                         id: good.id.clone(),
                         category: good.category.clone(),
                         base_price: good.base_price,
+                        names: self.names.get(g).cloned().unwrap_or_default(),
                     }
                 })
                 .collect(),
@@ -615,6 +623,8 @@ struct GoodInfo {
     id: String,
     category: String,
     base_price: f64,
+    /// Display names by language (empty when the world file has none).
+    names: BTreeMap<String, String>,
 }
 
 #[derive(Serialize)]
@@ -756,7 +766,10 @@ fn parse_decay(s: &str) -> Result<Decay, String> {
 }
 
 fn to_js<T: Serialize>(value: &T) -> Result<JsValue, JsValue> {
-    serde_wasm_bindgen::to_value(value).map_err(|e| JsValue::from_str(&e.to_string()))
+    // Maps become plain JS objects (not `Map`), e.g. `GoodInfo.names`.
+    value
+        .serialize(&serde_wasm_bindgen::Serializer::new().serialize_maps_as_objects(true))
+        .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 fn err<E: std::fmt::Display>(e: E) -> JsValue {

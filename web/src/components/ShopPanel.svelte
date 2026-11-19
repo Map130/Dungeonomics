@@ -1,6 +1,6 @@
 <script lang="ts">
   import { app } from "../store.svelte";
-  import { price, t, total } from "../i18n/index.svelte";
+  import { goodName, price, t, total } from "../i18n/index.svelte";
   import type { MessageKey } from "../i18n/en";
   import type { TradeResult } from "../types";
   import { CATALOG, type ShopItem } from "../shop/catalog";
@@ -90,7 +90,7 @@
   });
 
   const driverLabel = (p: Priced) =>
-    p.driver ? `← ${p.driver} ×${p.m.toFixed(2)}` : `← ${p.m.toFixed(2)} (${t("shop.noDriverShort")})`;
+    p.driver ? `← ${goodName(p.driver)} ×${p.m.toFixed(2)}` : `← ${p.m.toFixed(2)} (${t("shop.noDriverShort")})`;
 
   function select(p: Priced) {
     selected = p.item;
@@ -159,7 +159,7 @@
   {#if current}
     <h3 style="margin-top:.8rem;">
       {current.item.name}
-      {#if current.driver}<span class="muted">· {t("shop.via", { good: current.driver })}</span>{/if}
+      {#if current.driver}<span class="muted">· {t("shop.via", { good: goodName(current.driver) })}</span>{/if}
     </h3>
     <div class="row">
       <label class="muted">{t("gm.qty")} <input type="number" min="1" step="1" bind:value={qty} style="width:5rem;" /></label>

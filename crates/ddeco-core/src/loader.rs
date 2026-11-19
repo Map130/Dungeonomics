@@ -380,6 +380,27 @@ fn parse_decay(s: &str) -> Result<Decay, String> {
     }
 }
 
+#[derive(Debug, Deserialize)]
+struct RawNamesFile {
+    #[serde(default)]
+    goods: BTreeMap<String, RawGoodName>,
+}
+
+#[derive(Debug, Deserialize)]
+struct RawGoodName {
+    #[serde(default)]
+    name: BTreeMap<String, String>,
+}
+
+/// Parse good display names (`name = { en = "...", ru = "..." }`) from the world TOML:
+/// good id → language → name. A good without a `name` table maps to an empty map.
+pub fn good_names_from_toml(
+    text: &str,
+) -> Result<BTreeMap<String, BTreeMap<String, String>>, String> {
+    let raw: RawNamesFile = toml::from_str(text).map_err(|e| e.to_string())?;
+    Ok(raw.goods.into_iter().map(|(id, g)| (id, g.name)).collect())
+}
+
 /// Parse background shock templates from the world TOML. serde ignores other sections;
 /// a missing `[[shocks]]` gives an empty list (generator off).
 pub fn shocks_from_toml(text: &str) -> Result<Vec<ShockTemplate>, String> {
@@ -433,6 +454,34 @@ mod tests {
     fn no_shocks_section_is_empty() {
         // A world file without [[shocks]] — the generator is off.
         assert!(shocks_from_toml("seed = 1\n").unwrap().is_empty());
+    }
+
+    #[test]
+    fn good_names_present_absent_partial() {
+        let toml = r#"
+            [goods.grain]
+            category = "food"
+            base_price = 1.0
+            per_capita = 0.5
+            name = { en = "Grain", ru = "Зерно" }
+            [goods.salt]
+            category = "food"
+            base_price = 1.0
+            per_capita = 0.5
+            name = { en = "Salt" }
+            [goods.iron]
+            category = "material"
+            base_price = 1.0
+            per_capita = 0.5
+        "#;
+        let n = good_names_from_toml(toml).unwrap();
+        assert_eq!(n["grain"]["ru"], "Зерно");
+        assert_eq!(n["salt"].len(), 1);
+        assert_eq!(n["salt"]["en"], "Salt");
+        assert!(n["iron"].is_empty());
+        assert!(good_names_from_toml("seed = 1\n").unwrap().is_empty());
+        // the world loader still accepts the same text
+        assert!(world_from_toml(toml).is_ok());
     }
 
     #[test]

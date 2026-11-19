@@ -41,6 +41,8 @@ export interface GoodInfo {
   id: string;
   category: string;
   base_price: number;
+  /** Display names by language; empty when the world file has none. */
+  names: Record<string, string>;
 }
 
 export interface EdgeInfo {

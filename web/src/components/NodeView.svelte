@@ -1,6 +1,6 @@
 <script lang="ts">
   import { app } from "../store.svelte";
-  import { labelOf, price, t } from "../i18n/index.svelte";
+  import { goodName, labelOf, price, t } from "../i18n/index.svelte";
   import type { GoodView, Verdict } from "../types";
   import ReasonsPanel from "./ReasonsPanel.svelte";
   import ShopPanel from "./ShopPanel.svelte";
@@ -74,7 +74,7 @@
               <tr><td colspan="5" class="muted" style="padding-top:.6rem;"><strong>{labelOf("category", category)}</strong></td></tr>
               {#each goods as g}
                 <tr class="clickable" class:selected={g.good === selected} onclick={() => select(g.good)}>
-                  <td>{g.good}</td>
+                  <td>{goodName(g.good)}</td>
                   <td>{price(g.buy_price)}</td>
                   <td>{price(g.sell_price)}</td>
                   <td>{stockPct(g)}</td>

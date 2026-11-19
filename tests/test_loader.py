@@ -60,3 +60,14 @@ def test_state_roundtrip(tmp_path):
     assert back.prosperity["redwater"] == 0.6
     assert back.pipeline["redwater__millbrook"] == [{"grain": 10.0}, {"grain": 5.5}]
     assert back.caravan_accum["redwater__millbrook"] == 42.0
+
+
+def test_good_name_table_is_ignored(tmp_path):
+    """A `name = { en, ru }` table on a good is display data, not a §7 override."""
+    p = tmp_path / "w.toml"
+    p.write_text(
+        'seed = 1\n[goods.grain]\ncategory = "food"\nbase_price = 1.0\nper_capita = 0.5\n'
+        'name = { en = "Grain", ru = "Зерно" }\n'
+    )
+    world = load_world(p)
+    assert world.catalog["grain"].base_price == 1.0

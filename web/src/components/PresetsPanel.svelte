@@ -1,6 +1,6 @@
 <script lang="ts">
   import { app } from "../store.svelte";
-  import { t } from "../i18n/index.svelte";
+  import { goodName, t } from "../i18n/index.svelte";
   import { PRESETS, expandPresetOnTargets, presetName, roadsFromEdges } from "../presets";
 
   // `mode="edge"`: road presets on the world overview (pick a road, both arcs).
@@ -69,7 +69,7 @@
     {#if preset?.needsGood}
       <select bind:value={good} aria-label={t("presets.good")}>
         <option value="">{t("presets.good")}…</option>
-        {#each goods as g}<option value={g}>{g}</option>{/each}
+        {#each goods as g}<option value={g}>{goodName(g)}</option>{/each}
       </select>
     {/if}
     <label class="muted">{t("effects.days")} <input type="number" min="1" bind:value={duration} style="width:4rem;" /></label>

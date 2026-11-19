@@ -38,7 +38,19 @@ has(info, ["seed", "nodes", "goods", "edges"], "world_info");
 assert.ok(Array.isArray(info.nodes) && info.nodes.length > 0, "world_info.nodes is non-empty");
 has(info.nodes[0], ["id", "kind", "population", "spread", "hub", "produces"], "world_info.nodes[0]");
 assert.ok(info.nodes.some((n) => n.produces.length > 0), "some node produces goods");
-has(info.goods[0], ["id", "category", "base_price"], "world_info.goods[0]");
+has(info.goods[0], ["id", "category", "base_price", "names"], "world_info.goods[0]");
+
+// Display names come from `name = { en, ru }` on a good; absent -> empty map.
+{
+  const named = world.replace(
+    /(\[goods\.[a-z_]+\]\n)/,
+    '$1name = { en = "Test", ru = "Тест" }\n',
+  );
+  const ni = new Sim(named, 0).world_info();
+  const withName = ni.goods.filter((g) => g.names.ru === "Тест" && g.names.en === "Test");
+  assert.strictEqual(withName.length, 1, "one good carries the inline name table");
+  assert.ok(ni.goods.some((g) => Object.keys(g.names).length === 0), "goods without names -> empty map");
+}
 const node = info.nodes[0].id;
 const good = info.goods[0].id;
 

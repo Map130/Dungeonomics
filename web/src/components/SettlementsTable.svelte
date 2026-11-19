@@ -1,6 +1,6 @@
 <script lang="ts">
   import { app } from "../store.svelte";
-  import { labelOf, t } from "../i18n/index.svelte";
+  import { goodName, labelOf, t } from "../i18n/index.svelte";
   import type { NodeView } from "../types";
 
   // Static info (produces, hub) comes from world_info; dynamic (π, goods) from the snapshot.
@@ -36,8 +36,8 @@
             <td class="muted">{labelOf("kind", n.kind)}</td>
             <td>{n.population.toFixed(0)}</td>
             <td>{n.prosperity.toFixed(2)}</td>
-            <td>{info.get(n.node)?.produces.join(", ") || "—"}</td>
-            <td>{#if short}<span class="tag bad">⚠ {t("settlements.alert")}: {short}</span>{/if}</td>
+            <td>{info.get(n.node)?.produces.map(goodName).join(", ") || "—"}</td>
+            <td>{#if short}<span class="tag bad">⚠ {t("settlements.alert")}: {goodName(short)}</span>{/if}</td>
           </tr>
         {/each}
       </tbody>

@@ -3,6 +3,7 @@
 
 import type { Cause, Verdict } from "../types";
 import { formatCoin, formatCoinsMixed, type CoinLabels } from "../coins";
+import { app } from "../store.svelte";
 import { en, type MessageKey, type Messages } from "./en";
 import { ru } from "./ru";
 
@@ -99,3 +100,9 @@ export const price = (gp: number): string => formatCoin(gp, coins());
 
 /** A trade total in mixed coins, current language. */
 export const total = (gp: number): string => formatCoinsMixed(gp, coins());
+
+/** Display name of a good: current language, then English, then the id itself. */
+export function goodName(id: string): string {
+  const names = app.world?.goods.find((g) => g.id === id)?.names;
+  return names?.[i18n.lang] ?? names?.en ?? id;
+}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { app } from "../store.svelte";
-  import { causeText, t, verdictLabel } from "../i18n/index.svelte";
+  import { causeText, goodName, t, verdictLabel } from "../i18n/index.svelte";
   import type { Verdict } from "../types";
 
   const r = $derived(app.report);
@@ -15,7 +15,7 @@
   <h2>{t("reasons.title")}</h2>
   {#if r}
     <div class="row" style="justify-content: space-between;">
-      <strong>{r.good} · {r.node}</strong>
+      <strong>{goodName(r.good)} · {r.node}</strong>
       <span class={"tag " + verdictClass(r.verdict)}>{verdictLabel(r.verdict)}</span>
     </div>
     <p class="muted" style="margin:.4rem 0;">

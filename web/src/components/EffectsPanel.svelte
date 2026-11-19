@@ -1,6 +1,6 @@
 <script lang="ts">
   import { app } from "../store.svelte";
-  import { paramLabel, t } from "../i18n/index.svelte";
+  import { goodName, paramLabel, t } from "../i18n/index.svelte";
 
   // `node`: show only effects on this settlement or on roads touching it (node page);
   // `showForm`: the manual "add effect" form (world overview only).
@@ -68,7 +68,7 @@
         <li class="row" style="justify-content: space-between;">
           <span>
             <strong>{e.factor}</strong> {paramLabel(e.param)} · {t(e.target_kind === "edge" ? "effects.edge" : "effects.node")} {e.target_id}
-            {#if e.good}· {e.good}{:else if e.category}· {e.category}{/if}
+            {#if e.good}· {goodName(e.good)}{:else if e.category}· {e.category}{/if}
             {#if e.source}<span class="muted">({e.source})</span>{/if}
             <span class="muted">{t("effects.daysLeft", { days: e.days_left.toFixed(0) })}</span>
           </span>

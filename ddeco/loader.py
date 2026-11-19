@@ -79,6 +79,7 @@ def _parse_catalog(raw: dict) -> Catalog:
     goods: dict[str, GoodParams] = {}
     for gid, g in raw.items():
         price_class = PriceClass(g.pop("price_class", "common"))
+        g.pop("name", None)  # display names ({en, ru}) belong to the UI, not the model
         goods[gid] = make_good(
             id=gid,
             category=g.pop("category"),
