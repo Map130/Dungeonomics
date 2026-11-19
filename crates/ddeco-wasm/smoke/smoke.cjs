@@ -38,7 +38,8 @@ has(info, ["seed", "nodes", "goods", "edges"], "world_info");
 assert.ok(Array.isArray(info.nodes) && info.nodes.length > 0, "world_info.nodes is non-empty");
 has(info.nodes[0], ["id", "kind", "population", "spread", "hub", "produces"], "world_info.nodes[0]");
 assert.ok(info.nodes.some((n) => n.produces.length > 0), "some node produces goods");
-has(info.goods[0], ["id", "category", "base_price", "names"], "world_info.goods[0]");
+has(info.goods[0], ["id", "category", "base_price", "total_capacity", "names"], "world_info.goods[0]");
+if (!info.goods.some((g) => g.total_capacity > 0)) throw new Error("total_capacity: no good has capacity > 0");
 
 // Display names come from `name = { en, ru }` on a good; absent -> empty map.
 // The example world names every good; stripping the tables gives empty maps.

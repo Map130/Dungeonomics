@@ -55,12 +55,18 @@
 
   type Priced = { item: ShopItem; driver: string | null; m: number; buy: number; sell: number; tooBig: boolean };
   function pricedOf(item: ShopItem): Priced {
-    const driver = resolveDriver(roleOf(item), app.world?.goods ?? [], nodeGoods);
+    const driver = resolveDriver(roleOf(item), app.world?.goods ?? []);
     const m = (driver && nodeGoods.find((g) => g.good === driver)?.multiplier) || meanM;
     const base = driver ? (app.world?.goods.find((g) => g.id === driver)?.base_price ?? 0) : 0;
-    const stock = driver ? (nodeGoods.find((g) => g.good === driver)?.stock ?? 0) : 0;
-    const tooBig = !!driver && base > 0 && equivalentUnits(item.priceGp, 1, base) >= stock;
-    return { item, driver, m, tooBig, buy: item.priceGp * m * (1 + spread), sell: item.priceGp * m * (1 - spread) };
+    if (driver && base > 0) {
+      // Quoted list price: what one item really costs through the driver (slippage included).
+      const units = equivalentUnits(item.priceGp, 1, base);
+      void app.snapshot;
+      const b = app.quoteQuiet(node, driver, units, false)?.total;
+      const s = app.quoteQuiet(node, driver, units, true)?.total;
+      return { item, driver, m, tooBig: b === undefined, buy: b ?? NaN, sell: s ?? NaN };
+    }
+    return { item, driver, m, tooBig: false, buy: item.priceGp * m * (1 + spread), sell: item.priceGp * m * (1 - spread) };
   }
 
   const matches = (i: ShopItem, q: string) => !q || i.name.toLowerCase().includes(q);
@@ -85,7 +91,7 @@
   // Keep the reasons log on the selected item's driver fresh after every refresh (day, trade, undo).
   $effect(() => {
     void app.snapshot;
-    const d = selected ? resolveDriver(roleOf(selected), app.world?.goods ?? [], nodeGoods) : null;
+    const d = selected ? resolveDriver(roleOf(selected), app.world?.goods ?? []) : null;
     if (d) app.explain(node, d);
   });
 
@@ -144,8 +150,8 @@
         {#each rows as p (p.item.id)}
           <tr class="clickable" class:selected={p.item.id === selected?.id} onclick={() => select(p)}>
             <td>{p.item.name}</td>
-            <td>{price(p.buy)}</td>
-            <td>{price(p.sell)}</td>
+            <td>{Number.isNaN(p.buy) ? "—" : price(p.buy)}</td>
+            <td>{Number.isNaN(p.sell) ? "—" : price(p.sell)}</td>
             <td class="muted">{driverLabel(p)}{#if p.tooBig} · {t("shop.tooBig")}{/if}</td>
           </tr>
         {/each}

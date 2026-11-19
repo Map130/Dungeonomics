@@ -41,6 +41,8 @@ export interface GoodInfo {
   id: string;
   category: string;
   base_price: number;
+  /** Sum of base capacities over all nodes (picks the world-wide category driver). */
+  total_capacity: number;
   /** Display names by language; empty when the world file has none. */
   names: Record<string, string>;
 }

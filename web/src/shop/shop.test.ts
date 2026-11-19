@@ -3,17 +3,17 @@ import { CATALOG, parseCatalog, type ShopItem } from "./catalog";
 import { equivalentUnits, resolveDriver, roleOf } from "./drivers";
 
 const goods = [
-  { id: "grain", category: "food" },
-  { id: "fish", category: "food" },
-  { id: "meat", category: "food" },
-  { id: "salt", category: "food" },
-  { id: "iron", category: "materials" },
-  { id: "cloth", category: "cloth" },
-  { id: "tools", category: "tools" },
-  { id: "weapons", category: "weapons" },
-  { id: "wine", category: "luxury" },
-  { id: "spices", category: "luxury" },
-  { id: "silk", category: "luxury" },
+  { id: "grain", category: "food", total_capacity: 30 },
+  { id: "fish", category: "food", total_capacity: 50 },
+  { id: "meat", category: "food", total_capacity: 10 },
+  { id: "salt", category: "food", total_capacity: 5 },
+  { id: "iron", category: "materials", total_capacity: 8 },
+  { id: "cloth", category: "cloth", total_capacity: 4 },
+  { id: "tools", category: "tools", total_capacity: 4 },
+  { id: "weapons", category: "weapons", total_capacity: 3 },
+  { id: "wine", category: "luxury", total_capacity: 9 },
+  { id: "spices", category: "luxury", total_capacity: 9 },
+  { id: "silk", category: "luxury", total_capacity: 2 },
 ];
 const byId = (id: string): ShopItem => {
   const it = CATALOG.find((i) => i.id === id);
@@ -74,16 +74,24 @@ describe("roleOf coverage", () => {
 });
 
 describe("resolveDriver", () => {
-  it("resolves by id, category, stock", () => {
-    expect(resolveDriver("weapons", goods, [])).toBe("weapons");
-    expect(resolveDriver("materials", goods, [])).toBe("iron");
-    expect(resolveDriver("meat", goods, [])).toBe("meat");
-    expect(resolveDriver("food", goods, [{ good: "grain", stock: 50 }, { good: "fish", stock: 80 }])).toBe("fish");
-    expect(resolveDriver("grain", goods, [])).toBe("grain");
-    expect(resolveDriver("luxury", goods, [{ good: "wine", stock: 9 }])).toBe("wine");
-    expect(resolveDriver("luxury", goods, [])).toBe("silk");
-    expect(resolveDriver(null, goods, [])).toBeNull();
-    expect(resolveDriver("food", [{ id: "cloth", category: "cloth" }], [])).toBeNull();
+  it("resolves by id, else the category's largest total capacity", () => {
+    expect(resolveDriver("weapons", goods)).toBe("weapons");
+    expect(resolveDriver("materials", goods)).toBe("iron");
+    expect(resolveDriver("meat", goods)).toBe("meat");
+    expect(resolveDriver("grain", goods)).toBe("grain");
+    expect(resolveDriver("food", goods)).toBe("fish");
+    expect(resolveDriver(null, goods)).toBeNull();
+    expect(resolveDriver("food", [{ id: "cloth", category: "cloth", total_capacity: 1 }])).toBeNull();
+  });
+  it("ties go to the lower id (wine/spices -> spices)", () => {
+    expect(resolveDriver("luxury", goods)).toBe("spices");
+  });
+  it("all-zero capacity falls back to the lowest id", () => {
+    const z = [
+      { id: "b", category: "x", total_capacity: 0 },
+      { id: "a", category: "x", total_capacity: 0 },
+    ];
+    expect(resolveDriver("x", z)).toBe("a");
   });
 });
 

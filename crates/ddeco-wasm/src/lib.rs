@@ -157,6 +157,7 @@ impl Sim {
                         id: good.id.clone(),
                         category: good.category.clone(),
                         base_price: good.base_price,
+                        total_capacity: self.world.nodes.values().map(|n| n.pcap(g)).sum(),
                         names: self.names.get(g).cloned().unwrap_or_default(),
                     }
                 })
@@ -624,6 +625,8 @@ struct GoodInfo {
     id: String,
     category: String,
     base_price: f64,
+    /// Sum of base capacities over all nodes.
+    total_capacity: f64,
     /// Display names by language (empty when the world file has none).
     names: BTreeMap<String, String>,
 }

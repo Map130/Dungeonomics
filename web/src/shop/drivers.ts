@@ -65,15 +65,13 @@ export function roleOf(item: ShopItem): Role | null {
 /** A role is either a good id or a good category; picks the good to price against. */
 export function resolveDriver(
   role: Role | null,
-  goods: { id: string; category: string }[],
-  nodeGoods: { good: string; stock: number }[],
+  goods: { id: string; category: string; total_capacity: number }[],
 ): string | null {
   if (role === null) return null;
   if (goods.some((g) => g.id === role)) return role;
-  const stock = new Map(nodeGoods.map((n) => [n.good, n.stock]));
   const cands = goods
     .filter((g) => g.category === role)
-    .sort((a, b) => (stock.get(b.id) ?? 0) - (stock.get(a.id) ?? 0) || (a.id < b.id ? -1 : 1));
+    .sort((a, b) => b.total_capacity - a.total_capacity || (a.id < b.id ? -1 : 1));
   return cands[0]?.id ?? null;
 }
 

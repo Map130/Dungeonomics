@@ -133,6 +133,16 @@ class AppStore {
     if (r) this.report = r;
   }
 
+  /** Like `quote` but silent: failures return undefined and leave `error` alone (list pricing). */
+  quoteQuiet(node: string, good: string, qty: number, sell: boolean): TradeResult | undefined {
+    if (!this.sim) return undefined;
+    try {
+      return this.sim.quote(node, good, qty, sell) as TradeResult;
+    } catch {
+      return undefined;
+    }
+  }
+
   quote(node: string, good: string, qty: number, sell: boolean): TradeResult | undefined {
     return this.guard((s) => s.quote(node, good, qty, sell) as TradeResult);
   }
