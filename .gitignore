@@ -42,3 +42,6 @@ references/srd/
 
 # Claude Code: machine-local settings
 .claude/
+
+# Golden fixtures are generated from the Python oracle (scripts/dump_golden.py), not tracked
+golden/

@@ -38,7 +38,7 @@ python3 -m venv .venv && .venv/bin/python -m pip install -e ".[dev]"   # setup
 .venv/bin/python -m pytest -q                       # all Python tests (stability suite §8 lives here)
 .venv/bin/python -m pytest tests/test_single_node.py -q   # one test file
 .venv/bin/python -m pytest -q -k runaway             # tests matching a name
-.venv/bin/python scripts/dump_golden.py              # regenerate golden/*.json from the Python oracle
+.venv/bin/python scripts/dump_golden.py              # generate golden/ (not tracked; needed before cargo test)
 .venv/bin/python -m jupyter nbconvert --to notebook --execute notebooks/calibration.ipynb  # run notebook
 python3 -I scripts/build_srd_gear.py                 # regenerate references/srd_gear.csv (needs references/srd/*.json, see script)
 

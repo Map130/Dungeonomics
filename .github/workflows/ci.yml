@@ -18,6 +18,11 @@ jobs:
         with:
           components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # golden/ is not tracked: generate it from the Python oracle (stdlib only) before the parity tests.
+      - run: PYTHONPATH=. python3 scripts/dump_golden.py
       - run: cargo fmt --all --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace

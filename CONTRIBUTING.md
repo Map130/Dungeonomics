@@ -24,7 +24,7 @@ the Python and the Rust core, then:
 
 ```bash
 .venv/bin/python -m pytest -q
-.venv/bin/python scripts/dump_golden.py   # regenerate golden/ from Python
+.venv/bin/python scripts/dump_golden.py   # generate golden/ from Python (not tracked in git)
 cargo test --workspace                    # Rust must match the golden runs
 ```
 

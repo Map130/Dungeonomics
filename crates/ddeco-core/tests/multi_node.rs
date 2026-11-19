@@ -24,7 +24,7 @@ fn golden(name: &str) -> String {
         concat!(env!("CARGO_MANIFEST_DIR"), "/../../golden/{}.json"),
         name
     ))
-    .unwrap_or_else(|_| panic!("golden {name}"))
+    .unwrap_or_else(|e| panic!("golden {name}: {e} — golden/ is generated, not tracked: run `python3 scripts/dump_golden.py`"))
 }
 
 fn example_world() -> World {

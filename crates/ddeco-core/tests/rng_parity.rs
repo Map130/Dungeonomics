@@ -26,7 +26,9 @@ fn rng_matches_python_bit_for_bit() {
         env!("CARGO_MANIFEST_DIR"),
         "/../../golden/rng.json"
     ))
-    .expect("golden/rng.json");
+    .expect(
+        "golden/rng.json — golden/ is generated, not tracked: run `python3 scripts/dump_golden.py`",
+    );
     let g: Rng = serde_json::from_str(&text).unwrap();
     for s in &g.samples {
         let parts = [s.target.as_str(), s.template.as_str()];
