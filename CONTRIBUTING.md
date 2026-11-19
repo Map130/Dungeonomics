@@ -34,6 +34,7 @@ cargo test --workspace                    # Rust must match the golden runs
 .venv/bin/python -m pytest -q
 cargo fmt --all --check
 cargo clippy --workspace --all-targets -- -D warnings
+PYTHONPATH=. python3 scripts/dump_golden.py   # generate golden/ (not tracked)
 cargo test --workspace
 cargo build --workspace --benches
 wasm-pack build crates/ddeco-wasm --target nodejs --out-dir pkg-node && node crates/ddeco-wasm/smoke/smoke.cjs

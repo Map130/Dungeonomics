@@ -44,6 +44,7 @@ Python prototype → Rust core → WASM → offline PWA
 ## Build
 
 ```bash
+PYTHONPATH=. python3 scripts/dump_golden.py   # generate golden/ (not tracked)
 cargo test --workspace                    # core + facade (Python reference tests: pytest -q)
 cargo build -p ddeco-wasm --target wasm32-unknown-unknown   # WASM compatibility check
 

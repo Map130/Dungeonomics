@@ -21,6 +21,8 @@
 #   must fit into every city's weapons stock after warm-up (shop "too big" rule, D8).
 # - Luxury goods keep 30 days instead of the §7 default 14 (R30): the priciest luxury items
 #   (spyglass 1000 gp = 500 spice units) stay buyable in every city, and luxury prices calm down.
+#   Wine and spices tie on total capacity (125), so generic luxury shop items resolve to spices
+#   by id; a capacity change can move them to wine (base 10 gp vs 2 gp).
 
 seed = 42
 

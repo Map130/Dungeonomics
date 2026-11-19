@@ -42,6 +42,13 @@
     if (targets.length && !targets.includes(targetId)) targetId = targets[0];
   });
 
+  // Reset good/category when another world no longer has them.
+  $effect(() => {
+    const goods = app.world?.goods ?? [];
+    if (good && !goods.some((g) => g.id === good)) good = "";
+    if (category && !categories.includes(category)) category = "";
+  });
+
   function submit() {
     if (!targetId) return;
     app.addEffect(
