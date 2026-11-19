@@ -89,7 +89,7 @@ The idea is borrowed from the economy of Mount & Blade: Bannerlord, where villag
 - Quick addition of an effect from the interface, including one-click event presets (craftsman killed, blight, army billeted, epidemic, bandits, bridge collapsed).
 - Direct stock edits (a player bought out a good, the GM enters it by hand).
 - A settlement shop lists every item of the base price list; a deal moves the price of the item's driver good (D8).
-- The world overview flags a settlement by price (the most expensive good at ×1.5 or more), not by the core shortage verdict; shop list prices are one-item quotes (D10).
+- The world overview flags a settlement by price (the most expensive good at ×1.7 or more), not by the core shortage verdict; shop list prices are one-item quotes (D10).
 
 ### 5.9 Data
 - The world is stored in a single text file, convenient for versioning and sharing templates. **Decided: TOML (`DECISIONS.md` D1).**

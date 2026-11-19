@@ -4,9 +4,9 @@ import { mostExpensive } from "./overview";
 describe("mostExpensive", () => {
   it("empty -> null", () => expect(mostExpensive([])).toBeNull());
   it("all below threshold -> null", () =>
-    expect(mostExpensive([{ good: "a", multiplier: 1.49 }, { good: "b", multiplier: 0.8 }])).toBeNull());
+    expect(mostExpensive([{ good: "a", multiplier: 1.69 }, { good: "b", multiplier: 0.8 }])).toBeNull());
   it("exactly the threshold counts", () =>
-    expect(mostExpensive([{ good: "a", multiplier: 1.5 }])?.good).toBe("a"));
+    expect(mostExpensive([{ good: "a", multiplier: 1.7 }])?.good).toBe("a"));
   it("ties go to the lower id", () =>
     expect(mostExpensive([{ good: "b", multiplier: 2 }, { good: "a", multiplier: 2 }])?.good).toBe("a"));
   it("the max wins", () =>

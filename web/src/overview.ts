@@ -1,5 +1,5 @@
 /** Multiplier at or above which a good counts as "expensive" in the overview. */
-export const EXPENSIVE = 1.5;
+export const EXPENSIVE = 1.7;
 
 /** The most expensive good (highest multiplier, ties by lower id) if it reaches the threshold. */
 export function mostExpensive(
