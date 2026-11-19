@@ -77,11 +77,12 @@ fn add_effect_changes_trajectory_and_undoes() {
     base.run(20);
     let base_dump = base.save();
 
-    // A strong blight on food production in a city changes the trajectory.
+    // A strong blight on food production in a farming village changes the trajectory
+    // (cities make no food in the example world).
     let mut sim = Sim::new(WORLD, 0).expect("world");
     sim.add_effect(
         "node",
-        "redwater",
+        "millbrook",
         "pcap",
         "mult",
         0.05,

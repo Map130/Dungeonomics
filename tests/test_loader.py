@@ -12,13 +12,15 @@ WORLD = Path(__file__).resolve().parent.parent / "worlds" / "example_region.toml
 def test_load_example_world():
     world = load_world(WORLD)
     assert world.seed == 42
-    # 3 cities + 4 villages
-    assert len(world.nodes) == 7
+    # 3 cities + 6 villages + 1 trading post
+    assert len(world.nodes) == 10
     assert world.nodes["redwater"].kind is NodeKind.CITY
     assert world.nodes["millbrook"].kind is NodeKind.VILLAGE
     assert world.nodes["millbrook"].hub == "redwater"
-    # 7 roads → 14 directed arcs
-    assert len(world.edges) == 14
+    assert world.nodes["eastport"].kind is NodeKind.CAMP
+    assert world.nodes["eastport"].hub is None
+    # 11 roads → 22 directed arcs
+    assert len(world.edges) == 22
     assert "redwater__millbrook" in world.edges
     assert "millbrook__redwater" in world.edges
 
@@ -31,7 +33,8 @@ def test_good_overrides_and_defaults():
     # Parameter from the necessity price class (§7)
     assert fish.alpha == 0.5
     assert fish.in_food_basket is True
-    assert set(world.catalog.food_ids()) == {"fish", "grain"}
+    assert set(world.catalog.food_ids()) == {"fish", "grain", "meat", "salt"}
+    assert len(world.catalog.ids()) == 11
 
 
 def test_edge_delay():

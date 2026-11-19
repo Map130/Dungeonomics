@@ -16,8 +16,10 @@ fn example_world() -> ddeco_core::world::World {
 fn loads_nodes_and_edges() {
     let w = example_world();
     assert_eq!(w.seed, 42);
-    assert_eq!(w.nodes.len(), 7); // 3 cities + 4 villages
-    assert_eq!(w.edges.len(), 14); // 7 roads → 14 arcs
+    assert_eq!(w.nodes.len(), 10); // 3 cities + 6 villages + 1 trading post
+    assert_eq!(w.edges.len(), 22); // 11 roads → 22 arcs
+    assert_eq!(w.nodes["eastport"].kind, NodeKind::Camp);
+    assert_eq!(w.nodes["eastport"].hub, None);
     assert_eq!(w.nodes["redwater"].kind, NodeKind::City);
     assert_eq!(w.nodes["millbrook"].kind, NodeKind::Village);
     assert_eq!(w.nodes["millbrook"].hub.as_deref(), Some("redwater"));
@@ -33,7 +35,8 @@ fn good_overrides_and_class_defaults() {
     assert_eq!(fish.alpha, 0.5); // necessity class default (§7)
     assert!(fish.in_food_basket);
     let food: Vec<&String> = w.catalog.food_ids().collect();
-    assert_eq!(food, vec!["fish", "grain"]); // sorted by the BTreeMap
+    assert_eq!(food, vec!["fish", "grain", "meat", "salt"]); // sorted by the BTreeMap
+    assert_eq!(w.catalog.goods.len(), 11);
 }
 
 #[test]
@@ -41,6 +44,7 @@ fn base_prices_from_phb() {
     let w = example_world();
     assert_eq!(w.catalog.get("grain").base_price, 0.01);
     assert_eq!(w.catalog.get("wine").base_price, 10.0);
+    assert_eq!(w.catalog.get("weapons").base_price, 15.0); // SRD longsword
 }
 
 #[test]

@@ -41,15 +41,16 @@ assert.ok(info.nodes.some((n) => n.produces.length > 0), "some node produces goo
 has(info.goods[0], ["id", "category", "base_price", "names"], "world_info.goods[0]");
 
 // Display names come from `name = { en, ru }` on a good; absent -> empty map.
+// The example world names every good; stripping the tables gives empty maps.
+assert.ok(
+  info.goods.every((g) => typeof g.names.en === "string" && typeof g.names.ru === "string"),
+  "every example-world good carries en/ru names",
+);
 {
-  const named = world.replace(
-    /(\[goods\.[a-z_]+\]\n)/,
-    '$1name = { en = "Test", ru = "Тест" }\n',
-  );
-  const ni = new Sim(named, 0).world_info();
-  const withName = ni.goods.filter((g) => g.names.ru === "Тест" && g.names.en === "Test");
-  assert.strictEqual(withName.length, 1, "one good carries the inline name table");
-  assert.ok(ni.goods.some((g) => Object.keys(g.names).length === 0), "goods without names -> empty map");
+  const unnamed = world.replace(/^name = \{[^\n]*\}\n/gm, "");
+  assert.notStrictEqual(unnamed, world, "the example world has name tables to strip");
+  const ni = new Sim(unnamed, 0).world_info();
+  assert.ok(ni.goods.every((g) => Object.keys(g.names).length === 0), "goods without names -> empty map");
 }
 const node = info.nodes[0].id;
 const good = info.goods[0].id;

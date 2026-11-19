@@ -5,275 +5,674 @@
    "state": {
     "day": 20,
     "stock": {
-     "eastford|cloth": 210.1028372676205,
-     "eastford|fish": 1792.249499232399,
-     "eastford|grain": 1965.7026559054373,
-     "eastford|tools": 148.9053352201137,
-     "eastford|wine": 181.54432862211735,
-     "greenvale|cloth": 637.0797644093624,
-     "greenvale|fish": 3186.022119848581,
-     "greenvale|grain": 236.2989539334598,
-     "greenvale|tools": 241.2164330426445,
-     "greenvale|wine": 480.21869352707586,
-     "greyrock|cloth": 160.03045238617105,
+     "eastford|cloth": 333.3309298592773,
+     "eastford|fish": 307.8080959379426,
+     "eastford|grain": 872.5066330226609,
+     "eastford|iron": 72.01778159767964,
+     "eastford|meat": 113.30588202402524,
+     "eastford|salt": 0.0,
+     "eastford|silk": 30.438018282164244,
+     "eastford|spices": 62.82158977782212,
+     "eastford|tools": 99.26141220207302,
+     "eastford|weapons": 19.07918661843613,
+     "eastford|wine": 67.35401066395326,
+     "eastport|cloth": 323.86179546948347,
+     "eastport|fish": 274.3820181925033,
+     "eastport|grain": 795.9229260168859,
+     "eastport|iron": 97.95058732306599,
+     "eastport|meat": 113.10341477758803,
+     "eastport|salt": 68.82352038191151,
+     "eastport|silk": 151.70244194763703,
+     "eastport|spices": 525.8960318700866,
+     "eastport|tools": 98.59673725541384,
+     "eastport|weapons": 19.375417796509105,
+     "eastport|wine": 59.841142520557874,
+     "greenvale|cloth": 1196.3476096940246,
+     "greenvale|fish": 1215.5284139281991,
+     "greenvale|grain": 1330.625297280957,
+     "greenvale|iron": 290.2704140747556,
+     "greenvale|meat": 156.62964743581512,
+     "greenvale|salt": 312.4897701163408,
+     "greenvale|silk": 98.29130873794223,
+     "greenvale|spices": 123.72710047091753,
+     "greenvale|tools": 218.13526024465034,
+     "greenvale|weapons": 47.72493874545911,
+     "greenvale|wine": 225.31498687989304,
+     "greyrock|cloth": 263.29220392938936,
      "greyrock|fish": 0.0,
-     "greyrock|grain": 3021.0840119767286,
-     "greyrock|tools": 216.5022531746287,
-     "greyrock|wine": 138.58567731485203,
-     "lakeside|cloth": 171.9436822847676,
-     "lakeside|fish": 2320.0700417925573,
-     "lakeside|grain": 1065.6307565245093,
-     "lakeside|tools": 72.35521839407049,
-     "lakeside|wine": 187.37172622125283,
-     "millbrook|cloth": 251.2712080250782,
-     "millbrook|fish": 0.0,
-     "millbrook|grain": 3195.005776362884,
-     "millbrook|tools": 177.6471136142404,
-     "millbrook|wine": 180.57405121541234,
-     "redwater|cloth": 1008.098620255982,
-     "redwater|fish": 2604.7175593087272,
-     "redwater|grain": 6865.464493448328,
-     "redwater|tools": 684.7391926066806,
-     "redwater|wine": 566.9701128783202,
-     "stonehaven|cloth": 597.7151320412956,
-     "stonehaven|fish": 0.0,
-     "stonehaven|grain": 5268.688617964782,
-     "stonehaven|tools": 746.3565571023785,
-     "stonehaven|wine": 299.36043718177535
+     "greyrock|grain": 729.7960200295936,
+     "greyrock|iron": 255.19177487333226,
+     "greyrock|meat": 0.0,
+     "greyrock|salt": 0.0,
+     "greyrock|silk": 22.5204608621151,
+     "greyrock|spices": 42.206865654836356,
+     "greyrock|tools": 125.78660465068818,
+     "greyrock|weapons": 34.20650939734552,
+     "greyrock|wine": 47.766401817116765,
+     "ironhold|cloth": 163.3087786179553,
+     "ironhold|fish": 0.0,
+     "ironhold|grain": 418.7703688500282,
+     "ironhold|iron": 196.06737823350602,
+     "ironhold|meat": 0.0,
+     "ironhold|salt": 0.0,
+     "ironhold|silk": 11.873632190554746,
+     "ironhold|spices": 22.265664967722557,
+     "ironhold|tools": 76.91792792471385,
+     "ironhold|weapons": 20.86760369320734,
+     "ironhold|wine": 25.39047138420161,
+     "lakeside|cloth": 319.6782430442989,
+     "lakeside|fish": 336.20909768639206,
+     "lakeside|grain": 0.0,
+     "lakeside|iron": 49.277986108934,
+     "lakeside|meat": 0.0,
+     "lakeside|salt": 105.96164724489927,
+     "lakeside|silk": 25.523435232581008,
+     "lakeside|spices": 43.387837914709074,
+     "lakeside|tools": 72.00865281625232,
+     "lakeside|weapons": 15.12380544386733,
+     "lakeside|wine": 57.59823735140229,
+     "millbrook|cloth": 402.4547939429182,
+     "millbrook|fish": 312.4770818981631,
+     "millbrook|grain": 1081.2816059802676,
+     "millbrook|iron": 85.3076747599672,
+     "millbrook|meat": 200.09459821787112,
+     "millbrook|salt": 0.0,
+     "millbrook|silk": 36.2851013592905,
+     "millbrook|spices": 75.3919625041854,
+     "millbrook|tools": 119.45336545727363,
+     "millbrook|weapons": 22.70385505087309,
+     "millbrook|wine": 81.49908105894767,
+     "redwater|cloth": 1587.4911816017025,
+     "redwater|fish": 1231.497373357388,
+     "redwater|grain": 3805.482041769712,
+     "redwater|iron": 427.2702255348394,
+     "redwater|meat": 543.3326967842054,
+     "redwater|salt": 162.96655955045048,
+     "redwater|silk": 119.3653629272844,
+     "redwater|spices": 249.94839757328296,
+     "redwater|tools": 458.6009112301163,
+     "redwater|weapons": 76.74607713154019,
+     "redwater|wine": 298.97828740729364,
+     "saltmarsh|cloth": 273.2309558586244,
+     "saltmarsh|fish": 295.415381098772,
+     "saltmarsh|grain": 0.0,
+     "saltmarsh|iron": 49.74360343741244,
+     "saltmarsh|meat": 0.0,
+     "saltmarsh|salt": 93.2134631434347,
+     "saltmarsh|silk": 22.055005934956114,
+     "saltmarsh|spices": 37.59879169774738,
+     "saltmarsh|tools": 61.787375486685654,
+     "saltmarsh|weapons": 13.49243103228805,
+     "saltmarsh|wine": 49.852780517088206,
+     "stonehaven|cloth": 767.717293349802,
+     "stonehaven|fish": 488.98602047663,
+     "stonehaven|grain": 2588.1779271301457,
+     "stonehaven|iron": 608.6099069834429,
+     "stonehaven|meat": 190.5549295077739,
+     "stonehaven|salt": 124.43147238394549,
+     "stonehaven|silk": 57.10624779220048,
+     "stonehaven|spices": 110.62986813406827,
+     "stonehaven|tools": 432.26633317619456,
+     "stonehaven|weapons": 109.9445012673741,
+     "stonehaven|wine": 116.18667436697065
     },
     "multiplier": {
-     "eastford|cloth": 1.561360362503371,
-     "eastford|fish": 0.8975733984386183,
-     "eastford|grain": 1.1664566884468577,
-     "eastford|tools": 1.1234498799590593,
-     "eastford|wine": 1.2208929837076963,
-     "greenvale|cloth": 1.3870402336462009,
-     "greenvale|fish": 1.195094026889279,
-     "greenvale|grain": 1.8,
-     "greenvale|tools": 1.8285920530074726,
-     "greenvale|wine": 0.6783146051871378,
-     "greyrock|cloth": 1.9494550278600944,
+     "eastford|cloth": 0.884708740520616,
+     "eastford|fish": 0.9714223753594784,
+     "eastford|grain": 0.986080603600589,
+     "eastford|iron": 2.9230083132911466,
+     "eastford|meat": 1.0447488659248003,
+     "eastford|salt": 1.8,
+     "eastford|silk": 1.0977326691904896,
+     "eastford|spices": 1.078692648150121,
+     "eastford|tools": 0.9920178832687003,
+     "eastford|weapons": 1.6988139903129322,
+     "eastford|wine": 0.942472764255163,
+     "eastport|cloth": 0.8901407904709416,
+     "eastport|fish": 1.0963434032532688,
+     "eastport|grain": 1.1080675592319946,
+     "eastport|iron": 2.460209523462886,
+     "eastport|meat": 1.0797852480864458,
+     "eastport|salt": 1.1930224809085141,
+     "eastport|silk": 0.4,
+     "eastport|spices": 0.4000015509423061,
+     "eastport|tools": 1.0002174581461496,
+     "eastport|weapons": 1.6246054558057874,
+     "eastport|wine": 0.90326713263177,
+     "greenvale|cloth": 0.7111782671711905,
+     "greenvale|fish": 0.8909018536429083,
+     "greenvale|grain": 1.5212402828686806,
+     "greenvale|iron": 1.9945547181156813,
+     "greenvale|meat": 1.6237278677351017,
+     "greenvale|salt": 0.9635590414026581,
+     "greenvale|silk": 0.6087314421575999,
+     "greenvale|spices": 1.3003622456070174,
+     "greenvale|tools": 1.2912945804070524,
+     "greenvale|weapons": 1.8276607410883767,
+     "greenvale|wine": 0.4677049223183839,
+     "greyrock|cloth": 1.125662518076816,
      "greyrock|fish": 1.8,
-     "greyrock|grain": 0.9976681717996801,
-     "greyrock|tools": 0.7450862415029308,
-     "greyrock|wine": 1.24000783415175,
-     "lakeside|cloth": 1.660393546634169,
-     "lakeside|fish": 0.7546831873157797,
-     "lakeside|grain": 1.511534372668163,
-     "lakeside|tools": 2.0725074554080827,
-     "lakeside|wine": 0.7674737254901003,
-     "millbrook|cloth": 1.3890502919909327,
-     "millbrook|fish": 1.8,
-     "millbrook|grain": 0.9985437686300673,
-     "millbrook|tools": 1.0001982421968585,
-     "millbrook|wine": 1.0729979980457467,
-     "redwater|cloth": 1.2429321257143977,
-     "redwater|fish": 1.557685193259189,
-     "redwater|grain": 1.3236610945426694,
-     "redwater|tools": 0.9302544565644224,
-     "redwater|wine": 1.124974075269062,
-     "stonehaven|cloth": 1.6193825584069181,
-     "stonehaven|fish": 1.8,
-     "stonehaven|grain": 1.379608103782926,
-     "stonehaven|tools": 0.6605542911903547,
-     "stonehaven|wine": 1.5351557332249537
+     "greyrock|grain": 1.1141966405960437,
+     "greyrock|iron": 0.7552869373209787,
+     "greyrock|meat": 1.8,
+     "greyrock|salt": 1.8,
+     "greyrock|silk": 1.1422015113704496,
+     "greyrock|spices": 1.4205038708301803,
+     "greyrock|tools": 0.7517448930905851,
+     "greyrock|weapons": 0.8316417917060702,
+     "greyrock|wine": 1.0176591966271769,
+     "ironhold|cloth": 1.1109418749175681,
+     "ironhold|fish": 1.8,
+     "ironhold|grain": 1.2567657301868134,
+     "ironhold|iron": 0.6124418133415099,
+     "ironhold|meat": 1.8,
+     "ironhold|salt": 1.8,
+     "ironhold|silk": 1.1438630258449958,
+     "ironhold|spices": 1.3842667358337344,
+     "ironhold|tools": 0.7495897325670973,
+     "ironhold|weapons": 0.8343600435232119,
+     "ironhold|wine": 1.0209021013517068,
+     "lakeside|cloth": 0.7532199288711757,
+     "lakeside|fish": 0.9021154995644741,
+     "lakeside|grain": 1.8,
+     "lakeside|iron": 3.0,
+     "lakeside|meat": 1.8,
+     "lakeside|salt": 0.8638029420713533,
+     "lakeside|silk": 0.6504543815890406,
+     "lakeside|spices": 0.8689834947522853,
+     "lakeside|tools": 1.1127985327952103,
+     "lakeside|weapons": 1.7717794778848228,
+     "lakeside|wine": 0.5421592992634914,
+     "millbrook|cloth": 0.8316624227058428,
+     "millbrook|fish": 1.0736947148967955,
+     "millbrook|grain": 0.9569488546396969,
+     "millbrook|iron": 2.874242670006266,
+     "millbrook|meat": 0.8117896384248773,
+     "millbrook|salt": 1.8,
+     "millbrook|silk": 0.9816000583581462,
+     "millbrook|spices": 0.954091551388907,
+     "millbrook|tools": 0.9355886398110701,
+     "millbrook|weapons": 1.608597688327488,
+     "millbrook|wine": 0.8237366460538326,
+     "redwater|cloth": 0.7766750276810331,
+     "redwater|fish": 1.0292126605033387,
+     "redwater|grain": 1.004980526172065,
+     "redwater|iron": 1.9684697299065024,
+     "redwater|meat": 0.9852271267883388,
+     "redwater|salt": 1.595002050286852,
+     "redwater|silk": 1.1119338034558592,
+     "redwater|spices": 1.0675690102327136,
+     "redwater|tools": 0.8982002623411918,
+     "redwater|weapons": 1.6752212392915338,
+     "redwater|wine": 0.7759302944369992,
+     "saltmarsh|cloth": 0.7464653207936528,
+     "saltmarsh|fish": 0.885065987298418,
+     "saltmarsh|grain": 1.8,
+     "saltmarsh|iron": 2.9152645730611857,
+     "saltmarsh|meat": 1.8,
+     "saltmarsh|salt": 0.8440686671249288,
+     "saltmarsh|silk": 0.636637245533265,
+     "saltmarsh|spices": 0.8472841631503263,
+     "saltmarsh|tools": 1.091770491023604,
+     "saltmarsh|weapons": 1.6517063429325707,
+     "saltmarsh|wine": 0.5301477555197747,
+     "stonehaven|cloth": 1.255972485613176,
+     "stonehaven|fish": 1.5349082434986885,
+     "stonehaven|grain": 1.1103825732647254,
+     "stonehaven|iron": 1.0510676377753176,
+     "stonehaven|meat": 1.554235676384043,
+     "stonehaven|salt": 1.6497211222007762,
+     "stonehaven|silk": 1.5638779377325513,
+     "stonehaven|spices": 1.8308873811067905,
+     "stonehaven|tools": 0.7152943413397941,
+     "stonehaven|weapons": 0.8524485957940684,
+     "stonehaven|wine": 1.4755411494661348
     },
     "prosperity": {
-     "eastford": 0.6697632463935387,
-     "greenvale": 0.49725875178470247,
-     "greyrock": 0.5691223876592907,
-     "lakeside": 0.6034350331020296,
-     "millbrook": 0.5989546679428916,
-     "redwater": 0.558027748162038,
-     "stonehaven": 0.49150800120117133
+     "eastford": 0.6541850100058656,
+     "eastport": 0.5887239627475436,
+     "greenvale": 0.5465472028494487,
+     "greyrock": 0.5478305531188222,
+     "ironhold": 0.491283549292228,
+     "lakeside": 0.5204104870670391,
+     "millbrook": 0.644317243512379,
+     "redwater": 0.630029218276124,
+     "saltmarsh": 0.5222282252640956,
+     "stonehaven": 0.539637794718092
     },
     "pipeline": {
      "eastford__redwater": [
       {
-       "fish": 640.4393755694105,
-       "grain": 373.8243761276807
+       "fish": 223.5304519048755,
+       "grain": 214.76792209369464
       },
       {
-       "fish": 640.2739794013008,
-       "grain": 375.44478917120824
+       "fish": 223.34737024354666,
+       "grain": 215.0106828462056
+      }
+     ],
+     "eastport__greenvale": [
+      {
+       "grain": 6.752120179516795,
+       "meat": 1.4279184544508001,
+       "spices": 21.113341213458472
+      },
+      {
+       "grain": 6.799639358991958,
+       "meat": 1.4358759950462114,
+       "silk": 0.5474091402557438,
+       "spices": 21.701875018162482
+      },
+      {
+       "grain": 6.820957952735983,
+       "meat": 1.44160101910258,
+       "silk": 0.8941153989677028,
+       "spices": 22.29827985393478
+      },
+      {
+       "grain": 6.836822091582883,
+       "meat": 1.4455196105906416,
+       "silk": 1.1461390644033709,
+       "spices": 22.65003680462404
+      }
+     ],
+     "eastport__redwater": [
+      {
+       "salt": 1.1649119272314739,
+       "silk": 14.743548663014119,
+       "spices": 46.23688207895666
+      },
+      {
+       "salt": 1.197126268585121,
+       "silk": 15.100448168018687,
+       "spices": 47.258975282871845
+      }
+     ],
+     "greenvale__eastport": [
+      {
+       "cloth": 10.736447323150914,
+       "fish": 19.36270785705888,
+       "iron": 4.591223115392777,
+       "salt": 6.8209671805000385,
+       "weapons": 0.36748809775845703,
+       "wine": 5.831797527907312
+      },
+      {
+       "cloth": 10.830939767242912,
+       "fish": 19.283304028654744,
+       "iron": 3.761201780687748,
+       "salt": 6.820021223278603,
+       "weapons": 0.37744355416308123,
+       "wine": 5.924444985260025
+      },
+      {
+       "cloth": 11.03307688651114,
+       "fish": 19.216359949032466,
+       "iron": 3.7529348219317638,
+       "salt": 6.82166927491917,
+       "weapons": 0.38841850732852073,
+       "wine": 5.74432493732016
+      },
+      {
+       "cloth": 11.13227946460567,
+       "fish": 19.15748435018423,
+       "iron": 3.870556990294025,
+       "salt": 6.788887816073847,
+       "weapons": 0.3886353374180714,
+       "wine": 3.735983137203512
       }
      ],
      "greenvale__lakeside": [
       {
-       "cloth": 20.867041037263462,
-       "tools": 7.196234594530097,
-       "wine": 17.84565209834392
+       "cloth": 10.09071804618486,
+       "fish": 21.784219170692946,
+       "iron": 8.351225838038994,
+       "salt": 1.868477972365647,
+       "silk": 2.7116216183718898,
+       "spices": 3.647782784833113,
+       "tools": 2.281066339637599,
+       "weapons": 0.9692595627738455,
+       "wine": 4.223502307626308
       }
      ],
      "greenvale__redwater": [
       {
-       "fish": 26.224244238768193,
-       "wine": 18.492898382433857
+       "iron": 0.015952555747350456,
+       "salt": 20.10233590959806,
+       "silk": 2.8016540519722253,
+       "wine": 7.624794879734113
       },
       {
-       "fish": 24.612711292819217,
-       "wine": 18.73406946502643
+       "salt": 19.946566598104646,
+       "silk": 2.7570794757813073,
+       "wine": 7.322584067594834
       },
       {
-       "fish": 23.191252109072924,
-       "wine": 18.94436446504908
+       "iron": 0.04871134544479266,
+       "salt": 19.764009927032117,
+       "silk": 2.741822636190731,
+       "wine": 6.863575627261311
       },
       {
-       "fish": 21.941607923703703,
-       "wine": 19.162227521415875
+       "iron": 0.1396533546777655,
+       "salt": 19.596721085846756,
+       "silk": 2.856226249795473,
+       "wine": 6.179184418168334
       },
       {
-       "fish": 20.845627696619996,
-       "wine": 19.39266875904903
+       "iron": 0.19398009817032968,
+       "salt": 19.38563177483194,
+       "silk": 2.9590667151848504,
+       "wine": 3.6026556095880085
+      }
+     ],
+     "greenvale__saltmarsh": [
+      {
+       "cloth": 8.604095843699175,
+       "fish": 17.526073758019198,
+       "iron": 8.351225838038994,
+       "salt": 0.7729740378407958,
+       "silk": 2.388582081048835,
+       "spices": 3.245218658502215,
+       "tools": 1.9624502104460193,
+       "weapons": 0.7949878591084144,
+       "wine": 3.5193326219029566
       }
      ],
      "greenvale__stonehaven": [
       {
-       "fish": 192.4695685187363,
-       "wine": 21.275708237328466
+       "cloth": 27.447053459050032,
+       "fish": 48.68739804943007,
+       "salt": 16.95396241884539,
+       "silk": 4.187043744418675,
+       "spices": 4.159149907124604,
+       "wine": 12.781791474721025
       },
       {
-       "fish": 195.47977232773934,
-       "wine": 21.72883097459897
+       "cloth": 26.854618444244675,
+       "fish": 47.89366806579156,
+       "salt": 16.90049635273908,
+       "silk": 4.40187238405334,
+       "spices": 4.094610801854513,
+       "wine": 12.96406307934494
       },
       {
-       "fish": 198.09106772353675,
-       "wine": 22.220855945141253
+       "cloth": 26.601677645558343,
+       "fish": 47.27658690769147,
+       "salt": 16.79112052439931,
+       "silk": 4.731365305368004,
+       "spices": 4.120472531302366,
+       "wine": 13.020822082238476
       },
       {
-       "fish": 200.3746574129282,
-       "wine": 22.6502249083855
+       "cloth": 26.46347661064885,
+       "fish": 46.78653458411664,
+       "salt": 16.653579631573034,
+       "silk": 5.058918957311937,
+       "spices": 4.223261770092531,
+       "wine": 12.852132806931564
       },
       {
-       "fish": 202.38013288488895,
-       "wine": 23.005534110584872
+       "cloth": 26.45032572981858,
+       "fish": 46.38623287215871,
+       "salt": 16.52852165352161,
+       "silk": 5.372167034660548,
+       "spices": 4.242881849472641,
+       "wine": 12.11481414351245
       },
       {
-       "fish": 204.14561097149908,
-       "wine": 23.296941523815107
+       "cloth": 26.523606208573003,
+       "fish": 46.05003539036825,
+       "salt": 16.363453532596775,
+       "silk": 5.6003812858605135,
+       "spices": 4.37162448968373,
+       "wine": 9.58757979254072
       }
      ],
      "greyrock__stonehaven": [
       {
-       "grain": 857.6820663783067
+       "grain": 223.14135295880794,
+       "iron": 45.590919910177924
+      }
+     ],
+     "ironhold__stonehaven": [
+      {
+       "iron": 83.63458461297913
+      },
+      {
+       "iron": 83.5575417398086
       }
      ],
      "lakeside__greenvale": [
       {
-       "fish": 771.6541183905883,
-       "grain": 337.85846656032567
+       "fish": 109.41302677175972,
+       "salt": 32.75398063742677
       }
      ],
      "millbrook__redwater": [
       {
-       "grain": 746.8546763272976
+       "grain": 284.5146403385318,
+       "meat": 135.39642280249564
       }
      ],
      "redwater__eastford": [
       {
-       "cloth": 25.49202696564678,
-       "tools": 16.18154717692017,
-       "wine": 13.231904595328716
+       "cloth": 13.26391024372907,
+       "fish": 11.610334361334909,
+       "grain": 26.333653844559976,
+       "iron": 14.081137162459191,
+       "meat": 11.1395140729164,
+       "silk": 2.561685147804863,
+       "spices": 5.725530112891974,
+       "tools": 4.0546246257891,
+       "weapons": 1.1890700844441562,
+       "wine": 6.7647886399996615
       },
       {
-       "cloth": 25.534318898513906,
-       "tools": 16.361073685770798,
-       "wine": 13.254101924434554
+       "cloth": 13.2957654612771,
+       "fish": 11.800154472518065,
+       "grain": 27.745918043528853,
+       "iron": 13.6099196837266,
+       "meat": 11.122284932858845,
+       "silk": 2.6302254245283154,
+       "spices": 5.863174561056007,
+       "tools": 4.013603404114959,
+       "weapons": 1.1408394853277706,
+       "wine": 6.6860013179435
+      }
+     ],
+     "redwater__eastport": [
+      {
+       "cloth": 3.2321426379396456,
+       "fish": 10.850540510476806,
+       "grain": 62.12665702844199,
+       "iron": 5.873743602118461,
+       "meat": 13.137910239520496,
+       "tools": 4.208663115583907,
+       "weapons": 0.759613853179353
+      },
+      {
+       "cloth": 3.1309506237481304,
+       "fish": 10.845743354114859,
+       "grain": 61.60119759027352,
+       "iron": 5.019154834590243,
+       "meat": 13.13546832686508,
+       "tools": 4.218205815878501,
+       "weapons": 0.7483180331126605
       }
      ],
      "redwater__greenvale": [
       {
-       "cloth": 3.809621717835636,
-       "grain": 150.5802977207952,
-       "tools": 4.750256406504046
+       "grain": 130.38855005583346,
+       "meat": 26.936152011028497
       },
       {
-       "cloth": 3.7763889202712666,
-       "grain": 145.59801097718918,
-       "tools": 4.8546934046990105
+       "grain": 127.90624921990194,
+       "meat": 26.78631142389143,
+       "tools": 0.03243872226938295
       },
       {
-       "cloth": 3.731147282650247,
-       "grain": 141.48640500308397,
-       "tools": 4.104735718191096
+       "grain": 125.93650264292904,
+       "meat": 26.66195079362872,
+       "tools": 0.2685326942829071
       },
       {
-       "cloth": 3.6760790264427254,
-       "grain": 138.24373798270128,
-       "tools": 2.9751602101068144
+       "grain": 124.60449609455897,
+       "meat": 26.559714746481202,
+       "tools": 0.3908655199582118
       },
       {
-       "cloth": 3.6063404590393224,
-       "grain": 135.71342993613004,
-       "tools": 2.2103945801413842
+       "grain": 123.8226840982538,
+       "meat": 26.47636778239477,
+       "tools": 0.4925415836442464
       }
      ],
      "redwater__millbrook": [
       {
-       "cloth": 28.904608298152702,
-       "tools": 18.468480547882624,
-       "wine": 14.011549422507287
+       "cloth": 15.692831373368142,
+       "fish": 34.50993211854893,
+       "grain": 31.02067934780434,
+       "iron": 14.454260228317803,
+       "silk": 3.3713925809099665,
+       "spices": 7.535429618839105,
+       "tools": 4.744940858625656,
+       "weapons": 1.3817194295488098,
+       "wine": 8.85178066900768
       }
      ],
      "redwater__stonehaven": [
       {
-       "cloth": 22.010992506445838
+       "cloth": 25.855346385909375,
+       "fish": 34.67897271963161,
+       "grain": 23.37162191380684,
+       "meat": 31.985954287788655,
+       "silk": 0.05670513532178983,
+       "spices": 6.880473945305045
       },
       {
-       "cloth": 22.04149982393478
+       "cloth": 25.332343374878636,
+       "fish": 34.759428290325125,
+       "grain": 22.162432418955003,
+       "meat": 31.906313620233046,
+       "silk": 0.33532200445093086,
+       "spices": 7.129245328234958,
+       "wine": 0.5290204239491986
       },
       {
-       "cloth": 22.047625683332036
+       "cloth": 25.05863011344545,
+       "fish": 34.85253730617547,
+       "grain": 21.109658101123973,
+       "meat": 31.843622216561183,
+       "silk": 0.49959270213542817,
+       "spices": 7.325257509562437,
+       "wine": 1.0606755091214157
       },
       {
-       "cloth": 22.036052541709484
+       "cloth": 24.98246855829026,
+       "fish": 34.94963398054426,
+       "grain": 20.18535596694215,
+       "meat": 31.793639865261014,
+       "silk": 0.6103338026223633,
+       "spices": 7.649363194507918,
+       "wine": 1.6329020499715088
+      }
+     ],
+     "saltmarsh__greenvale": [
+      {
+       "fish": 108.78406873971551,
+       "salt": 32.51196586564698
       }
      ],
      "stonehaven__greenvale": [
       {
-       "grain": 32.01537925122167,
-       "tools": 38.50836048417103
+       "grain": 15.07278054572548,
+       "iron": 37.75243897942904,
+       "tools": 13.006193736626805,
+       "weapons": 5.896435611170187
       },
       {
-       "grain": 32.44889736461394,
-       "tools": 40.61929785011635
+       "grain": 13.356865547721544,
+       "iron": 37.907838493108535,
+       "tools": 12.923957384433145,
+       "weapons": 5.3543023769562454
       },
       {
-       "grain": 32.63150350598701,
-       "tools": 40.58312668029808
+       "grain": 11.659444999786118,
+       "iron": 37.786351639271984,
+       "tools": 12.902776409023009,
+       "weapons": 5.129876870434418
       },
       {
-       "grain": 32.714498927044545,
-       "tools": 39.415555158128846
+       "grain": 10.11669135919229,
+       "iron": 36.992354835603734,
+       "tools": 12.950521568258926,
+       "weapons": 4.965864991995051
       },
       {
-       "grain": 32.740883645457124,
-       "tools": 37.84042709969067
+       "grain": 8.74380170029931,
+       "iron": 36.29043494576161,
+       "tools": 12.944535215949145,
+       "weapons": 4.895805402221948
       },
       {
-       "grain": 32.737041115826564,
-       "tools": 36.89245692083613
+       "grain": 7.528863617227822,
+       "iron": 36.279072894287054,
+       "tools": 12.940701439988352,
+       "weapons": 4.860614776901837
       }
      ],
      "stonehaven__greyrock": [
       {
-       "cloth": 20.187398731579883,
-       "tools": 20.072588908498087,
-       "wine": 8.729926990863442
+       "cloth": 10.49734666865544,
+       "grain": 24.909997567912306,
+       "iron": 4.305380519405774,
+       "silk": 1.2185368069718208,
+       "spices": 2.439780870927575,
+       "tools": 3.632168364321832,
+       "weapons": 1.1839332117780588,
+       "wine": 3.1221885249383727
+      }
+     ],
+     "stonehaven__ironhold": [
+      {
+       "cloth": 6.506744230837787,
+       "grain": 35.53278532051635,
+       "silk": 0.7127466665471061,
+       "spices": 1.4313796990369212,
+       "tools": 2.3458692439979765,
+       "weapons": 0.762167150903628,
+       "wine": 1.8237377752077841
+      },
+      {
+       "cloth": 6.465684359935819,
+       "grain": 34.89836232029847,
+       "silk": 0.7396399376307037,
+       "spices": 1.4045886296124883,
+       "tools": 2.347763497052438,
+       "weapons": 0.7649508477302946,
+       "wine": 1.816818634985927
       }
      ],
      "stonehaven__redwater": [
       {
-       "tools": 18.948472116012955
+       "iron": 58.32299640667055,
+       "tools": 5.24884336637873,
+       "weapons": 7.937960443406838
       },
       {
-       "tools": 18.961608451244718
+       "iron": 58.800849497587976,
+       "tools": 5.046560063204905,
+       "weapons": 7.863813507699949
       },
       {
-       "tools": 19.06855631633009
+       "iron": 59.808880448508596,
+       "tools": 4.923225717491394,
+       "weapons": 7.818525664807935
       },
       {
-       "tools": 19.23709195090806
+       "iron": 60.52619358888579,
+       "tools": 4.825116603689516,
+       "weapons": 7.775120028228704
       }
      ]
     }
@@ -282,282 +681,681 @@
   {
    "action": "buy",
    "trade": {
-    "total": 7.41774419565154,
-    "avg_price": 0.014835488391303081,
-    "new_multiplier": 1.3746644982964555
+    "total": 5.721960049491537,
+    "avg_price": 0.011443920098983075,
+    "new_multiplier": 1.0783136026780975
    },
    "state": {
     "day": 20,
     "stock": {
-     "eastford|cloth": 210.1028372676205,
-     "eastford|fish": 1792.249499232399,
-     "eastford|grain": 1965.7026559054373,
-     "eastford|tools": 148.9053352201137,
-     "eastford|wine": 181.54432862211735,
-     "greenvale|cloth": 637.0797644093624,
-     "greenvale|fish": 3186.022119848581,
-     "greenvale|grain": 236.2989539334598,
-     "greenvale|tools": 241.2164330426445,
-     "greenvale|wine": 480.21869352707586,
-     "greyrock|cloth": 160.03045238617105,
+     "eastford|cloth": 333.3309298592773,
+     "eastford|fish": 307.8080959379426,
+     "eastford|grain": 872.5066330226609,
+     "eastford|iron": 72.01778159767964,
+     "eastford|meat": 113.30588202402524,
+     "eastford|salt": 0.0,
+     "eastford|silk": 30.438018282164244,
+     "eastford|spices": 62.82158977782212,
+     "eastford|tools": 99.26141220207302,
+     "eastford|weapons": 19.07918661843613,
+     "eastford|wine": 67.35401066395326,
+     "eastport|cloth": 323.86179546948347,
+     "eastport|fish": 274.3820181925033,
+     "eastport|grain": 795.9229260168859,
+     "eastport|iron": 97.95058732306599,
+     "eastport|meat": 113.10341477758803,
+     "eastport|salt": 68.82352038191151,
+     "eastport|silk": 151.70244194763703,
+     "eastport|spices": 525.8960318700866,
+     "eastport|tools": 98.59673725541384,
+     "eastport|weapons": 19.375417796509105,
+     "eastport|wine": 59.841142520557874,
+     "greenvale|cloth": 1196.3476096940246,
+     "greenvale|fish": 1215.5284139281991,
+     "greenvale|grain": 1330.625297280957,
+     "greenvale|iron": 290.2704140747556,
+     "greenvale|meat": 156.62964743581512,
+     "greenvale|salt": 312.4897701163408,
+     "greenvale|silk": 98.29130873794223,
+     "greenvale|spices": 123.72710047091753,
+     "greenvale|tools": 218.13526024465034,
+     "greenvale|weapons": 47.72493874545911,
+     "greenvale|wine": 225.31498687989304,
+     "greyrock|cloth": 263.29220392938936,
      "greyrock|fish": 0.0,
-     "greyrock|grain": 3021.0840119767286,
-     "greyrock|tools": 216.5022531746287,
-     "greyrock|wine": 138.58567731485203,
-     "lakeside|cloth": 171.9436822847676,
-     "lakeside|fish": 2320.0700417925573,
-     "lakeside|grain": 1065.6307565245093,
-     "lakeside|tools": 72.35521839407049,
-     "lakeside|wine": 187.37172622125283,
-     "millbrook|cloth": 251.2712080250782,
-     "millbrook|fish": 0.0,
-     "millbrook|grain": 3195.005776362884,
-     "millbrook|tools": 177.6471136142404,
-     "millbrook|wine": 180.57405121541234,
-     "redwater|cloth": 1008.098620255982,
-     "redwater|fish": 2604.7175593087272,
-     "redwater|grain": 6365.464493448328,
-     "redwater|tools": 684.7391926066806,
-     "redwater|wine": 566.9701128783202,
-     "stonehaven|cloth": 597.7151320412956,
-     "stonehaven|fish": 0.0,
-     "stonehaven|grain": 5268.688617964782,
-     "stonehaven|tools": 746.3565571023785,
-     "stonehaven|wine": 299.36043718177535
+     "greyrock|grain": 729.7960200295936,
+     "greyrock|iron": 255.19177487333226,
+     "greyrock|meat": 0.0,
+     "greyrock|salt": 0.0,
+     "greyrock|silk": 22.5204608621151,
+     "greyrock|spices": 42.206865654836356,
+     "greyrock|tools": 125.78660465068818,
+     "greyrock|weapons": 34.20650939734552,
+     "greyrock|wine": 47.766401817116765,
+     "ironhold|cloth": 163.3087786179553,
+     "ironhold|fish": 0.0,
+     "ironhold|grain": 418.7703688500282,
+     "ironhold|iron": 196.06737823350602,
+     "ironhold|meat": 0.0,
+     "ironhold|salt": 0.0,
+     "ironhold|silk": 11.873632190554746,
+     "ironhold|spices": 22.265664967722557,
+     "ironhold|tools": 76.91792792471385,
+     "ironhold|weapons": 20.86760369320734,
+     "ironhold|wine": 25.39047138420161,
+     "lakeside|cloth": 319.6782430442989,
+     "lakeside|fish": 336.20909768639206,
+     "lakeside|grain": 0.0,
+     "lakeside|iron": 49.277986108934,
+     "lakeside|meat": 0.0,
+     "lakeside|salt": 105.96164724489927,
+     "lakeside|silk": 25.523435232581008,
+     "lakeside|spices": 43.387837914709074,
+     "lakeside|tools": 72.00865281625232,
+     "lakeside|weapons": 15.12380544386733,
+     "lakeside|wine": 57.59823735140229,
+     "millbrook|cloth": 402.4547939429182,
+     "millbrook|fish": 312.4770818981631,
+     "millbrook|grain": 1081.2816059802676,
+     "millbrook|iron": 85.3076747599672,
+     "millbrook|meat": 200.09459821787112,
+     "millbrook|salt": 0.0,
+     "millbrook|silk": 36.2851013592905,
+     "millbrook|spices": 75.3919625041854,
+     "millbrook|tools": 119.45336545727363,
+     "millbrook|weapons": 22.70385505087309,
+     "millbrook|wine": 81.49908105894767,
+     "redwater|cloth": 1587.4911816017025,
+     "redwater|fish": 1231.497373357388,
+     "redwater|grain": 3305.482041769712,
+     "redwater|iron": 427.2702255348394,
+     "redwater|meat": 543.3326967842054,
+     "redwater|salt": 162.96655955045048,
+     "redwater|silk": 119.3653629272844,
+     "redwater|spices": 249.94839757328296,
+     "redwater|tools": 458.6009112301163,
+     "redwater|weapons": 76.74607713154019,
+     "redwater|wine": 298.97828740729364,
+     "saltmarsh|cloth": 273.2309558586244,
+     "saltmarsh|fish": 295.415381098772,
+     "saltmarsh|grain": 0.0,
+     "saltmarsh|iron": 49.74360343741244,
+     "saltmarsh|meat": 0.0,
+     "saltmarsh|salt": 93.2134631434347,
+     "saltmarsh|silk": 22.055005934956114,
+     "saltmarsh|spices": 37.59879169774738,
+     "saltmarsh|tools": 61.787375486685654,
+     "saltmarsh|weapons": 13.49243103228805,
+     "saltmarsh|wine": 49.852780517088206,
+     "stonehaven|cloth": 767.717293349802,
+     "stonehaven|fish": 488.98602047663,
+     "stonehaven|grain": 2588.1779271301457,
+     "stonehaven|iron": 608.6099069834429,
+     "stonehaven|meat": 190.5549295077739,
+     "stonehaven|salt": 124.43147238394549,
+     "stonehaven|silk": 57.10624779220048,
+     "stonehaven|spices": 110.62986813406827,
+     "stonehaven|tools": 432.26633317619456,
+     "stonehaven|weapons": 109.9445012673741,
+     "stonehaven|wine": 116.18667436697065
     },
     "multiplier": {
-     "eastford|cloth": 1.561360362503371,
-     "eastford|fish": 0.8975733984386183,
-     "eastford|grain": 1.1664566884468577,
-     "eastford|tools": 1.1234498799590593,
-     "eastford|wine": 1.2208929837076963,
-     "greenvale|cloth": 1.3870402336462009,
-     "greenvale|fish": 1.195094026889279,
-     "greenvale|grain": 1.8,
-     "greenvale|tools": 1.8285920530074726,
-     "greenvale|wine": 0.6783146051871378,
-     "greyrock|cloth": 1.9494550278600944,
+     "eastford|cloth": 0.884708740520616,
+     "eastford|fish": 0.9714223753594784,
+     "eastford|grain": 0.986080603600589,
+     "eastford|iron": 2.9230083132911466,
+     "eastford|meat": 1.0447488659248003,
+     "eastford|salt": 1.8,
+     "eastford|silk": 1.0977326691904896,
+     "eastford|spices": 1.078692648150121,
+     "eastford|tools": 0.9920178832687003,
+     "eastford|weapons": 1.6988139903129322,
+     "eastford|wine": 0.942472764255163,
+     "eastport|cloth": 0.8901407904709416,
+     "eastport|fish": 1.0963434032532688,
+     "eastport|grain": 1.1080675592319946,
+     "eastport|iron": 2.460209523462886,
+     "eastport|meat": 1.0797852480864458,
+     "eastport|salt": 1.1930224809085141,
+     "eastport|silk": 0.4,
+     "eastport|spices": 0.4000015509423061,
+     "eastport|tools": 1.0002174581461496,
+     "eastport|weapons": 1.6246054558057874,
+     "eastport|wine": 0.90326713263177,
+     "greenvale|cloth": 0.7111782671711905,
+     "greenvale|fish": 0.8909018536429083,
+     "greenvale|grain": 1.5212402828686806,
+     "greenvale|iron": 1.9945547181156813,
+     "greenvale|meat": 1.6237278677351017,
+     "greenvale|salt": 0.9635590414026581,
+     "greenvale|silk": 0.6087314421575999,
+     "greenvale|spices": 1.3003622456070174,
+     "greenvale|tools": 1.2912945804070524,
+     "greenvale|weapons": 1.8276607410883767,
+     "greenvale|wine": 0.4677049223183839,
+     "greyrock|cloth": 1.125662518076816,
      "greyrock|fish": 1.8,
-     "greyrock|grain": 0.9976681717996801,
-     "greyrock|tools": 0.7450862415029308,
-     "greyrock|wine": 1.24000783415175,
-     "lakeside|cloth": 1.660393546634169,
-     "lakeside|fish": 0.7546831873157797,
-     "lakeside|grain": 1.511534372668163,
-     "lakeside|tools": 2.0725074554080827,
-     "lakeside|wine": 0.7674737254901003,
-     "millbrook|cloth": 1.3890502919909327,
-     "millbrook|fish": 1.8,
-     "millbrook|grain": 0.9985437686300673,
-     "millbrook|tools": 1.0001982421968585,
-     "millbrook|wine": 1.0729979980457467,
-     "redwater|cloth": 1.2429321257143977,
-     "redwater|fish": 1.557685193259189,
-     "redwater|grain": 1.3746644982964555,
-     "redwater|tools": 0.9302544565644224,
-     "redwater|wine": 1.124974075269062,
-     "stonehaven|cloth": 1.6193825584069181,
-     "stonehaven|fish": 1.8,
-     "stonehaven|grain": 1.379608103782926,
-     "stonehaven|tools": 0.6605542911903547,
-     "stonehaven|wine": 1.5351557332249537
+     "greyrock|grain": 1.1141966405960437,
+     "greyrock|iron": 0.7552869373209787,
+     "greyrock|meat": 1.8,
+     "greyrock|salt": 1.8,
+     "greyrock|silk": 1.1422015113704496,
+     "greyrock|spices": 1.4205038708301803,
+     "greyrock|tools": 0.7517448930905851,
+     "greyrock|weapons": 0.8316417917060702,
+     "greyrock|wine": 1.0176591966271769,
+     "ironhold|cloth": 1.1109418749175681,
+     "ironhold|fish": 1.8,
+     "ironhold|grain": 1.2567657301868134,
+     "ironhold|iron": 0.6124418133415099,
+     "ironhold|meat": 1.8,
+     "ironhold|salt": 1.8,
+     "ironhold|silk": 1.1438630258449958,
+     "ironhold|spices": 1.3842667358337344,
+     "ironhold|tools": 0.7495897325670973,
+     "ironhold|weapons": 0.8343600435232119,
+     "ironhold|wine": 1.0209021013517068,
+     "lakeside|cloth": 0.7532199288711757,
+     "lakeside|fish": 0.9021154995644741,
+     "lakeside|grain": 1.8,
+     "lakeside|iron": 3.0,
+     "lakeside|meat": 1.8,
+     "lakeside|salt": 0.8638029420713533,
+     "lakeside|silk": 0.6504543815890406,
+     "lakeside|spices": 0.8689834947522853,
+     "lakeside|tools": 1.1127985327952103,
+     "lakeside|weapons": 1.7717794778848228,
+     "lakeside|wine": 0.5421592992634914,
+     "millbrook|cloth": 0.8316624227058428,
+     "millbrook|fish": 1.0736947148967955,
+     "millbrook|grain": 0.9569488546396969,
+     "millbrook|iron": 2.874242670006266,
+     "millbrook|meat": 0.8117896384248773,
+     "millbrook|salt": 1.8,
+     "millbrook|silk": 0.9816000583581462,
+     "millbrook|spices": 0.954091551388907,
+     "millbrook|tools": 0.9355886398110701,
+     "millbrook|weapons": 1.608597688327488,
+     "millbrook|wine": 0.8237366460538326,
+     "redwater|cloth": 0.7766750276810331,
+     "redwater|fish": 1.0292126605033387,
+     "redwater|grain": 1.0783136026780975,
+     "redwater|iron": 1.9684697299065024,
+     "redwater|meat": 0.9852271267883388,
+     "redwater|salt": 1.595002050286852,
+     "redwater|silk": 1.1119338034558592,
+     "redwater|spices": 1.0675690102327136,
+     "redwater|tools": 0.8982002623411918,
+     "redwater|weapons": 1.6752212392915338,
+     "redwater|wine": 0.7759302944369992,
+     "saltmarsh|cloth": 0.7464653207936528,
+     "saltmarsh|fish": 0.885065987298418,
+     "saltmarsh|grain": 1.8,
+     "saltmarsh|iron": 2.9152645730611857,
+     "saltmarsh|meat": 1.8,
+     "saltmarsh|salt": 0.8440686671249288,
+     "saltmarsh|silk": 0.636637245533265,
+     "saltmarsh|spices": 0.8472841631503263,
+     "saltmarsh|tools": 1.091770491023604,
+     "saltmarsh|weapons": 1.6517063429325707,
+     "saltmarsh|wine": 0.5301477555197747,
+     "stonehaven|cloth": 1.255972485613176,
+     "stonehaven|fish": 1.5349082434986885,
+     "stonehaven|grain": 1.1103825732647254,
+     "stonehaven|iron": 1.0510676377753176,
+     "stonehaven|meat": 1.554235676384043,
+     "stonehaven|salt": 1.6497211222007762,
+     "stonehaven|silk": 1.5638779377325513,
+     "stonehaven|spices": 1.8308873811067905,
+     "stonehaven|tools": 0.7152943413397941,
+     "stonehaven|weapons": 0.8524485957940684,
+     "stonehaven|wine": 1.4755411494661348
     },
     "prosperity": {
-     "eastford": 0.6697632463935387,
-     "greenvale": 0.49725875178470247,
-     "greyrock": 0.5691223876592907,
-     "lakeside": 0.6034350331020296,
-     "millbrook": 0.5989546679428916,
-     "redwater": 0.558027748162038,
-     "stonehaven": 0.49150800120117133
+     "eastford": 0.6541850100058656,
+     "eastport": 0.5887239627475436,
+     "greenvale": 0.5465472028494487,
+     "greyrock": 0.5478305531188222,
+     "ironhold": 0.491283549292228,
+     "lakeside": 0.5204104870670391,
+     "millbrook": 0.644317243512379,
+     "redwater": 0.630029218276124,
+     "saltmarsh": 0.5222282252640956,
+     "stonehaven": 0.539637794718092
     },
     "pipeline": {
      "eastford__redwater": [
       {
-       "fish": 640.4393755694105,
-       "grain": 373.8243761276807
+       "fish": 223.5304519048755,
+       "grain": 214.76792209369464
       },
       {
-       "fish": 640.2739794013008,
-       "grain": 375.44478917120824
+       "fish": 223.34737024354666,
+       "grain": 215.0106828462056
+      }
+     ],
+     "eastport__greenvale": [
+      {
+       "grain": 6.752120179516795,
+       "meat": 1.4279184544508001,
+       "spices": 21.113341213458472
+      },
+      {
+       "grain": 6.799639358991958,
+       "meat": 1.4358759950462114,
+       "silk": 0.5474091402557438,
+       "spices": 21.701875018162482
+      },
+      {
+       "grain": 6.820957952735983,
+       "meat": 1.44160101910258,
+       "silk": 0.8941153989677028,
+       "spices": 22.29827985393478
+      },
+      {
+       "grain": 6.836822091582883,
+       "meat": 1.4455196105906416,
+       "silk": 1.1461390644033709,
+       "spices": 22.65003680462404
+      }
+     ],
+     "eastport__redwater": [
+      {
+       "salt": 1.1649119272314739,
+       "silk": 14.743548663014119,
+       "spices": 46.23688207895666
+      },
+      {
+       "salt": 1.197126268585121,
+       "silk": 15.100448168018687,
+       "spices": 47.258975282871845
+      }
+     ],
+     "greenvale__eastport": [
+      {
+       "cloth": 10.736447323150914,
+       "fish": 19.36270785705888,
+       "iron": 4.591223115392777,
+       "salt": 6.8209671805000385,
+       "weapons": 0.36748809775845703,
+       "wine": 5.831797527907312
+      },
+      {
+       "cloth": 10.830939767242912,
+       "fish": 19.283304028654744,
+       "iron": 3.761201780687748,
+       "salt": 6.820021223278603,
+       "weapons": 0.37744355416308123,
+       "wine": 5.924444985260025
+      },
+      {
+       "cloth": 11.03307688651114,
+       "fish": 19.216359949032466,
+       "iron": 3.7529348219317638,
+       "salt": 6.82166927491917,
+       "weapons": 0.38841850732852073,
+       "wine": 5.74432493732016
+      },
+      {
+       "cloth": 11.13227946460567,
+       "fish": 19.15748435018423,
+       "iron": 3.870556990294025,
+       "salt": 6.788887816073847,
+       "weapons": 0.3886353374180714,
+       "wine": 3.735983137203512
       }
      ],
      "greenvale__lakeside": [
       {
-       "cloth": 20.867041037263462,
-       "tools": 7.196234594530097,
-       "wine": 17.84565209834392
+       "cloth": 10.09071804618486,
+       "fish": 21.784219170692946,
+       "iron": 8.351225838038994,
+       "salt": 1.868477972365647,
+       "silk": 2.7116216183718898,
+       "spices": 3.647782784833113,
+       "tools": 2.281066339637599,
+       "weapons": 0.9692595627738455,
+       "wine": 4.223502307626308
       }
      ],
      "greenvale__redwater": [
       {
-       "fish": 26.224244238768193,
-       "wine": 18.492898382433857
+       "iron": 0.015952555747350456,
+       "salt": 20.10233590959806,
+       "silk": 2.8016540519722253,
+       "wine": 7.624794879734113
       },
       {
-       "fish": 24.612711292819217,
-       "wine": 18.73406946502643
+       "salt": 19.946566598104646,
+       "silk": 2.7570794757813073,
+       "wine": 7.322584067594834
       },
       {
-       "fish": 23.191252109072924,
-       "wine": 18.94436446504908
+       "iron": 0.04871134544479266,
+       "salt": 19.764009927032117,
+       "silk": 2.741822636190731,
+       "wine": 6.863575627261311
       },
       {
-       "fish": 21.941607923703703,
-       "wine": 19.162227521415875
+       "iron": 0.1396533546777655,
+       "salt": 19.596721085846756,
+       "silk": 2.856226249795473,
+       "wine": 6.179184418168334
       },
       {
-       "fish": 20.845627696619996,
-       "wine": 19.39266875904903
+       "iron": 0.19398009817032968,
+       "salt": 19.38563177483194,
+       "silk": 2.9590667151848504,
+       "wine": 3.6026556095880085
+      }
+     ],
+     "greenvale__saltmarsh": [
+      {
+       "cloth": 8.604095843699175,
+       "fish": 17.526073758019198,
+       "iron": 8.351225838038994,
+       "salt": 0.7729740378407958,
+       "silk": 2.388582081048835,
+       "spices": 3.245218658502215,
+       "tools": 1.9624502104460193,
+       "weapons": 0.7949878591084144,
+       "wine": 3.5193326219029566
       }
      ],
      "greenvale__stonehaven": [
       {
-       "fish": 192.4695685187363,
-       "wine": 21.275708237328466
+       "cloth": 27.447053459050032,
+       "fish": 48.68739804943007,
+       "salt": 16.95396241884539,
+       "silk": 4.187043744418675,
+       "spices": 4.159149907124604,
+       "wine": 12.781791474721025
       },
       {
-       "fish": 195.47977232773934,
-       "wine": 21.72883097459897
+       "cloth": 26.854618444244675,
+       "fish": 47.89366806579156,
+       "salt": 16.90049635273908,
+       "silk": 4.40187238405334,
+       "spices": 4.094610801854513,
+       "wine": 12.96406307934494
       },
       {
-       "fish": 198.09106772353675,
-       "wine": 22.220855945141253
+       "cloth": 26.601677645558343,
+       "fish": 47.27658690769147,
+       "salt": 16.79112052439931,
+       "silk": 4.731365305368004,
+       "spices": 4.120472531302366,
+       "wine": 13.020822082238476
       },
       {
-       "fish": 200.3746574129282,
-       "wine": 22.6502249083855
+       "cloth": 26.46347661064885,
+       "fish": 46.78653458411664,
+       "salt": 16.653579631573034,
+       "silk": 5.058918957311937,
+       "spices": 4.223261770092531,
+       "wine": 12.852132806931564
       },
       {
-       "fish": 202.38013288488895,
-       "wine": 23.005534110584872
+       "cloth": 26.45032572981858,
+       "fish": 46.38623287215871,
+       "salt": 16.52852165352161,
+       "silk": 5.372167034660548,
+       "spices": 4.242881849472641,
+       "wine": 12.11481414351245
       },
       {
-       "fish": 204.14561097149908,
-       "wine": 23.296941523815107
+       "cloth": 26.523606208573003,
+       "fish": 46.05003539036825,
+       "salt": 16.363453532596775,
+       "silk": 5.6003812858605135,
+       "spices": 4.37162448968373,
+       "wine": 9.58757979254072
       }
      ],
      "greyrock__stonehaven": [
       {
-       "grain": 857.6820663783067
+       "grain": 223.14135295880794,
+       "iron": 45.590919910177924
+      }
+     ],
+     "ironhold__stonehaven": [
+      {
+       "iron": 83.63458461297913
+      },
+      {
+       "iron": 83.5575417398086
       }
      ],
      "lakeside__greenvale": [
       {
-       "fish": 771.6541183905883,
-       "grain": 337.85846656032567
+       "fish": 109.41302677175972,
+       "salt": 32.75398063742677
       }
      ],
      "millbrook__redwater": [
       {
-       "grain": 746.8546763272976
+       "grain": 284.5146403385318,
+       "meat": 135.39642280249564
       }
      ],
      "redwater__eastford": [
       {
-       "cloth": 25.49202696564678,
-       "tools": 16.18154717692017,
-       "wine": 13.231904595328716
+       "cloth": 13.26391024372907,
+       "fish": 11.610334361334909,
+       "grain": 26.333653844559976,
+       "iron": 14.081137162459191,
+       "meat": 11.1395140729164,
+       "silk": 2.561685147804863,
+       "spices": 5.725530112891974,
+       "tools": 4.0546246257891,
+       "weapons": 1.1890700844441562,
+       "wine": 6.7647886399996615
       },
       {
-       "cloth": 25.534318898513906,
-       "tools": 16.361073685770798,
-       "wine": 13.254101924434554
+       "cloth": 13.2957654612771,
+       "fish": 11.800154472518065,
+       "grain": 27.745918043528853,
+       "iron": 13.6099196837266,
+       "meat": 11.122284932858845,
+       "silk": 2.6302254245283154,
+       "spices": 5.863174561056007,
+       "tools": 4.013603404114959,
+       "weapons": 1.1408394853277706,
+       "wine": 6.6860013179435
+      }
+     ],
+     "redwater__eastport": [
+      {
+       "cloth": 3.2321426379396456,
+       "fish": 10.850540510476806,
+       "grain": 62.12665702844199,
+       "iron": 5.873743602118461,
+       "meat": 13.137910239520496,
+       "tools": 4.208663115583907,
+       "weapons": 0.759613853179353
+      },
+      {
+       "cloth": 3.1309506237481304,
+       "fish": 10.845743354114859,
+       "grain": 61.60119759027352,
+       "iron": 5.019154834590243,
+       "meat": 13.13546832686508,
+       "tools": 4.218205815878501,
+       "weapons": 0.7483180331126605
       }
      ],
      "redwater__greenvale": [
       {
-       "cloth": 3.809621717835636,
-       "grain": 150.5802977207952,
-       "tools": 4.750256406504046
+       "grain": 130.38855005583346,
+       "meat": 26.936152011028497
       },
       {
-       "cloth": 3.7763889202712666,
-       "grain": 145.59801097718918,
-       "tools": 4.8546934046990105
+       "grain": 127.90624921990194,
+       "meat": 26.78631142389143,
+       "tools": 0.03243872226938295
       },
       {
-       "cloth": 3.731147282650247,
-       "grain": 141.48640500308397,
-       "tools": 4.104735718191096
+       "grain": 125.93650264292904,
+       "meat": 26.66195079362872,
+       "tools": 0.2685326942829071
       },
       {
-       "cloth": 3.6760790264427254,
-       "grain": 138.24373798270128,
-       "tools": 2.9751602101068144
+       "grain": 124.60449609455897,
+       "meat": 26.559714746481202,
+       "tools": 0.3908655199582118
       },
       {
-       "cloth": 3.6063404590393224,
-       "grain": 135.71342993613004,
-       "tools": 2.2103945801413842
+       "grain": 123.8226840982538,
+       "meat": 26.47636778239477,
+       "tools": 0.4925415836442464
       }
      ],
      "redwater__millbrook": [
       {
-       "cloth": 28.904608298152702,
-       "tools": 18.468480547882624,
-       "wine": 14.011549422507287
+       "cloth": 15.692831373368142,
+       "fish": 34.50993211854893,
+       "grain": 31.02067934780434,
+       "iron": 14.454260228317803,
+       "silk": 3.3713925809099665,
+       "spices": 7.535429618839105,
+       "tools": 4.744940858625656,
+       "weapons": 1.3817194295488098,
+       "wine": 8.85178066900768
       }
      ],
      "redwater__stonehaven": [
       {
-       "cloth": 22.010992506445838
+       "cloth": 25.855346385909375,
+       "fish": 34.67897271963161,
+       "grain": 23.37162191380684,
+       "meat": 31.985954287788655,
+       "silk": 0.05670513532178983,
+       "spices": 6.880473945305045
       },
       {
-       "cloth": 22.04149982393478
+       "cloth": 25.332343374878636,
+       "fish": 34.759428290325125,
+       "grain": 22.162432418955003,
+       "meat": 31.906313620233046,
+       "silk": 0.33532200445093086,
+       "spices": 7.129245328234958,
+       "wine": 0.5290204239491986
       },
       {
-       "cloth": 22.047625683332036
+       "cloth": 25.05863011344545,
+       "fish": 34.85253730617547,
+       "grain": 21.109658101123973,
+       "meat": 31.843622216561183,
+       "silk": 0.49959270213542817,
+       "spices": 7.325257509562437,
+       "wine": 1.0606755091214157
       },
       {
-       "cloth": 22.036052541709484
+       "cloth": 24.98246855829026,
+       "fish": 34.94963398054426,
+       "grain": 20.18535596694215,
+       "meat": 31.793639865261014,
+       "silk": 0.6103338026223633,
+       "spices": 7.649363194507918,
+       "wine": 1.6329020499715088
+      }
+     ],
+     "saltmarsh__greenvale": [
+      {
+       "fish": 108.78406873971551,
+       "salt": 32.51196586564698
       }
      ],
      "stonehaven__greenvale": [
       {
-       "grain": 32.01537925122167,
-       "tools": 38.50836048417103
+       "grain": 15.07278054572548,
+       "iron": 37.75243897942904,
+       "tools": 13.006193736626805,
+       "weapons": 5.896435611170187
       },
       {
-       "grain": 32.44889736461394,
-       "tools": 40.61929785011635
+       "grain": 13.356865547721544,
+       "iron": 37.907838493108535,
+       "tools": 12.923957384433145,
+       "weapons": 5.3543023769562454
       },
       {
-       "grain": 32.63150350598701,
-       "tools": 40.58312668029808
+       "grain": 11.659444999786118,
+       "iron": 37.786351639271984,
+       "tools": 12.902776409023009,
+       "weapons": 5.129876870434418
       },
       {
-       "grain": 32.714498927044545,
-       "tools": 39.415555158128846
+       "grain": 10.11669135919229,
+       "iron": 36.992354835603734,
+       "tools": 12.950521568258926,
+       "weapons": 4.965864991995051
       },
       {
-       "grain": 32.740883645457124,
-       "tools": 37.84042709969067
+       "grain": 8.74380170029931,
+       "iron": 36.29043494576161,
+       "tools": 12.944535215949145,
+       "weapons": 4.895805402221948
       },
       {
-       "grain": 32.737041115826564,
-       "tools": 36.89245692083613
+       "grain": 7.528863617227822,
+       "iron": 36.279072894287054,
+       "tools": 12.940701439988352,
+       "weapons": 4.860614776901837
       }
      ],
      "stonehaven__greyrock": [
       {
-       "cloth": 20.187398731579883,
-       "tools": 20.072588908498087,
-       "wine": 8.729926990863442
+       "cloth": 10.49734666865544,
+       "grain": 24.909997567912306,
+       "iron": 4.305380519405774,
+       "silk": 1.2185368069718208,
+       "spices": 2.439780870927575,
+       "tools": 3.632168364321832,
+       "weapons": 1.1839332117780588,
+       "wine": 3.1221885249383727
+      }
+     ],
+     "stonehaven__ironhold": [
+      {
+       "cloth": 6.506744230837787,
+       "grain": 35.53278532051635,
+       "silk": 0.7127466665471061,
+       "spices": 1.4313796990369212,
+       "tools": 2.3458692439979765,
+       "weapons": 0.762167150903628,
+       "wine": 1.8237377752077841
+      },
+      {
+       "cloth": 6.465684359935819,
+       "grain": 34.89836232029847,
+       "silk": 0.7396399376307037,
+       "spices": 1.4045886296124883,
+       "tools": 2.347763497052438,
+       "weapons": 0.7649508477302946,
+       "wine": 1.816818634985927
       }
      ],
      "stonehaven__redwater": [
       {
-       "tools": 18.948472116012955
+       "iron": 58.32299640667055,
+       "tools": 5.24884336637873,
+       "weapons": 7.937960443406838
       },
       {
-       "tools": 18.961608451244718
+       "iron": 58.800849497587976,
+       "tools": 5.046560063204905,
+       "weapons": 7.863813507699949
       },
       {
-       "tools": 19.06855631633009
+       "iron": 59.808880448508596,
+       "tools": 4.923225717491394,
+       "weapons": 7.818525664807935
       },
       {
-       "tools": 19.23709195090806
+       "iron": 60.52619358888579,
+       "tools": 4.825116603689516,
+       "weapons": 7.775120028228704
       }
      ]
     }
@@ -566,279 +1364,678 @@
   {
    "action": "loot",
    "edge": "eastford__redwater",
-   "looted": 1014.9912601348001,
+   "looted": 438.32821354416114,
    "state": {
     "day": 20,
     "stock": {
-     "eastford|cloth": 210.1028372676205,
-     "eastford|fish": 1792.249499232399,
-     "eastford|grain": 1965.7026559054373,
-     "eastford|tools": 148.9053352201137,
-     "eastford|wine": 181.54432862211735,
-     "greenvale|cloth": 637.0797644093624,
-     "greenvale|fish": 3186.022119848581,
-     "greenvale|grain": 236.2989539334598,
-     "greenvale|tools": 241.2164330426445,
-     "greenvale|wine": 480.21869352707586,
-     "greyrock|cloth": 160.03045238617105,
+     "eastford|cloth": 333.3309298592773,
+     "eastford|fish": 307.8080959379426,
+     "eastford|grain": 872.5066330226609,
+     "eastford|iron": 72.01778159767964,
+     "eastford|meat": 113.30588202402524,
+     "eastford|salt": 0.0,
+     "eastford|silk": 30.438018282164244,
+     "eastford|spices": 62.82158977782212,
+     "eastford|tools": 99.26141220207302,
+     "eastford|weapons": 19.07918661843613,
+     "eastford|wine": 67.35401066395326,
+     "eastport|cloth": 323.86179546948347,
+     "eastport|fish": 274.3820181925033,
+     "eastport|grain": 795.9229260168859,
+     "eastport|iron": 97.95058732306599,
+     "eastport|meat": 113.10341477758803,
+     "eastport|salt": 68.82352038191151,
+     "eastport|silk": 151.70244194763703,
+     "eastport|spices": 525.8960318700866,
+     "eastport|tools": 98.59673725541384,
+     "eastport|weapons": 19.375417796509105,
+     "eastport|wine": 59.841142520557874,
+     "greenvale|cloth": 1196.3476096940246,
+     "greenvale|fish": 1215.5284139281991,
+     "greenvale|grain": 1330.625297280957,
+     "greenvale|iron": 290.2704140747556,
+     "greenvale|meat": 156.62964743581512,
+     "greenvale|salt": 312.4897701163408,
+     "greenvale|silk": 98.29130873794223,
+     "greenvale|spices": 123.72710047091753,
+     "greenvale|tools": 218.13526024465034,
+     "greenvale|weapons": 47.72493874545911,
+     "greenvale|wine": 225.31498687989304,
+     "greyrock|cloth": 263.29220392938936,
      "greyrock|fish": 0.0,
-     "greyrock|grain": 3021.0840119767286,
-     "greyrock|tools": 216.5022531746287,
-     "greyrock|wine": 138.58567731485203,
-     "lakeside|cloth": 171.9436822847676,
-     "lakeside|fish": 2320.0700417925573,
-     "lakeside|grain": 1065.6307565245093,
-     "lakeside|tools": 72.35521839407049,
-     "lakeside|wine": 187.37172622125283,
-     "millbrook|cloth": 251.2712080250782,
-     "millbrook|fish": 0.0,
-     "millbrook|grain": 3195.005776362884,
-     "millbrook|tools": 177.6471136142404,
-     "millbrook|wine": 180.57405121541234,
-     "redwater|cloth": 1008.098620255982,
-     "redwater|fish": 2604.7175593087272,
-     "redwater|grain": 6365.464493448328,
-     "redwater|tools": 684.7391926066806,
-     "redwater|wine": 566.9701128783202,
-     "stonehaven|cloth": 597.7151320412956,
-     "stonehaven|fish": 0.0,
-     "stonehaven|grain": 5268.688617964782,
-     "stonehaven|tools": 746.3565571023785,
-     "stonehaven|wine": 299.36043718177535
+     "greyrock|grain": 729.7960200295936,
+     "greyrock|iron": 255.19177487333226,
+     "greyrock|meat": 0.0,
+     "greyrock|salt": 0.0,
+     "greyrock|silk": 22.5204608621151,
+     "greyrock|spices": 42.206865654836356,
+     "greyrock|tools": 125.78660465068818,
+     "greyrock|weapons": 34.20650939734552,
+     "greyrock|wine": 47.766401817116765,
+     "ironhold|cloth": 163.3087786179553,
+     "ironhold|fish": 0.0,
+     "ironhold|grain": 418.7703688500282,
+     "ironhold|iron": 196.06737823350602,
+     "ironhold|meat": 0.0,
+     "ironhold|salt": 0.0,
+     "ironhold|silk": 11.873632190554746,
+     "ironhold|spices": 22.265664967722557,
+     "ironhold|tools": 76.91792792471385,
+     "ironhold|weapons": 20.86760369320734,
+     "ironhold|wine": 25.39047138420161,
+     "lakeside|cloth": 319.6782430442989,
+     "lakeside|fish": 336.20909768639206,
+     "lakeside|grain": 0.0,
+     "lakeside|iron": 49.277986108934,
+     "lakeside|meat": 0.0,
+     "lakeside|salt": 105.96164724489927,
+     "lakeside|silk": 25.523435232581008,
+     "lakeside|spices": 43.387837914709074,
+     "lakeside|tools": 72.00865281625232,
+     "lakeside|weapons": 15.12380544386733,
+     "lakeside|wine": 57.59823735140229,
+     "millbrook|cloth": 402.4547939429182,
+     "millbrook|fish": 312.4770818981631,
+     "millbrook|grain": 1081.2816059802676,
+     "millbrook|iron": 85.3076747599672,
+     "millbrook|meat": 200.09459821787112,
+     "millbrook|salt": 0.0,
+     "millbrook|silk": 36.2851013592905,
+     "millbrook|spices": 75.3919625041854,
+     "millbrook|tools": 119.45336545727363,
+     "millbrook|weapons": 22.70385505087309,
+     "millbrook|wine": 81.49908105894767,
+     "redwater|cloth": 1587.4911816017025,
+     "redwater|fish": 1231.497373357388,
+     "redwater|grain": 3305.482041769712,
+     "redwater|iron": 427.2702255348394,
+     "redwater|meat": 543.3326967842054,
+     "redwater|salt": 162.96655955045048,
+     "redwater|silk": 119.3653629272844,
+     "redwater|spices": 249.94839757328296,
+     "redwater|tools": 458.6009112301163,
+     "redwater|weapons": 76.74607713154019,
+     "redwater|wine": 298.97828740729364,
+     "saltmarsh|cloth": 273.2309558586244,
+     "saltmarsh|fish": 295.415381098772,
+     "saltmarsh|grain": 0.0,
+     "saltmarsh|iron": 49.74360343741244,
+     "saltmarsh|meat": 0.0,
+     "saltmarsh|salt": 93.2134631434347,
+     "saltmarsh|silk": 22.055005934956114,
+     "saltmarsh|spices": 37.59879169774738,
+     "saltmarsh|tools": 61.787375486685654,
+     "saltmarsh|weapons": 13.49243103228805,
+     "saltmarsh|wine": 49.852780517088206,
+     "stonehaven|cloth": 767.717293349802,
+     "stonehaven|fish": 488.98602047663,
+     "stonehaven|grain": 2588.1779271301457,
+     "stonehaven|iron": 608.6099069834429,
+     "stonehaven|meat": 190.5549295077739,
+     "stonehaven|salt": 124.43147238394549,
+     "stonehaven|silk": 57.10624779220048,
+     "stonehaven|spices": 110.62986813406827,
+     "stonehaven|tools": 432.26633317619456,
+     "stonehaven|weapons": 109.9445012673741,
+     "stonehaven|wine": 116.18667436697065
     },
     "multiplier": {
-     "eastford|cloth": 1.561360362503371,
-     "eastford|fish": 0.8975733984386183,
-     "eastford|grain": 1.1664566884468577,
-     "eastford|tools": 1.1234498799590593,
-     "eastford|wine": 1.2208929837076963,
-     "greenvale|cloth": 1.3870402336462009,
-     "greenvale|fish": 1.195094026889279,
-     "greenvale|grain": 1.8,
-     "greenvale|tools": 1.8285920530074726,
-     "greenvale|wine": 0.6783146051871378,
-     "greyrock|cloth": 1.9494550278600944,
+     "eastford|cloth": 0.884708740520616,
+     "eastford|fish": 0.9714223753594784,
+     "eastford|grain": 0.986080603600589,
+     "eastford|iron": 2.9230083132911466,
+     "eastford|meat": 1.0447488659248003,
+     "eastford|salt": 1.8,
+     "eastford|silk": 1.0977326691904896,
+     "eastford|spices": 1.078692648150121,
+     "eastford|tools": 0.9920178832687003,
+     "eastford|weapons": 1.6988139903129322,
+     "eastford|wine": 0.942472764255163,
+     "eastport|cloth": 0.8901407904709416,
+     "eastport|fish": 1.0963434032532688,
+     "eastport|grain": 1.1080675592319946,
+     "eastport|iron": 2.460209523462886,
+     "eastport|meat": 1.0797852480864458,
+     "eastport|salt": 1.1930224809085141,
+     "eastport|silk": 0.4,
+     "eastport|spices": 0.4000015509423061,
+     "eastport|tools": 1.0002174581461496,
+     "eastport|weapons": 1.6246054558057874,
+     "eastport|wine": 0.90326713263177,
+     "greenvale|cloth": 0.7111782671711905,
+     "greenvale|fish": 0.8909018536429083,
+     "greenvale|grain": 1.5212402828686806,
+     "greenvale|iron": 1.9945547181156813,
+     "greenvale|meat": 1.6237278677351017,
+     "greenvale|salt": 0.9635590414026581,
+     "greenvale|silk": 0.6087314421575999,
+     "greenvale|spices": 1.3003622456070174,
+     "greenvale|tools": 1.2912945804070524,
+     "greenvale|weapons": 1.8276607410883767,
+     "greenvale|wine": 0.4677049223183839,
+     "greyrock|cloth": 1.125662518076816,
      "greyrock|fish": 1.8,
-     "greyrock|grain": 0.9976681717996801,
-     "greyrock|tools": 0.7450862415029308,
-     "greyrock|wine": 1.24000783415175,
-     "lakeside|cloth": 1.660393546634169,
-     "lakeside|fish": 0.7546831873157797,
-     "lakeside|grain": 1.511534372668163,
-     "lakeside|tools": 2.0725074554080827,
-     "lakeside|wine": 0.7674737254901003,
-     "millbrook|cloth": 1.3890502919909327,
-     "millbrook|fish": 1.8,
-     "millbrook|grain": 0.9985437686300673,
-     "millbrook|tools": 1.0001982421968585,
-     "millbrook|wine": 1.0729979980457467,
-     "redwater|cloth": 1.2429321257143977,
-     "redwater|fish": 1.557685193259189,
-     "redwater|grain": 1.3746644982964555,
-     "redwater|tools": 0.9302544565644224,
-     "redwater|wine": 1.124974075269062,
-     "stonehaven|cloth": 1.6193825584069181,
-     "stonehaven|fish": 1.8,
-     "stonehaven|grain": 1.379608103782926,
-     "stonehaven|tools": 0.6605542911903547,
-     "stonehaven|wine": 1.5351557332249537
+     "greyrock|grain": 1.1141966405960437,
+     "greyrock|iron": 0.7552869373209787,
+     "greyrock|meat": 1.8,
+     "greyrock|salt": 1.8,
+     "greyrock|silk": 1.1422015113704496,
+     "greyrock|spices": 1.4205038708301803,
+     "greyrock|tools": 0.7517448930905851,
+     "greyrock|weapons": 0.8316417917060702,
+     "greyrock|wine": 1.0176591966271769,
+     "ironhold|cloth": 1.1109418749175681,
+     "ironhold|fish": 1.8,
+     "ironhold|grain": 1.2567657301868134,
+     "ironhold|iron": 0.6124418133415099,
+     "ironhold|meat": 1.8,
+     "ironhold|salt": 1.8,
+     "ironhold|silk": 1.1438630258449958,
+     "ironhold|spices": 1.3842667358337344,
+     "ironhold|tools": 0.7495897325670973,
+     "ironhold|weapons": 0.8343600435232119,
+     "ironhold|wine": 1.0209021013517068,
+     "lakeside|cloth": 0.7532199288711757,
+     "lakeside|fish": 0.9021154995644741,
+     "lakeside|grain": 1.8,
+     "lakeside|iron": 3.0,
+     "lakeside|meat": 1.8,
+     "lakeside|salt": 0.8638029420713533,
+     "lakeside|silk": 0.6504543815890406,
+     "lakeside|spices": 0.8689834947522853,
+     "lakeside|tools": 1.1127985327952103,
+     "lakeside|weapons": 1.7717794778848228,
+     "lakeside|wine": 0.5421592992634914,
+     "millbrook|cloth": 0.8316624227058428,
+     "millbrook|fish": 1.0736947148967955,
+     "millbrook|grain": 0.9569488546396969,
+     "millbrook|iron": 2.874242670006266,
+     "millbrook|meat": 0.8117896384248773,
+     "millbrook|salt": 1.8,
+     "millbrook|silk": 0.9816000583581462,
+     "millbrook|spices": 0.954091551388907,
+     "millbrook|tools": 0.9355886398110701,
+     "millbrook|weapons": 1.608597688327488,
+     "millbrook|wine": 0.8237366460538326,
+     "redwater|cloth": 0.7766750276810331,
+     "redwater|fish": 1.0292126605033387,
+     "redwater|grain": 1.0783136026780975,
+     "redwater|iron": 1.9684697299065024,
+     "redwater|meat": 0.9852271267883388,
+     "redwater|salt": 1.595002050286852,
+     "redwater|silk": 1.1119338034558592,
+     "redwater|spices": 1.0675690102327136,
+     "redwater|tools": 0.8982002623411918,
+     "redwater|weapons": 1.6752212392915338,
+     "redwater|wine": 0.7759302944369992,
+     "saltmarsh|cloth": 0.7464653207936528,
+     "saltmarsh|fish": 0.885065987298418,
+     "saltmarsh|grain": 1.8,
+     "saltmarsh|iron": 2.9152645730611857,
+     "saltmarsh|meat": 1.8,
+     "saltmarsh|salt": 0.8440686671249288,
+     "saltmarsh|silk": 0.636637245533265,
+     "saltmarsh|spices": 0.8472841631503263,
+     "saltmarsh|tools": 1.091770491023604,
+     "saltmarsh|weapons": 1.6517063429325707,
+     "saltmarsh|wine": 0.5301477555197747,
+     "stonehaven|cloth": 1.255972485613176,
+     "stonehaven|fish": 1.5349082434986885,
+     "stonehaven|grain": 1.1103825732647254,
+     "stonehaven|iron": 1.0510676377753176,
+     "stonehaven|meat": 1.554235676384043,
+     "stonehaven|salt": 1.6497211222007762,
+     "stonehaven|silk": 1.5638779377325513,
+     "stonehaven|spices": 1.8308873811067905,
+     "stonehaven|tools": 0.7152943413397941,
+     "stonehaven|weapons": 0.8524485957940684,
+     "stonehaven|wine": 1.4755411494661348
     },
     "prosperity": {
-     "eastford": 0.6697632463935387,
-     "greenvale": 0.49725875178470247,
-     "greyrock": 0.5691223876592907,
-     "lakeside": 0.6034350331020296,
-     "millbrook": 0.5989546679428916,
-     "redwater": 0.558027748162038,
-     "stonehaven": 0.49150800120117133
+     "eastford": 0.6541850100058656,
+     "eastport": 0.5887239627475436,
+     "greenvale": 0.5465472028494487,
+     "greyrock": 0.5478305531188222,
+     "ironhold": 0.491283549292228,
+     "lakeside": 0.5204104870670391,
+     "millbrook": 0.644317243512379,
+     "redwater": 0.630029218276124,
+     "saltmarsh": 0.5222282252640956,
+     "stonehaven": 0.539637794718092
     },
     "pipeline": {
      "eastford__redwater": [
       {
-       "fish": 320.21968778470523,
-       "grain": 186.91218806384035
+       "fish": 111.76522595243775,
+       "grain": 107.38396104684732
       },
       {
-       "fish": 320.1369897006504,
-       "grain": 187.72239458560412
+       "fish": 111.67368512177333,
+       "grain": 107.5053414231028
+      }
+     ],
+     "eastport__greenvale": [
+      {
+       "grain": 6.752120179516795,
+       "meat": 1.4279184544508001,
+       "spices": 21.113341213458472
+      },
+      {
+       "grain": 6.799639358991958,
+       "meat": 1.4358759950462114,
+       "silk": 0.5474091402557438,
+       "spices": 21.701875018162482
+      },
+      {
+       "grain": 6.820957952735983,
+       "meat": 1.44160101910258,
+       "silk": 0.8941153989677028,
+       "spices": 22.29827985393478
+      },
+      {
+       "grain": 6.836822091582883,
+       "meat": 1.4455196105906416,
+       "silk": 1.1461390644033709,
+       "spices": 22.65003680462404
+      }
+     ],
+     "eastport__redwater": [
+      {
+       "salt": 1.1649119272314739,
+       "silk": 14.743548663014119,
+       "spices": 46.23688207895666
+      },
+      {
+       "salt": 1.197126268585121,
+       "silk": 15.100448168018687,
+       "spices": 47.258975282871845
+      }
+     ],
+     "greenvale__eastport": [
+      {
+       "cloth": 10.736447323150914,
+       "fish": 19.36270785705888,
+       "iron": 4.591223115392777,
+       "salt": 6.8209671805000385,
+       "weapons": 0.36748809775845703,
+       "wine": 5.831797527907312
+      },
+      {
+       "cloth": 10.830939767242912,
+       "fish": 19.283304028654744,
+       "iron": 3.761201780687748,
+       "salt": 6.820021223278603,
+       "weapons": 0.37744355416308123,
+       "wine": 5.924444985260025
+      },
+      {
+       "cloth": 11.03307688651114,
+       "fish": 19.216359949032466,
+       "iron": 3.7529348219317638,
+       "salt": 6.82166927491917,
+       "weapons": 0.38841850732852073,
+       "wine": 5.74432493732016
+      },
+      {
+       "cloth": 11.13227946460567,
+       "fish": 19.15748435018423,
+       "iron": 3.870556990294025,
+       "salt": 6.788887816073847,
+       "weapons": 0.3886353374180714,
+       "wine": 3.735983137203512
       }
      ],
      "greenvale__lakeside": [
       {
-       "cloth": 20.867041037263462,
-       "tools": 7.196234594530097,
-       "wine": 17.84565209834392
+       "cloth": 10.09071804618486,
+       "fish": 21.784219170692946,
+       "iron": 8.351225838038994,
+       "salt": 1.868477972365647,
+       "silk": 2.7116216183718898,
+       "spices": 3.647782784833113,
+       "tools": 2.281066339637599,
+       "weapons": 0.9692595627738455,
+       "wine": 4.223502307626308
       }
      ],
      "greenvale__redwater": [
       {
-       "fish": 26.224244238768193,
-       "wine": 18.492898382433857
+       "iron": 0.015952555747350456,
+       "salt": 20.10233590959806,
+       "silk": 2.8016540519722253,
+       "wine": 7.624794879734113
       },
       {
-       "fish": 24.612711292819217,
-       "wine": 18.73406946502643
+       "salt": 19.946566598104646,
+       "silk": 2.7570794757813073,
+       "wine": 7.322584067594834
       },
       {
-       "fish": 23.191252109072924,
-       "wine": 18.94436446504908
+       "iron": 0.04871134544479266,
+       "salt": 19.764009927032117,
+       "silk": 2.741822636190731,
+       "wine": 6.863575627261311
       },
       {
-       "fish": 21.941607923703703,
-       "wine": 19.162227521415875
+       "iron": 0.1396533546777655,
+       "salt": 19.596721085846756,
+       "silk": 2.856226249795473,
+       "wine": 6.179184418168334
       },
       {
-       "fish": 20.845627696619996,
-       "wine": 19.39266875904903
+       "iron": 0.19398009817032968,
+       "salt": 19.38563177483194,
+       "silk": 2.9590667151848504,
+       "wine": 3.6026556095880085
+      }
+     ],
+     "greenvale__saltmarsh": [
+      {
+       "cloth": 8.604095843699175,
+       "fish": 17.526073758019198,
+       "iron": 8.351225838038994,
+       "salt": 0.7729740378407958,
+       "silk": 2.388582081048835,
+       "spices": 3.245218658502215,
+       "tools": 1.9624502104460193,
+       "weapons": 0.7949878591084144,
+       "wine": 3.5193326219029566
       }
      ],
      "greenvale__stonehaven": [
       {
-       "fish": 192.4695685187363,
-       "wine": 21.275708237328466
+       "cloth": 27.447053459050032,
+       "fish": 48.68739804943007,
+       "salt": 16.95396241884539,
+       "silk": 4.187043744418675,
+       "spices": 4.159149907124604,
+       "wine": 12.781791474721025
       },
       {
-       "fish": 195.47977232773934,
-       "wine": 21.72883097459897
+       "cloth": 26.854618444244675,
+       "fish": 47.89366806579156,
+       "salt": 16.90049635273908,
+       "silk": 4.40187238405334,
+       "spices": 4.094610801854513,
+       "wine": 12.96406307934494
       },
       {
-       "fish": 198.09106772353675,
-       "wine": 22.220855945141253
+       "cloth": 26.601677645558343,
+       "fish": 47.27658690769147,
+       "salt": 16.79112052439931,
+       "silk": 4.731365305368004,
+       "spices": 4.120472531302366,
+       "wine": 13.020822082238476
       },
       {
-       "fish": 200.3746574129282,
-       "wine": 22.6502249083855
+       "cloth": 26.46347661064885,
+       "fish": 46.78653458411664,
+       "salt": 16.653579631573034,
+       "silk": 5.058918957311937,
+       "spices": 4.223261770092531,
+       "wine": 12.852132806931564
       },
       {
-       "fish": 202.38013288488895,
-       "wine": 23.005534110584872
+       "cloth": 26.45032572981858,
+       "fish": 46.38623287215871,
+       "salt": 16.52852165352161,
+       "silk": 5.372167034660548,
+       "spices": 4.242881849472641,
+       "wine": 12.11481414351245
       },
       {
-       "fish": 204.14561097149908,
-       "wine": 23.296941523815107
+       "cloth": 26.523606208573003,
+       "fish": 46.05003539036825,
+       "salt": 16.363453532596775,
+       "silk": 5.6003812858605135,
+       "spices": 4.37162448968373,
+       "wine": 9.58757979254072
       }
      ],
      "greyrock__stonehaven": [
       {
-       "grain": 857.6820663783067
+       "grain": 223.14135295880794,
+       "iron": 45.590919910177924
+      }
+     ],
+     "ironhold__stonehaven": [
+      {
+       "iron": 83.63458461297913
+      },
+      {
+       "iron": 83.5575417398086
       }
      ],
      "lakeside__greenvale": [
       {
-       "fish": 771.6541183905883,
-       "grain": 337.85846656032567
+       "fish": 109.41302677175972,
+       "salt": 32.75398063742677
       }
      ],
      "millbrook__redwater": [
       {
-       "grain": 746.8546763272976
+       "grain": 284.5146403385318,
+       "meat": 135.39642280249564
       }
      ],
      "redwater__eastford": [
       {
-       "cloth": 25.49202696564678,
-       "tools": 16.18154717692017,
-       "wine": 13.231904595328716
+       "cloth": 13.26391024372907,
+       "fish": 11.610334361334909,
+       "grain": 26.333653844559976,
+       "iron": 14.081137162459191,
+       "meat": 11.1395140729164,
+       "silk": 2.561685147804863,
+       "spices": 5.725530112891974,
+       "tools": 4.0546246257891,
+       "weapons": 1.1890700844441562,
+       "wine": 6.7647886399996615
       },
       {
-       "cloth": 25.534318898513906,
-       "tools": 16.361073685770798,
-       "wine": 13.254101924434554
+       "cloth": 13.2957654612771,
+       "fish": 11.800154472518065,
+       "grain": 27.745918043528853,
+       "iron": 13.6099196837266,
+       "meat": 11.122284932858845,
+       "silk": 2.6302254245283154,
+       "spices": 5.863174561056007,
+       "tools": 4.013603404114959,
+       "weapons": 1.1408394853277706,
+       "wine": 6.6860013179435
+      }
+     ],
+     "redwater__eastport": [
+      {
+       "cloth": 3.2321426379396456,
+       "fish": 10.850540510476806,
+       "grain": 62.12665702844199,
+       "iron": 5.873743602118461,
+       "meat": 13.137910239520496,
+       "tools": 4.208663115583907,
+       "weapons": 0.759613853179353
+      },
+      {
+       "cloth": 3.1309506237481304,
+       "fish": 10.845743354114859,
+       "grain": 61.60119759027352,
+       "iron": 5.019154834590243,
+       "meat": 13.13546832686508,
+       "tools": 4.218205815878501,
+       "weapons": 0.7483180331126605
       }
      ],
      "redwater__greenvale": [
       {
-       "cloth": 3.809621717835636,
-       "grain": 150.5802977207952,
-       "tools": 4.750256406504046
+       "grain": 130.38855005583346,
+       "meat": 26.936152011028497
       },
       {
-       "cloth": 3.7763889202712666,
-       "grain": 145.59801097718918,
-       "tools": 4.8546934046990105
+       "grain": 127.90624921990194,
+       "meat": 26.78631142389143,
+       "tools": 0.03243872226938295
       },
       {
-       "cloth": 3.731147282650247,
-       "grain": 141.48640500308397,
-       "tools": 4.104735718191096
+       "grain": 125.93650264292904,
+       "meat": 26.66195079362872,
+       "tools": 0.2685326942829071
       },
       {
-       "cloth": 3.6760790264427254,
-       "grain": 138.24373798270128,
-       "tools": 2.9751602101068144
+       "grain": 124.60449609455897,
+       "meat": 26.559714746481202,
+       "tools": 0.3908655199582118
       },
       {
-       "cloth": 3.6063404590393224,
-       "grain": 135.71342993613004,
-       "tools": 2.2103945801413842
+       "grain": 123.8226840982538,
+       "meat": 26.47636778239477,
+       "tools": 0.4925415836442464
       }
      ],
      "redwater__millbrook": [
       {
-       "cloth": 28.904608298152702,
-       "tools": 18.468480547882624,
-       "wine": 14.011549422507287
+       "cloth": 15.692831373368142,
+       "fish": 34.50993211854893,
+       "grain": 31.02067934780434,
+       "iron": 14.454260228317803,
+       "silk": 3.3713925809099665,
+       "spices": 7.535429618839105,
+       "tools": 4.744940858625656,
+       "weapons": 1.3817194295488098,
+       "wine": 8.85178066900768
       }
      ],
      "redwater__stonehaven": [
       {
-       "cloth": 22.010992506445838
+       "cloth": 25.855346385909375,
+       "fish": 34.67897271963161,
+       "grain": 23.37162191380684,
+       "meat": 31.985954287788655,
+       "silk": 0.05670513532178983,
+       "spices": 6.880473945305045
       },
       {
-       "cloth": 22.04149982393478
+       "cloth": 25.332343374878636,
+       "fish": 34.759428290325125,
+       "grain": 22.162432418955003,
+       "meat": 31.906313620233046,
+       "silk": 0.33532200445093086,
+       "spices": 7.129245328234958,
+       "wine": 0.5290204239491986
       },
       {
-       "cloth": 22.047625683332036
+       "cloth": 25.05863011344545,
+       "fish": 34.85253730617547,
+       "grain": 21.109658101123973,
+       "meat": 31.843622216561183,
+       "silk": 0.49959270213542817,
+       "spices": 7.325257509562437,
+       "wine": 1.0606755091214157
       },
       {
-       "cloth": 22.036052541709484
+       "cloth": 24.98246855829026,
+       "fish": 34.94963398054426,
+       "grain": 20.18535596694215,
+       "meat": 31.793639865261014,
+       "silk": 0.6103338026223633,
+       "spices": 7.649363194507918,
+       "wine": 1.6329020499715088
+      }
+     ],
+     "saltmarsh__greenvale": [
+      {
+       "fish": 108.78406873971551,
+       "salt": 32.51196586564698
       }
      ],
      "stonehaven__greenvale": [
       {
-       "grain": 32.01537925122167,
-       "tools": 38.50836048417103
+       "grain": 15.07278054572548,
+       "iron": 37.75243897942904,
+       "tools": 13.006193736626805,
+       "weapons": 5.896435611170187
       },
       {
-       "grain": 32.44889736461394,
-       "tools": 40.61929785011635
+       "grain": 13.356865547721544,
+       "iron": 37.907838493108535,
+       "tools": 12.923957384433145,
+       "weapons": 5.3543023769562454
       },
       {
-       "grain": 32.63150350598701,
-       "tools": 40.58312668029808
+       "grain": 11.659444999786118,
+       "iron": 37.786351639271984,
+       "tools": 12.902776409023009,
+       "weapons": 5.129876870434418
       },
       {
-       "grain": 32.714498927044545,
-       "tools": 39.415555158128846
+       "grain": 10.11669135919229,
+       "iron": 36.992354835603734,
+       "tools": 12.950521568258926,
+       "weapons": 4.965864991995051
       },
       {
-       "grain": 32.740883645457124,
-       "tools": 37.84042709969067
+       "grain": 8.74380170029931,
+       "iron": 36.29043494576161,
+       "tools": 12.944535215949145,
+       "weapons": 4.895805402221948
       },
       {
-       "grain": 32.737041115826564,
-       "tools": 36.89245692083613
+       "grain": 7.528863617227822,
+       "iron": 36.279072894287054,
+       "tools": 12.940701439988352,
+       "weapons": 4.860614776901837
       }
      ],
      "stonehaven__greyrock": [
       {
-       "cloth": 20.187398731579883,
-       "tools": 20.072588908498087,
-       "wine": 8.729926990863442
+       "cloth": 10.49734666865544,
+       "grain": 24.909997567912306,
+       "iron": 4.305380519405774,
+       "silk": 1.2185368069718208,
+       "spices": 2.439780870927575,
+       "tools": 3.632168364321832,
+       "weapons": 1.1839332117780588,
+       "wine": 3.1221885249383727
+      }
+     ],
+     "stonehaven__ironhold": [
+      {
+       "cloth": 6.506744230837787,
+       "grain": 35.53278532051635,
+       "silk": 0.7127466665471061,
+       "spices": 1.4313796990369212,
+       "tools": 2.3458692439979765,
+       "weapons": 0.762167150903628,
+       "wine": 1.8237377752077841
+      },
+      {
+       "cloth": 6.465684359935819,
+       "grain": 34.89836232029847,
+       "silk": 0.7396399376307037,
+       "spices": 1.4045886296124883,
+       "tools": 2.347763497052438,
+       "weapons": 0.7649508477302946,
+       "wine": 1.816818634985927
       }
      ],
      "stonehaven__redwater": [
       {
-       "tools": 18.948472116012955
+       "iron": 58.32299640667055,
+       "tools": 5.24884336637873,
+       "weapons": 7.937960443406838
       },
       {
-       "tools": 18.961608451244718
+       "iron": 58.800849497587976,
+       "tools": 5.046560063204905,
+       "weapons": 7.863813507699949
       },
       {
-       "tools": 19.06855631633009
+       "iron": 59.808880448508596,
+       "tools": 4.923225717491394,
+       "weapons": 7.818525664807935
       },
       {
-       "tools": 19.23709195090806
+       "iron": 60.52619358888579,
+       "tools": 4.825116603689516,
+       "weapons": 7.775120028228704
       }
      ]
     }
@@ -849,275 +2046,674 @@
    "state": {
     "day": 20,
     "stock": {
-     "eastford|cloth": 210.1028372676205,
-     "eastford|fish": 1792.249499232399,
-     "eastford|grain": 1965.7026559054373,
-     "eastford|tools": 148.9053352201137,
-     "eastford|wine": 181.54432862211735,
-     "greenvale|cloth": 637.0797644093624,
-     "greenvale|fish": 3186.022119848581,
-     "greenvale|grain": 236.2989539334598,
-     "greenvale|tools": 241.2164330426445,
-     "greenvale|wine": 480.21869352707586,
-     "greyrock|cloth": 160.03045238617105,
+     "eastford|cloth": 333.3309298592773,
+     "eastford|fish": 307.8080959379426,
+     "eastford|grain": 872.5066330226609,
+     "eastford|iron": 72.01778159767964,
+     "eastford|meat": 113.30588202402524,
+     "eastford|salt": 0.0,
+     "eastford|silk": 30.438018282164244,
+     "eastford|spices": 62.82158977782212,
+     "eastford|tools": 99.26141220207302,
+     "eastford|weapons": 19.07918661843613,
+     "eastford|wine": 67.35401066395326,
+     "eastport|cloth": 323.86179546948347,
+     "eastport|fish": 274.3820181925033,
+     "eastport|grain": 795.9229260168859,
+     "eastport|iron": 97.95058732306599,
+     "eastport|meat": 113.10341477758803,
+     "eastport|salt": 68.82352038191151,
+     "eastport|silk": 151.70244194763703,
+     "eastport|spices": 525.8960318700866,
+     "eastport|tools": 98.59673725541384,
+     "eastport|weapons": 19.375417796509105,
+     "eastport|wine": 59.841142520557874,
+     "greenvale|cloth": 1196.3476096940246,
+     "greenvale|fish": 1215.5284139281991,
+     "greenvale|grain": 1330.625297280957,
+     "greenvale|iron": 290.2704140747556,
+     "greenvale|meat": 156.62964743581512,
+     "greenvale|salt": 312.4897701163408,
+     "greenvale|silk": 98.29130873794223,
+     "greenvale|spices": 123.72710047091753,
+     "greenvale|tools": 218.13526024465034,
+     "greenvale|weapons": 47.72493874545911,
+     "greenvale|wine": 225.31498687989304,
+     "greyrock|cloth": 263.29220392938936,
      "greyrock|fish": 0.0,
-     "greyrock|grain": 3021.0840119767286,
-     "greyrock|tools": 216.5022531746287,
-     "greyrock|wine": 138.58567731485203,
-     "lakeside|cloth": 171.9436822847676,
-     "lakeside|fish": 2320.0700417925573,
-     "lakeside|grain": 1065.6307565245093,
-     "lakeside|tools": 72.35521839407049,
-     "lakeside|wine": 187.37172622125283,
-     "millbrook|cloth": 251.2712080250782,
-     "millbrook|fish": 0.0,
-     "millbrook|grain": 3195.005776362884,
-     "millbrook|tools": 177.6471136142404,
-     "millbrook|wine": 180.57405121541234,
-     "redwater|cloth": 1008.098620255982,
-     "redwater|fish": 2604.7175593087272,
-     "redwater|grain": 6365.464493448328,
-     "redwater|tools": 684.7391926066806,
-     "redwater|wine": 566.9701128783202,
-     "stonehaven|cloth": 597.7151320412956,
-     "stonehaven|fish": 0.0,
-     "stonehaven|grain": 5268.688617964782,
-     "stonehaven|tools": 746.3565571023785,
-     "stonehaven|wine": 299.36043718177535
+     "greyrock|grain": 729.7960200295936,
+     "greyrock|iron": 255.19177487333226,
+     "greyrock|meat": 0.0,
+     "greyrock|salt": 0.0,
+     "greyrock|silk": 22.5204608621151,
+     "greyrock|spices": 42.206865654836356,
+     "greyrock|tools": 125.78660465068818,
+     "greyrock|weapons": 34.20650939734552,
+     "greyrock|wine": 47.766401817116765,
+     "ironhold|cloth": 163.3087786179553,
+     "ironhold|fish": 0.0,
+     "ironhold|grain": 418.7703688500282,
+     "ironhold|iron": 196.06737823350602,
+     "ironhold|meat": 0.0,
+     "ironhold|salt": 0.0,
+     "ironhold|silk": 11.873632190554746,
+     "ironhold|spices": 22.265664967722557,
+     "ironhold|tools": 76.91792792471385,
+     "ironhold|weapons": 20.86760369320734,
+     "ironhold|wine": 25.39047138420161,
+     "lakeside|cloth": 319.6782430442989,
+     "lakeside|fish": 336.20909768639206,
+     "lakeside|grain": 0.0,
+     "lakeside|iron": 49.277986108934,
+     "lakeside|meat": 0.0,
+     "lakeside|salt": 105.96164724489927,
+     "lakeside|silk": 25.523435232581008,
+     "lakeside|spices": 43.387837914709074,
+     "lakeside|tools": 72.00865281625232,
+     "lakeside|weapons": 15.12380544386733,
+     "lakeside|wine": 57.59823735140229,
+     "millbrook|cloth": 402.4547939429182,
+     "millbrook|fish": 312.4770818981631,
+     "millbrook|grain": 1081.2816059802676,
+     "millbrook|iron": 85.3076747599672,
+     "millbrook|meat": 200.09459821787112,
+     "millbrook|salt": 0.0,
+     "millbrook|silk": 36.2851013592905,
+     "millbrook|spices": 75.3919625041854,
+     "millbrook|tools": 119.45336545727363,
+     "millbrook|weapons": 22.70385505087309,
+     "millbrook|wine": 81.49908105894767,
+     "redwater|cloth": 1587.4911816017025,
+     "redwater|fish": 1231.497373357388,
+     "redwater|grain": 3305.482041769712,
+     "redwater|iron": 427.2702255348394,
+     "redwater|meat": 543.3326967842054,
+     "redwater|salt": 162.96655955045048,
+     "redwater|silk": 119.3653629272844,
+     "redwater|spices": 249.94839757328296,
+     "redwater|tools": 458.6009112301163,
+     "redwater|weapons": 76.74607713154019,
+     "redwater|wine": 298.97828740729364,
+     "saltmarsh|cloth": 273.2309558586244,
+     "saltmarsh|fish": 295.415381098772,
+     "saltmarsh|grain": 0.0,
+     "saltmarsh|iron": 49.74360343741244,
+     "saltmarsh|meat": 0.0,
+     "saltmarsh|salt": 93.2134631434347,
+     "saltmarsh|silk": 22.055005934956114,
+     "saltmarsh|spices": 37.59879169774738,
+     "saltmarsh|tools": 61.787375486685654,
+     "saltmarsh|weapons": 13.49243103228805,
+     "saltmarsh|wine": 49.852780517088206,
+     "stonehaven|cloth": 767.717293349802,
+     "stonehaven|fish": 488.98602047663,
+     "stonehaven|grain": 2588.1779271301457,
+     "stonehaven|iron": 608.6099069834429,
+     "stonehaven|meat": 190.5549295077739,
+     "stonehaven|salt": 124.43147238394549,
+     "stonehaven|silk": 57.10624779220048,
+     "stonehaven|spices": 110.62986813406827,
+     "stonehaven|tools": 432.26633317619456,
+     "stonehaven|weapons": 109.9445012673741,
+     "stonehaven|wine": 116.18667436697065
     },
     "multiplier": {
-     "eastford|cloth": 1.561360362503371,
-     "eastford|fish": 0.8975733984386183,
-     "eastford|grain": 1.1664566884468577,
-     "eastford|tools": 1.1234498799590593,
-     "eastford|wine": 1.2208929837076963,
-     "greenvale|cloth": 1.3870402336462009,
-     "greenvale|fish": 1.195094026889279,
-     "greenvale|grain": 1.8,
-     "greenvale|tools": 1.8285920530074726,
-     "greenvale|wine": 0.6783146051871378,
-     "greyrock|cloth": 1.9494550278600944,
+     "eastford|cloth": 0.884708740520616,
+     "eastford|fish": 0.9714223753594784,
+     "eastford|grain": 0.986080603600589,
+     "eastford|iron": 2.9230083132911466,
+     "eastford|meat": 1.0447488659248003,
+     "eastford|salt": 1.8,
+     "eastford|silk": 1.0977326691904896,
+     "eastford|spices": 1.078692648150121,
+     "eastford|tools": 0.9920178832687003,
+     "eastford|weapons": 1.6988139903129322,
+     "eastford|wine": 0.942472764255163,
+     "eastport|cloth": 0.8901407904709416,
+     "eastport|fish": 1.0963434032532688,
+     "eastport|grain": 1.1080675592319946,
+     "eastport|iron": 2.460209523462886,
+     "eastport|meat": 1.0797852480864458,
+     "eastport|salt": 1.1930224809085141,
+     "eastport|silk": 0.4,
+     "eastport|spices": 0.4000015509423061,
+     "eastport|tools": 1.0002174581461496,
+     "eastport|weapons": 1.6246054558057874,
+     "eastport|wine": 0.90326713263177,
+     "greenvale|cloth": 0.7111782671711905,
+     "greenvale|fish": 0.8909018536429083,
+     "greenvale|grain": 1.5212402828686806,
+     "greenvale|iron": 1.9945547181156813,
+     "greenvale|meat": 1.6237278677351017,
+     "greenvale|salt": 0.9635590414026581,
+     "greenvale|silk": 0.6087314421575999,
+     "greenvale|spices": 1.3003622456070174,
+     "greenvale|tools": 1.2912945804070524,
+     "greenvale|weapons": 1.8276607410883767,
+     "greenvale|wine": 0.4677049223183839,
+     "greyrock|cloth": 1.125662518076816,
      "greyrock|fish": 1.8,
-     "greyrock|grain": 0.9976681717996801,
-     "greyrock|tools": 0.7450862415029308,
-     "greyrock|wine": 1.24000783415175,
-     "lakeside|cloth": 1.660393546634169,
-     "lakeside|fish": 0.7546831873157797,
-     "lakeside|grain": 1.511534372668163,
-     "lakeside|tools": 2.0725074554080827,
-     "lakeside|wine": 0.7674737254901003,
-     "millbrook|cloth": 1.3890502919909327,
-     "millbrook|fish": 1.8,
-     "millbrook|grain": 0.9985437686300673,
-     "millbrook|tools": 1.0001982421968585,
-     "millbrook|wine": 1.0729979980457467,
-     "redwater|cloth": 1.2429321257143977,
-     "redwater|fish": 1.557685193259189,
-     "redwater|grain": 1.3746644982964555,
-     "redwater|tools": 0.9302544565644224,
-     "redwater|wine": 1.124974075269062,
-     "stonehaven|cloth": 1.6193825584069181,
-     "stonehaven|fish": 1.8,
-     "stonehaven|grain": 1.379608103782926,
-     "stonehaven|tools": 0.6605542911903547,
-     "stonehaven|wine": 1.5351557332249537
+     "greyrock|grain": 1.1141966405960437,
+     "greyrock|iron": 0.7552869373209787,
+     "greyrock|meat": 1.8,
+     "greyrock|salt": 1.8,
+     "greyrock|silk": 1.1422015113704496,
+     "greyrock|spices": 1.4205038708301803,
+     "greyrock|tools": 0.7517448930905851,
+     "greyrock|weapons": 0.8316417917060702,
+     "greyrock|wine": 1.0176591966271769,
+     "ironhold|cloth": 1.1109418749175681,
+     "ironhold|fish": 1.8,
+     "ironhold|grain": 1.2567657301868134,
+     "ironhold|iron": 0.6124418133415099,
+     "ironhold|meat": 1.8,
+     "ironhold|salt": 1.8,
+     "ironhold|silk": 1.1438630258449958,
+     "ironhold|spices": 1.3842667358337344,
+     "ironhold|tools": 0.7495897325670973,
+     "ironhold|weapons": 0.8343600435232119,
+     "ironhold|wine": 1.0209021013517068,
+     "lakeside|cloth": 0.7532199288711757,
+     "lakeside|fish": 0.9021154995644741,
+     "lakeside|grain": 1.8,
+     "lakeside|iron": 3.0,
+     "lakeside|meat": 1.8,
+     "lakeside|salt": 0.8638029420713533,
+     "lakeside|silk": 0.6504543815890406,
+     "lakeside|spices": 0.8689834947522853,
+     "lakeside|tools": 1.1127985327952103,
+     "lakeside|weapons": 1.7717794778848228,
+     "lakeside|wine": 0.5421592992634914,
+     "millbrook|cloth": 0.8316624227058428,
+     "millbrook|fish": 1.0736947148967955,
+     "millbrook|grain": 0.9569488546396969,
+     "millbrook|iron": 2.874242670006266,
+     "millbrook|meat": 0.8117896384248773,
+     "millbrook|salt": 1.8,
+     "millbrook|silk": 0.9816000583581462,
+     "millbrook|spices": 0.954091551388907,
+     "millbrook|tools": 0.9355886398110701,
+     "millbrook|weapons": 1.608597688327488,
+     "millbrook|wine": 0.8237366460538326,
+     "redwater|cloth": 0.7766750276810331,
+     "redwater|fish": 1.0292126605033387,
+     "redwater|grain": 1.0783136026780975,
+     "redwater|iron": 1.9684697299065024,
+     "redwater|meat": 0.9852271267883388,
+     "redwater|salt": 1.595002050286852,
+     "redwater|silk": 1.1119338034558592,
+     "redwater|spices": 1.0675690102327136,
+     "redwater|tools": 0.8982002623411918,
+     "redwater|weapons": 1.6752212392915338,
+     "redwater|wine": 0.7759302944369992,
+     "saltmarsh|cloth": 0.7464653207936528,
+     "saltmarsh|fish": 0.885065987298418,
+     "saltmarsh|grain": 1.8,
+     "saltmarsh|iron": 2.9152645730611857,
+     "saltmarsh|meat": 1.8,
+     "saltmarsh|salt": 0.8440686671249288,
+     "saltmarsh|silk": 0.636637245533265,
+     "saltmarsh|spices": 0.8472841631503263,
+     "saltmarsh|tools": 1.091770491023604,
+     "saltmarsh|weapons": 1.6517063429325707,
+     "saltmarsh|wine": 0.5301477555197747,
+     "stonehaven|cloth": 1.255972485613176,
+     "stonehaven|fish": 1.5349082434986885,
+     "stonehaven|grain": 1.1103825732647254,
+     "stonehaven|iron": 1.0510676377753176,
+     "stonehaven|meat": 1.554235676384043,
+     "stonehaven|salt": 1.6497211222007762,
+     "stonehaven|silk": 1.5638779377325513,
+     "stonehaven|spices": 1.8308873811067905,
+     "stonehaven|tools": 0.7152943413397941,
+     "stonehaven|weapons": 0.8524485957940684,
+     "stonehaven|wine": 1.4755411494661348
     },
     "prosperity": {
-     "eastford": 0.6697632463935387,
-     "greenvale": 0.49725875178470247,
-     "greyrock": 0.5691223876592907,
-     "lakeside": 0.6034350331020296,
-     "millbrook": 0.5989546679428916,
-     "redwater": 0.4185208111215285,
-     "stonehaven": 0.49150800120117133
+     "eastford": 0.6541850100058656,
+     "eastport": 0.5887239627475436,
+     "greenvale": 0.5465472028494487,
+     "greyrock": 0.5478305531188222,
+     "ironhold": 0.491283549292228,
+     "lakeside": 0.5204104870670391,
+     "millbrook": 0.644317243512379,
+     "redwater": 0.472521913707093,
+     "saltmarsh": 0.5222282252640956,
+     "stonehaven": 0.539637794718092
     },
     "pipeline": {
      "eastford__redwater": [
       {
-       "fish": 320.21968778470523,
-       "grain": 186.91218806384035
+       "fish": 111.76522595243775,
+       "grain": 107.38396104684732
       },
       {
-       "fish": 320.1369897006504,
-       "grain": 187.72239458560412
+       "fish": 111.67368512177333,
+       "grain": 107.5053414231028
+      }
+     ],
+     "eastport__greenvale": [
+      {
+       "grain": 6.752120179516795,
+       "meat": 1.4279184544508001,
+       "spices": 21.113341213458472
+      },
+      {
+       "grain": 6.799639358991958,
+       "meat": 1.4358759950462114,
+       "silk": 0.5474091402557438,
+       "spices": 21.701875018162482
+      },
+      {
+       "grain": 6.820957952735983,
+       "meat": 1.44160101910258,
+       "silk": 0.8941153989677028,
+       "spices": 22.29827985393478
+      },
+      {
+       "grain": 6.836822091582883,
+       "meat": 1.4455196105906416,
+       "silk": 1.1461390644033709,
+       "spices": 22.65003680462404
+      }
+     ],
+     "eastport__redwater": [
+      {
+       "salt": 1.1649119272314739,
+       "silk": 14.743548663014119,
+       "spices": 46.23688207895666
+      },
+      {
+       "salt": 1.197126268585121,
+       "silk": 15.100448168018687,
+       "spices": 47.258975282871845
+      }
+     ],
+     "greenvale__eastport": [
+      {
+       "cloth": 10.736447323150914,
+       "fish": 19.36270785705888,
+       "iron": 4.591223115392777,
+       "salt": 6.8209671805000385,
+       "weapons": 0.36748809775845703,
+       "wine": 5.831797527907312
+      },
+      {
+       "cloth": 10.830939767242912,
+       "fish": 19.283304028654744,
+       "iron": 3.761201780687748,
+       "salt": 6.820021223278603,
+       "weapons": 0.37744355416308123,
+       "wine": 5.924444985260025
+      },
+      {
+       "cloth": 11.03307688651114,
+       "fish": 19.216359949032466,
+       "iron": 3.7529348219317638,
+       "salt": 6.82166927491917,
+       "weapons": 0.38841850732852073,
+       "wine": 5.74432493732016
+      },
+      {
+       "cloth": 11.13227946460567,
+       "fish": 19.15748435018423,
+       "iron": 3.870556990294025,
+       "salt": 6.788887816073847,
+       "weapons": 0.3886353374180714,
+       "wine": 3.735983137203512
       }
      ],
      "greenvale__lakeside": [
       {
-       "cloth": 20.867041037263462,
-       "tools": 7.196234594530097,
-       "wine": 17.84565209834392
+       "cloth": 10.09071804618486,
+       "fish": 21.784219170692946,
+       "iron": 8.351225838038994,
+       "salt": 1.868477972365647,
+       "silk": 2.7116216183718898,
+       "spices": 3.647782784833113,
+       "tools": 2.281066339637599,
+       "weapons": 0.9692595627738455,
+       "wine": 4.223502307626308
       }
      ],
      "greenvale__redwater": [
       {
-       "fish": 26.224244238768193,
-       "wine": 18.492898382433857
+       "iron": 0.015952555747350456,
+       "salt": 20.10233590959806,
+       "silk": 2.8016540519722253,
+       "wine": 7.624794879734113
       },
       {
-       "fish": 24.612711292819217,
-       "wine": 18.73406946502643
+       "salt": 19.946566598104646,
+       "silk": 2.7570794757813073,
+       "wine": 7.322584067594834
       },
       {
-       "fish": 23.191252109072924,
-       "wine": 18.94436446504908
+       "iron": 0.04871134544479266,
+       "salt": 19.764009927032117,
+       "silk": 2.741822636190731,
+       "wine": 6.863575627261311
       },
       {
-       "fish": 21.941607923703703,
-       "wine": 19.162227521415875
+       "iron": 0.1396533546777655,
+       "salt": 19.596721085846756,
+       "silk": 2.856226249795473,
+       "wine": 6.179184418168334
       },
       {
-       "fish": 20.845627696619996,
-       "wine": 19.39266875904903
+       "iron": 0.19398009817032968,
+       "salt": 19.38563177483194,
+       "silk": 2.9590667151848504,
+       "wine": 3.6026556095880085
+      }
+     ],
+     "greenvale__saltmarsh": [
+      {
+       "cloth": 8.604095843699175,
+       "fish": 17.526073758019198,
+       "iron": 8.351225838038994,
+       "salt": 0.7729740378407958,
+       "silk": 2.388582081048835,
+       "spices": 3.245218658502215,
+       "tools": 1.9624502104460193,
+       "weapons": 0.7949878591084144,
+       "wine": 3.5193326219029566
       }
      ],
      "greenvale__stonehaven": [
       {
-       "fish": 192.4695685187363,
-       "wine": 21.275708237328466
+       "cloth": 27.447053459050032,
+       "fish": 48.68739804943007,
+       "salt": 16.95396241884539,
+       "silk": 4.187043744418675,
+       "spices": 4.159149907124604,
+       "wine": 12.781791474721025
       },
       {
-       "fish": 195.47977232773934,
-       "wine": 21.72883097459897
+       "cloth": 26.854618444244675,
+       "fish": 47.89366806579156,
+       "salt": 16.90049635273908,
+       "silk": 4.40187238405334,
+       "spices": 4.094610801854513,
+       "wine": 12.96406307934494
       },
       {
-       "fish": 198.09106772353675,
-       "wine": 22.220855945141253
+       "cloth": 26.601677645558343,
+       "fish": 47.27658690769147,
+       "salt": 16.79112052439931,
+       "silk": 4.731365305368004,
+       "spices": 4.120472531302366,
+       "wine": 13.020822082238476
       },
       {
-       "fish": 200.3746574129282,
-       "wine": 22.6502249083855
+       "cloth": 26.46347661064885,
+       "fish": 46.78653458411664,
+       "salt": 16.653579631573034,
+       "silk": 5.058918957311937,
+       "spices": 4.223261770092531,
+       "wine": 12.852132806931564
       },
       {
-       "fish": 202.38013288488895,
-       "wine": 23.005534110584872
+       "cloth": 26.45032572981858,
+       "fish": 46.38623287215871,
+       "salt": 16.52852165352161,
+       "silk": 5.372167034660548,
+       "spices": 4.242881849472641,
+       "wine": 12.11481414351245
       },
       {
-       "fish": 204.14561097149908,
-       "wine": 23.296941523815107
+       "cloth": 26.523606208573003,
+       "fish": 46.05003539036825,
+       "salt": 16.363453532596775,
+       "silk": 5.6003812858605135,
+       "spices": 4.37162448968373,
+       "wine": 9.58757979254072
       }
      ],
      "greyrock__stonehaven": [
       {
-       "grain": 857.6820663783067
+       "grain": 223.14135295880794,
+       "iron": 45.590919910177924
+      }
+     ],
+     "ironhold__stonehaven": [
+      {
+       "iron": 83.63458461297913
+      },
+      {
+       "iron": 83.5575417398086
       }
      ],
      "lakeside__greenvale": [
       {
-       "fish": 771.6541183905883,
-       "grain": 337.85846656032567
+       "fish": 109.41302677175972,
+       "salt": 32.75398063742677
       }
      ],
      "millbrook__redwater": [
       {
-       "grain": 746.8546763272976
+       "grain": 284.5146403385318,
+       "meat": 135.39642280249564
       }
      ],
      "redwater__eastford": [
       {
-       "cloth": 25.49202696564678,
-       "tools": 16.18154717692017,
-       "wine": 13.231904595328716
+       "cloth": 13.26391024372907,
+       "fish": 11.610334361334909,
+       "grain": 26.333653844559976,
+       "iron": 14.081137162459191,
+       "meat": 11.1395140729164,
+       "silk": 2.561685147804863,
+       "spices": 5.725530112891974,
+       "tools": 4.0546246257891,
+       "weapons": 1.1890700844441562,
+       "wine": 6.7647886399996615
       },
       {
-       "cloth": 25.534318898513906,
-       "tools": 16.361073685770798,
-       "wine": 13.254101924434554
+       "cloth": 13.2957654612771,
+       "fish": 11.800154472518065,
+       "grain": 27.745918043528853,
+       "iron": 13.6099196837266,
+       "meat": 11.122284932858845,
+       "silk": 2.6302254245283154,
+       "spices": 5.863174561056007,
+       "tools": 4.013603404114959,
+       "weapons": 1.1408394853277706,
+       "wine": 6.6860013179435
+      }
+     ],
+     "redwater__eastport": [
+      {
+       "cloth": 3.2321426379396456,
+       "fish": 10.850540510476806,
+       "grain": 62.12665702844199,
+       "iron": 5.873743602118461,
+       "meat": 13.137910239520496,
+       "tools": 4.208663115583907,
+       "weapons": 0.759613853179353
+      },
+      {
+       "cloth": 3.1309506237481304,
+       "fish": 10.845743354114859,
+       "grain": 61.60119759027352,
+       "iron": 5.019154834590243,
+       "meat": 13.13546832686508,
+       "tools": 4.218205815878501,
+       "weapons": 0.7483180331126605
       }
      ],
      "redwater__greenvale": [
       {
-       "cloth": 3.809621717835636,
-       "grain": 150.5802977207952,
-       "tools": 4.750256406504046
+       "grain": 130.38855005583346,
+       "meat": 26.936152011028497
       },
       {
-       "cloth": 3.7763889202712666,
-       "grain": 145.59801097718918,
-       "tools": 4.8546934046990105
+       "grain": 127.90624921990194,
+       "meat": 26.78631142389143,
+       "tools": 0.03243872226938295
       },
       {
-       "cloth": 3.731147282650247,
-       "grain": 141.48640500308397,
-       "tools": 4.104735718191096
+       "grain": 125.93650264292904,
+       "meat": 26.66195079362872,
+       "tools": 0.2685326942829071
       },
       {
-       "cloth": 3.6760790264427254,
-       "grain": 138.24373798270128,
-       "tools": 2.9751602101068144
+       "grain": 124.60449609455897,
+       "meat": 26.559714746481202,
+       "tools": 0.3908655199582118
       },
       {
-       "cloth": 3.6063404590393224,
-       "grain": 135.71342993613004,
-       "tools": 2.2103945801413842
+       "grain": 123.8226840982538,
+       "meat": 26.47636778239477,
+       "tools": 0.4925415836442464
       }
      ],
      "redwater__millbrook": [
       {
-       "cloth": 28.904608298152702,
-       "tools": 18.468480547882624,
-       "wine": 14.011549422507287
+       "cloth": 15.692831373368142,
+       "fish": 34.50993211854893,
+       "grain": 31.02067934780434,
+       "iron": 14.454260228317803,
+       "silk": 3.3713925809099665,
+       "spices": 7.535429618839105,
+       "tools": 4.744940858625656,
+       "weapons": 1.3817194295488098,
+       "wine": 8.85178066900768
       }
      ],
      "redwater__stonehaven": [
       {
-       "cloth": 22.010992506445838
+       "cloth": 25.855346385909375,
+       "fish": 34.67897271963161,
+       "grain": 23.37162191380684,
+       "meat": 31.985954287788655,
+       "silk": 0.05670513532178983,
+       "spices": 6.880473945305045
       },
       {
-       "cloth": 22.04149982393478
+       "cloth": 25.332343374878636,
+       "fish": 34.759428290325125,
+       "grain": 22.162432418955003,
+       "meat": 31.906313620233046,
+       "silk": 0.33532200445093086,
+       "spices": 7.129245328234958,
+       "wine": 0.5290204239491986
       },
       {
-       "cloth": 22.047625683332036
+       "cloth": 25.05863011344545,
+       "fish": 34.85253730617547,
+       "grain": 21.109658101123973,
+       "meat": 31.843622216561183,
+       "silk": 0.49959270213542817,
+       "spices": 7.325257509562437,
+       "wine": 1.0606755091214157
       },
       {
-       "cloth": 22.036052541709484
+       "cloth": 24.98246855829026,
+       "fish": 34.94963398054426,
+       "grain": 20.18535596694215,
+       "meat": 31.793639865261014,
+       "silk": 0.6103338026223633,
+       "spices": 7.649363194507918,
+       "wine": 1.6329020499715088
+      }
+     ],
+     "saltmarsh__greenvale": [
+      {
+       "fish": 108.78406873971551,
+       "salt": 32.51196586564698
       }
      ],
      "stonehaven__greenvale": [
       {
-       "grain": 32.01537925122167,
-       "tools": 38.50836048417103
+       "grain": 15.07278054572548,
+       "iron": 37.75243897942904,
+       "tools": 13.006193736626805,
+       "weapons": 5.896435611170187
       },
       {
-       "grain": 32.44889736461394,
-       "tools": 40.61929785011635
+       "grain": 13.356865547721544,
+       "iron": 37.907838493108535,
+       "tools": 12.923957384433145,
+       "weapons": 5.3543023769562454
       },
       {
-       "grain": 32.63150350598701,
-       "tools": 40.58312668029808
+       "grain": 11.659444999786118,
+       "iron": 37.786351639271984,
+       "tools": 12.902776409023009,
+       "weapons": 5.129876870434418
       },
       {
-       "grain": 32.714498927044545,
-       "tools": 39.415555158128846
+       "grain": 10.11669135919229,
+       "iron": 36.992354835603734,
+       "tools": 12.950521568258926,
+       "weapons": 4.965864991995051
       },
       {
-       "grain": 32.740883645457124,
-       "tools": 37.84042709969067
+       "grain": 8.74380170029931,
+       "iron": 36.29043494576161,
+       "tools": 12.944535215949145,
+       "weapons": 4.895805402221948
       },
       {
-       "grain": 32.737041115826564,
-       "tools": 36.89245692083613
+       "grain": 7.528863617227822,
+       "iron": 36.279072894287054,
+       "tools": 12.940701439988352,
+       "weapons": 4.860614776901837
       }
      ],
      "stonehaven__greyrock": [
       {
-       "cloth": 20.187398731579883,
-       "tools": 20.072588908498087,
-       "wine": 8.729926990863442
+       "cloth": 10.49734666865544,
+       "grain": 24.909997567912306,
+       "iron": 4.305380519405774,
+       "silk": 1.2185368069718208,
+       "spices": 2.439780870927575,
+       "tools": 3.632168364321832,
+       "weapons": 1.1839332117780588,
+       "wine": 3.1221885249383727
+      }
+     ],
+     "stonehaven__ironhold": [
+      {
+       "cloth": 6.506744230837787,
+       "grain": 35.53278532051635,
+       "silk": 0.7127466665471061,
+       "spices": 1.4313796990369212,
+       "tools": 2.3458692439979765,
+       "weapons": 0.762167150903628,
+       "wine": 1.8237377752077841
+      },
+      {
+       "cloth": 6.465684359935819,
+       "grain": 34.89836232029847,
+       "silk": 0.7396399376307037,
+       "spices": 1.4045886296124883,
+       "tools": 2.347763497052438,
+       "weapons": 0.7649508477302946,
+       "wine": 1.816818634985927
       }
      ],
      "stonehaven__redwater": [
       {
-       "tools": 18.948472116012955
+       "iron": 58.32299640667055,
+       "tools": 5.24884336637873,
+       "weapons": 7.937960443406838
       },
       {
-       "tools": 18.961608451244718
+       "iron": 58.800849497587976,
+       "tools": 5.046560063204905,
+       "weapons": 7.863813507699949
       },
       {
-       "tools": 19.06855631633009
+       "iron": 59.808880448508596,
+       "tools": 4.923225717491394,
+       "weapons": 7.818525664807935
       },
       {
-       "tools": 19.23709195090806
+       "iron": 60.52619358888579,
+       "tools": 4.825116603689516,
+       "weapons": 7.775120028228704
       }
      ]
     }
