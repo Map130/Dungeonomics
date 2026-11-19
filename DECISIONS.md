@@ -58,4 +58,5 @@ Affects: REQUIREMENTS §5.5, §5.8; MODEL §5.7. Plan `m7-shop.md`.
 Good display names live in the world file as `name = { en, ru }`: UI-only data, parsed additively (Python loader ignores it, Rust `good_names_from_toml`, facade `world_info().goods[].names`); the `World` struct and the model are untouched.
 Example-world calibration (reasons in the header of `worlds/example_region.toml`; do not undo blindly): food/materials/crafts keep deeper stocks (`coverage_days` 30, fish and meat 20); exporting villages send `hub_share = 0.9` to their hub; `per_capita` is in scaled trade units (grain 0.1 per person per day) so flows fit road capacities; meat spoilage 0.02, salt uses the necessity default spoilage, eastport population 300.
 Acceptance: after warm-up no node×good has demand within 1e-3 of the corridor edge (`tests/test_example_world.py`).
+The web app loads the bundled world warmed up (cap 2000 days, tolerance 1e-4); the day counter shows the warm-up days.
 Affects: REQUIREMENTS §5.2; MODEL §7 (defaults), §8 (acceptance). Plan `m8-richer-world.md`.

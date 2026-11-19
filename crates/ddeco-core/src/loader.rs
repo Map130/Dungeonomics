@@ -389,7 +389,20 @@ struct RawNamesFile {
 #[derive(Debug, Deserialize)]
 struct RawGoodName {
     #[serde(default)]
-    name: BTreeMap<String, String>,
+    name: Option<toml::Value>,
+}
+
+fn names_from_value(v: Option<toml::Value>) -> BTreeMap<String, String> {
+    let Some(toml::Value::Table(t)) = v else {
+        return BTreeMap::new();
+    };
+    t.into_iter()
+        .map(|(k, v)| match v {
+            toml::Value::String(s) => Some((k, s)),
+            _ => None,
+        })
+        .collect::<Option<BTreeMap<_, _>>>()
+        .unwrap_or_default()
 }
 
 /// Parse good display names (`name = { en = "...", ru = "..." }`) from the world TOML:
@@ -398,7 +411,12 @@ pub fn good_names_from_toml(
     text: &str,
 ) -> Result<BTreeMap<String, BTreeMap<String, String>>, String> {
     let raw: RawNamesFile = toml::from_str(text).map_err(|e| e.to_string())?;
-    Ok(raw.goods.into_iter().map(|(id, g)| (id, g.name)).collect())
+    // Lenient: a `name` that is not a table of strings is skipped (Python ignores `name`).
+    Ok(raw
+        .goods
+        .into_iter()
+        .map(|(id, g)| (id, names_from_value(g.name)))
+        .collect())
 }
 
 /// Parse background shock templates from the world TOML. serde ignores other sections;
@@ -482,6 +500,11 @@ mod tests {
         assert!(good_names_from_toml("seed = 1\n").unwrap().is_empty());
         // the world loader still accepts the same text
         assert!(world_from_toml(toml).is_ok());
+        // a malformed `name` is skipped for that good, not fatal
+        let bad = "[goods.a]\nname = \"Grain\"\n[goods.b]\nname = { en = 5 }\n[goods.c]\nname = { en = \"C\" }\n";
+        let n = good_names_from_toml(bad).unwrap();
+        assert!(n["a"].is_empty() && n["b"].is_empty());
+        assert_eq!(n["c"]["en"], "C");
     }
 
     #[test]

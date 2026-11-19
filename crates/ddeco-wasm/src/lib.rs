@@ -44,7 +44,8 @@ impl Sim {
     /// Create a simulation from a TOML world description (schema — `worlds/example_region.toml`).
     ///
     /// `warmup_days > 0` — warm the world up to equilibrium without events (§5.14), otherwise take
-    /// the calibrated starting snapshot without a run.
+    /// the calibrated starting snapshot without a run. `warmup_days` is a cap: the run stops early
+    /// once the relative change falls below 1e-4 (the tolerance of the stability tests).
     #[wasm_bindgen(constructor)]
     pub fn new(world_toml: &str, warmup_days: u32) -> Result<Sim, JsValue> {
         console_error_panic_hook::set_once();
@@ -52,7 +53,7 @@ impl Sim {
         let shocks = shocks_from_toml(world_toml).map_err(|e| JsValue::from_str(&e))?;
         let names = good_names_from_toml(world_toml).map_err(|e| JsValue::from_str(&e))?;
         let state = if warmup_days > 0 {
-            warmup(&world, warmup_days, 1e-6)
+            warmup(&world, warmup_days, 1e-4)
         } else {
             seed_state(&world)
         };

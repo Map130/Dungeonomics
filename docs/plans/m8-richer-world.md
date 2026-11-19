@@ -1,5 +1,7 @@
 > **Status:** closed — stages R25–R28.
 
+> **Final review fixes (R28):** the web app loads the bundled world warmed up (cap 2000, tolerance 1e-4, "warming up" hint); category labels for materials/tools added; Rust `good_names_from_toml` skips a malformed `name` instead of rejecting the world (matches Python).
+
 # Plan: M8 — a richer example world and goods display names
 
 ## Context

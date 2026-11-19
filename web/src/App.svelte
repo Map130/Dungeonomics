@@ -6,11 +6,11 @@
   import { i18n, LANGS, t, type Lang } from "./i18n/index.svelte";
 
   let runDays = $state(30);
-  let warmup = $state(0);
+  let warmup = $state(2000);
 
   $effect(() => {
     // Initialise WASM once, then load the default world.
-    app.init().then(() => app.loadWorld(defaultWorld, 0));
+    app.init().then(() => app.loadWorld(defaultWorld, warmup));
   });
 
   async function onWorldFile(e: Event) {
@@ -58,8 +58,9 @@
       <button onclick={() => download("state.toml", app.save())}>{t("app.save")}</button>
     </div>
   {:else}
-    <span class="muted">{t("app.loading")}</span>
+    <span class="muted">{app.warming ? t("app.warming") : t("app.loading")}</span>
   {/if}
+  {#if app.warming && app.sim}<span class="muted">{t("app.warming")}</span>{/if}
   <select
     aria-label={t("app.language")}
     value={i18n.lang}

@@ -28,6 +28,8 @@ class AppStore {
   view = $state<View>(typeof location === "undefined" ? { kind: "world" } : viewFromHash(location.hash));
 
   ready = $state(false);
+  /** True while a world is being built / warmed up (the UI shows a hint). */
+  warming = $state(false);
   error = $state<string | null>(null);
 
   // $state.raw: the header renders on `app.sim`, so it must be reactive; raw keeps
@@ -65,7 +67,10 @@ class AppStore {
   }
 
   /** Load a world from TOML and calibrate / warm it up. */
-  loadWorld(worldToml: string, warmupDays = 0): void {
+  async loadWorld(worldToml: string, warmupDays = 0): Promise<void> {
+    this.warming = warmupDays > 0;
+    // Let the "warming up" hint paint before the synchronous construction.
+    if (this.warming) await new Promise((r) => setTimeout(r, 0));
     try {
       const sim = new Sim(worldToml, warmupDays);
       this.sim?.free();
@@ -80,6 +85,8 @@ class AppStore {
       this.refresh();
     } catch (e) {
       this.error = String(e);
+    } finally {
+      this.warming = false;
     }
   }
 
