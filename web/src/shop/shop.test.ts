@@ -5,9 +5,15 @@ import { equivalentUnits, resolveDriver, roleOf } from "./drivers";
 const goods = [
   { id: "grain", category: "food" },
   { id: "fish", category: "food" },
+  { id: "meat", category: "food" },
+  { id: "salt", category: "food" },
+  { id: "iron", category: "materials" },
   { id: "cloth", category: "cloth" },
-  { id: "tools", category: "weapons" },
+  { id: "tools", category: "tools" },
+  { id: "weapons", category: "weapons" },
   { id: "wine", category: "luxury" },
+  { id: "spices", category: "luxury" },
+  { id: "silk", category: "luxury" },
 ];
 const byId = (id: string): ShopItem => {
   const it = CATALOG.find((i) => i.id === id);
@@ -42,6 +48,18 @@ describe("roleOf", () => {
     ["robes", "cloth"],
     ["spellbook", "luxury"],
     ["ball-bearings-bag-of-1000", "tools"],
+    ["iron-1-lb", "iron"],
+    ["copper-1-lb", "materials"],
+    ["salt-1-lb", "salt"],
+    ["silk-1-sq-yd", "silk"],
+    ["pepper-1-lb", "spices"],
+    ["saffron-1-lb", "spices"],
+    ["cow", "meat"],
+    ["chicken", "meat"],
+    ["meat-chunk", "meat"],
+    ["bread-loaf", "food"],
+    ["cheese-hunk", "food"],
+    ["arrow", "weapons"],
   ])("%s -> %s", (id, role) => {
     expect(roleOf(byId(id))).toBe(role);
   });
@@ -57,10 +75,13 @@ describe("roleOf coverage", () => {
 
 describe("resolveDriver", () => {
   it("resolves by id, category, stock", () => {
-    expect(resolveDriver("weapons", goods, [])).toBe("tools");
+    expect(resolveDriver("weapons", goods, [])).toBe("weapons");
+    expect(resolveDriver("materials", goods, [])).toBe("iron");
+    expect(resolveDriver("meat", goods, [])).toBe("meat");
     expect(resolveDriver("food", goods, [{ good: "grain", stock: 50 }, { good: "fish", stock: 80 }])).toBe("fish");
     expect(resolveDriver("grain", goods, [])).toBe("grain");
-    expect(resolveDriver("luxury", goods, [])).toBe("wine");
+    expect(resolveDriver("luxury", goods, [{ good: "wine", stock: 9 }])).toBe("wine");
+    expect(resolveDriver("luxury", goods, [])).toBe("silk");
     expect(resolveDriver(null, goods, [])).toBeNull();
     expect(resolveDriver("food", [{ id: "cloth", category: "cloth" }], [])).toBeNull();
   });
